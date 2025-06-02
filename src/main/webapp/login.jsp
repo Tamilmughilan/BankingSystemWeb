@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,24 +11,24 @@
     <div class="container">
         <div class="form-container">
             <h2>Banking System Login</h2>
+            <% if (request.getAttribute("loginFailed") != null) { %>
+                <p class="error">Login failed. Please try again.</p>
+            <% } %>
             <form action="login" method="post">
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                
                 <div class="form-group">
                     <button type="submit">Login</button>
                 </div>
             </form>
-            
             <div class="links">
-                <p>Don't have an account? <a href="signup">Sign up here</a></p>
+                <p>Don't have an account? <a href="signup.jsp">Sign up here</a></p>
             </div>
         </div>
     </div>

@@ -26,6 +26,7 @@ public class AccountServlet extends HttpServlet {
         }
     }
     
+    //GET - Account details for a particular Account number
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class AccountServlet extends HttpServlet {
             try {
                 int accNo = Integer.parseInt(accountNo);
                 
-                // Create service with user selected storage
+                //Creates a service with user selected storage
                 DataStorage dataStorage = getDataStorage(storageType);
                 AccountService accountService = new AccountService(dataStorage);
                 
@@ -54,19 +55,20 @@ public class AccountServlet extends HttpServlet {
                 } else {
                     out.println("<h2>Account not found</h2>");
                 }
-                out.println("<br><a href='account.html'>Back</a>");
+                out.println("<br><a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             } catch (NumberFormatException e) {
                 out.println("<html><body><h2>Invalid Account Number</h2></body></html>");
             } catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         } else {
-            response.sendRedirect("account.html");
+            response.sendRedirect("account.jsp");
         }
     }
     
+    //POST - Creating an Account, Withdraw from an account, Deposit to an account
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -98,15 +100,17 @@ public class AccountServlet extends HttpServlet {
                 out.println("<h2>Account Created Successfully</h2>");
                 out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
                 out.println("<p>Account Number: " + accountNo + "</p>");
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             } catch (Exception e) {
                 out.println("<html><body>");
                 out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             }
-        } else if ("withdraw".equals(action)) {
+        }
+        //Withdraw
+        else if ("withdraw".equals(action)) {
             try {
                 int accountNo = Integer.parseInt(request.getParameter("accountNo"));
                 double amount = Double.parseDouble(request.getParameter("amount"));
@@ -120,15 +124,17 @@ public class AccountServlet extends HttpServlet {
                 } else {
                     out.println("<h2>Withdrawal Failed</h2>");
                 }
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             } catch (Exception e) {
                 out.println("<html><body>");
                 out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             }
-        } else if ("deposit".equals(action)) {
+        }
+        //Deposit
+        else if ("deposit".equals(action)) {
             try {
                 int accountNo = Integer.parseInt(request.getParameter("accountNo"));
                 double amount = Double.parseDouble(request.getParameter("amount"));
@@ -142,12 +148,12 @@ public class AccountServlet extends HttpServlet {
                 } else {
                     out.println("<h2>Deposit Failed</h2>");
                 }
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             } catch (Exception e) {
                 out.println("<html><body>");
                 out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.html'>Back</a>");
+                out.println("<a href='account.jsp'>Back</a>");
                 out.println("</body></html>");
             }
         }

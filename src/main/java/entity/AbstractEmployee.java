@@ -1,12 +1,14 @@
 package entity;
 
+//Abstract class implementing person interface
 public abstract class AbstractEmployee implements Person {
     protected int id;
     protected String name;
     protected String email;
     protected String role;
     protected String password;
-
+    
+    //Constructos
     protected AbstractEmployee(int id, String name, String email, String role, String password) {
         this.id = id;
         this.name = name;
@@ -14,6 +16,8 @@ public abstract class AbstractEmployee implements Person {
         this.role = role;
         this.password = password;
     }
+    
+    //New getter and setter added after adding password 
     public String getPassword() {
         return password;
     }
@@ -22,8 +26,9 @@ public abstract class AbstractEmployee implements Person {
         this.password = password;
     }
 
-    public abstract int getBranchId();
+    public abstract int getBranchId(); //New method added after adding branch
 
+    //Getters
     public int getId() { return id; }
     public String getName() { return name; }
     public String getEmail() { return email; }
@@ -32,7 +37,8 @@ public abstract class AbstractEmployee implements Person {
     public boolean canApproveTransactions() {
         return "Manager".equals(role);
     }
-
+    
+    //Setters
     public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setEmail(String email) { this.email = email; }

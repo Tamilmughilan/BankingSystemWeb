@@ -21,11 +21,12 @@ public class CustomerServlet extends HttpServlet {
         } else if ("collection".equalsIgnoreCase(storageType)) {
             return new CollectionStorage();
         } else {
-            // Default to database if not specified or invalid
+            // Default to database if not specified
             return new DatabaseStorage();
         }
     }
-
+    
+    //GET - Customer details
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class CustomerServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(customerId);
                 
-                // Create service with user-selected storage
+                // Create service with user selected storage - Dependency Injection
                 DataStorage dataStorage = getDataStorage(storageType);
                 CustomerService customerService = new CustomerService(dataStorage);
                 
@@ -52,21 +53,24 @@ public class CustomerServlet extends HttpServlet {
                     out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
                     out.println(customer.toString().replace("\n", "<br>"));
                 } else {
-                    out.println("<h2>Customer not found</h2>");
+                    out.println("<h2>Customer Not Found</h2>");
                 }
-                out.println("<br><a href='customer.html'>Back</a>");
+                out.println("<br><a href='customer.jsp'>Back</a>");
                 out.println("</body></html>");
             } catch (NumberFormatException e) {
                 out.println("<html><body><h2>Invalid Customer ID</h2></body></html>");
             } catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         } else {
-            response.sendRedirect("customer.html");
+        	
+            response.sendRedirect("customer.jsp");
         }
     }
-
+    
+    //Before hitting any Servlet , the user request passes through certain Filters for Rate limiting, logging and authentication
+    
+    //POST - Updating and deleting Customers
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -81,7 +85,7 @@ public class CustomerServlet extends HttpServlet {
             CustomerService customerService = new CustomerService(dataStorage);
             
             if ("update".equals(action)) {
-                // Handle update
+                //Getting details to update
                 int customerId = Integer.parseInt(request.getParameter("customerId"));
                 String name = request.getParameter("name");
                 String phone = request.getParameter("phone");
@@ -92,7 +96,7 @@ public class CustomerServlet extends HttpServlet {
                 out.println("<h2>Customer Updated Successfully</h2>");
                 
             } else if ("delete".equals(action)) {
-                // Handle delete
+                // Getting id to delete
                 int customerId = Integer.parseInt(request.getParameter("customerId"));
                 customerService.deleteCustomer(customerId);
                 out.println("<h2>Customer Deleted Successfully</h2>");
@@ -101,11 +105,11 @@ public class CustomerServlet extends HttpServlet {
                 throw new ServletException("Invalid action");
             }
             
-            out.println("<a href='customer.html'>Back</a>");
+            out.println("<a href='customer.jsp'>Back</a>");
             
         } catch (Exception e) {
             out.println("<h2>Error: " + e.getMessage() + "</h2>");
-            out.println("<a href='customer.html'>Back</a>");
+            out.println("<a href='customer.jsp'>Back</a>");
         }
     }
 

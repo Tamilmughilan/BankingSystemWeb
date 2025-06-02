@@ -9,7 +9,7 @@ public class AuthenticationFilter implements Filter {
     
     private static final Set<String> openPaths = Set.of(
         "/login", "/signup", "/logout", 
-        "/login.html", "/signup.html", "/style.css"
+        "/login.jsp", "/signup.jsp", "/style.css"
     );
     
     @Override
@@ -24,22 +24,20 @@ public class AuthenticationFilter implements Filter {
         
         System.out.println("AuthFilter: Processing path: " + path);
         
-        // redirect to login if not authenticated
-        if (path.equals("/") || path.equals("") || path.equals("/index.html")) {
+        // Only redirect for root paths, NOT /index.jsp
+        if (path.equals("/") || path.equals("")) {
             if (session != null && session.getAttribute("role") != null) {
                 String role = (String) session.getAttribute("role");
                 redirectBasedOnRole(role, res, contextPath);
                 return;
             } else {
-                res.sendRedirect(contextPath + "/login.html");
+                res.sendRedirect(contextPath + "/login.jsp");
                 return;
             }
         }
         
-        // open paths and static resources
-        if (openPaths.contains(path) || path.endsWith(".css") || path.endsWith(".js") || 
-            path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".gif") ||
-            path.endsWith(".ico")) {
+        // Add /index.jsp to open paths so authenticated users can access it
+        if (openPaths.contains(path) || path.equals("/index.jsp") || path.endsWith(".css") || path.endsWith(".js")) {
             chain.doFilter(req, res);
             return;
         }
@@ -47,7 +45,7 @@ public class AuthenticationFilter implements Filter {
         // Check if user is logged in for protected resources
         if (session == null || session.getAttribute("role") == null) {
             System.out.println("AuthFilter: No valid session, redirecting to login");
-            res.sendRedirect(contextPath + "/login.html");
+            res.sendRedirect(contextPath + "/login.jsp");
             return;
         }
         
@@ -69,26 +67,22 @@ public class AuthenticationFilter implements Filter {
                     sendAccessDenied(res, "Only managers can delete records.");
                     return;
                 }
-                // Employees cannot access account.html directly
-                if (path.equals("/account.html")) {
-                    sendAccessDenied(res, "Access denied. Employees use customer management interface.");
-                    return;
-                }
+                
                 chain.doFilter(req, res);
                 break;
                 
             case "CUSTOMER":
                 // Customers are restricted to account operations only
-                if (path.equals("/customer") || path.equals("/customer.html")) {
+                if (path.equals("/customer") || path.equals("/customer.jsp")) {
                     sendAccessDenied(res, "Access denied. Customers cannot access customer management.");
                     return;
                 }
-                // Only allow account-related paths for customers
-                if (path.equals("/account") || path.equals("/account.html")) {
+                // Only allow account related paths for customers
+                if (path.equals("/account") || path.equals("/account.jsp")) {
                     chain.doFilter(req, res);
                 } else {
                     // if they access any other path
-                    res.sendRedirect(contextPath + "/account.html");
+                    res.sendRedirect(contextPath + "/account.jsp");
                     return;
                 }
                 break;
@@ -102,14 +96,14 @@ public class AuthenticationFilter implements Filter {
     private void redirectBasedOnRole(String role, HttpServletResponse response, String contextPath) throws IOException {
         switch (role) {
             case "CUSTOMER":
-                response.sendRedirect(contextPath + "/account.html");
+                response.sendRedirect(contextPath + "/account.jsp");
                 break;
             case "EMPLOYEE":
             case "MANAGER":
-                response.sendRedirect(contextPath + "/customer.html");
+                response.sendRedirect(contextPath + "/index.jsp");
                 break;
             default:
-                response.sendRedirect(contextPath + "/login.html");
+                response.sendRedirect(contextPath + "/login.jsp");
         }
     }
     

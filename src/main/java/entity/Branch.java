@@ -1,5 +1,6 @@
 package entity;
 
+//Implementation og Branch
 public class Branch {
     private int branchId;
     private String branchName;

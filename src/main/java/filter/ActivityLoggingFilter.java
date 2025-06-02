@@ -8,38 +8,41 @@ import java.time.LocalDateTime;
 public class ActivityLoggingFilter implements Filter {
     
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        
-        HttpSession session = req.getSession(false);
         String path = req.getServletPath();
+        HttpSession session = req.getSession(false);
         
-        if (session != null) {
-            String role = (String) session.getAttribute("role");
-            int userId = (int) session.getAttribute("userId");
-            String userName = (String) session.getAttribute("userName");
-            
-            String time = LocalDateTime.now().toString();
-            
-            System.out.println("User Activity Log:");
-            System.out.println("Time: " + time);
-            System.out.println("User ID: " + userId);
-            System.out.println("Name: " + userName);
-            System.out.println("Role: " + role);
-            System.out.println("Activity: " + path);
-            System.out.println("----------------------------------------");
+        // Skip logging for open paths
+        if (path.equals("/login") || path.equals("/signup") || path.equals("/login.jsp") || path.equals("/signup.jsp")) {
+            chain.doFilter(req, res);
+            return;
         }
-        
-        System.out.println("\nActivity logging filter moving to authentication");
-        chain.doFilter(request, response);
+       
+        chain.doFilter(req, res);
+
+        if (session != null) {
+            Integer userId = (Integer) session.getAttribute("userId");
+            String userName = (String) session.getAttribute("userName");
+            String role = (String) session.getAttribute("role");
+            
+            if (userId != null) { // Only log if user is authenticated
+                System.out.println("\nUser Activity Log:");
+                System.out.println("Time: " + LocalDateTime.now());
+                System.out.println("User ID: " + userId);
+                System.out.println("Name: " + userName);
+                System.out.println("Role: " + role);
+                System.out.println("Activity: " + path);
+                System.out.println("----------------------------------------");
+            }
+        }
     }
     
     @Override
-    public void init(FilterConfig filterConfig) {
-        System.out.println("\nActivity logging Filter Initialized second.");
-    }
+    public void init(FilterConfig filterConfig) {}
     
     @Override
     public void destroy() {}

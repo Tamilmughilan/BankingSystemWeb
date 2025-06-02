@@ -400,7 +400,8 @@ public class DatabaseStorage extends AbstractDataStorage {
         return (employee instanceof Manager) ? (Manager) employee : null;
     }
 
-    public String getSaltForEmployee(int employeeId) throws SQLException {
+    @Override
+    public String getSaltForEmployee(int employeeId) {
         String sql = "SELECT salt FROM user_salts WHERE user_id = ? AND user_type IN ('EMPLOYEE', 'MANAGER')";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -408,6 +409,9 @@ public class DatabaseStorage extends AbstractDataStorage {
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() ? rs.getString("salt") : null;
             }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            return null; 
         }
     }
 

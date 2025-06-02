@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>My Banking Account</h1>
+            <h1>Welcome, <%= session.getAttribute("userName") %></h1>
             <div class="logout-container">
                 <a href="logout" class="button logout-btn">Logout</a>
             </div>
@@ -22,11 +23,11 @@
                 <input type="hidden" name="storageType" value="database">
                 <div class="form-group">
                     <label for="customerId">Customer ID:</label>
-                    <input type="number" id="customerId" name="customerId" required placeholder="Enter your customer ID">
+                    <input type="number" id="customerId" name="customerId" required>
                 </div>
                 <div class="form-group">
                     <label for="balance">Initial Balance:</label>
-                    <input type="number" id="balance" name="balance" step="0.01" min="100" required placeholder="Minimum 100">
+                    <input type="number" id="balance" name="balance" step="0.01" min="100" required>
                 </div>
                 <div class="form-group">
                     <label for="branchId">Branch ID:</label>
@@ -88,66 +89,5 @@
             </form>
         </div>
     </div>
-
-    <style>
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .logout-container {
-            margin-left: auto;
-        }
-        
-        .logout-btn {
-            background-color: #dc3545;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-        
-        .deposit-btn {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        .deposit-btn:hover {
-            background-color: #218838;
-        }
-        
-        .withdraw-btn {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        
-        .withdraw-btn:hover {
-            background-color: #e0a800;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-    </style>
 </body>
 </html>

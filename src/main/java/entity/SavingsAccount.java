@@ -3,7 +3,7 @@ package entity;
 public class SavingsAccount extends AbstractAccount {
 	
 	private int branch_id;
-	//Savings account specific state
+	//account specific state
 	private static final double MIN_BALANCE = 100.0;
     public SavingsAccount(int accountNo, int customerId, double balance, int branch_id) {
         super(accountNo, customerId, balance, "Savings");

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private DataStorage dataStorage;
+    //Uses the Authentication entity for role based features
     private AuthenticationService authService;
 
     @Override
@@ -25,7 +26,8 @@ public class LoginServlet extends HttpServlet {
         }
         this.authService = new AuthenticationService(dataStorage);
     }
-
+    
+    //Takes to user to the dashboard respective to their role - SOLID principle
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,20 +39,20 @@ public class LoginServlet extends HttpServlet {
             String contextPath = request.getContextPath();
             switch (role) {
                 case "CUSTOMER":
-                    response.sendRedirect(contextPath + "/account.html");
+                    response.sendRedirect(contextPath + "/account.jsp");
                     break;
                 case "EMPLOYEE":
                 case "MANAGER":
-                    response.sendRedirect(contextPath + "/customer.html");
+                    response.sendRedirect(contextPath + "/index.jsp");
                     break;
                 default:
-                    response.sendRedirect(contextPath + "/login.html");
+                    response.sendRedirect(contextPath + "/login.jsp");
             }
             return;
         }
 
         // Show login page
-        response.sendRedirect(request.getContextPath() + "/login.html");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
 
     @Override
@@ -67,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 "<html><head><title>Login Error</title></head><body>" +
                 "<h2>Login Error</h2>" +
                 "<p>Email and password are required.</p>" +
-                "<p><a href='" + contextPath + "/login.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
             return;
@@ -86,14 +88,14 @@ public class LoginServlet extends HttpServlet {
                 // Redirect based on role
                 switch (result.getRole()) {
                     case "CUSTOMER":
-                        response.sendRedirect(contextPath + "/account.html");
+                        response.sendRedirect(contextPath + "/account.jsp");
                         break;
                     case "EMPLOYEE":
                     case "MANAGER":
-                        response.sendRedirect(contextPath + "/customer.html");
+                        response.sendRedirect(contextPath + "/index.jsp");
                         break;
                     default:
-                        response.sendRedirect(contextPath + "/login.html");
+                        response.sendRedirect(contextPath + "/login.jsp");
                 }
             } else {
                 response.setContentType("text/html");
@@ -101,7 +103,7 @@ public class LoginServlet extends HttpServlet {
                     "<html><head><title>Login Failed</title></head><body>" +
                     "<h2>Login Failed</h2>" +
                     "<p>Invalid credentials. Try again</p>" +
-                    "<p><a href='" + contextPath + "/login.html'>Try Again</a></p>" +
+                    "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
                     "</body></html>"
                 );
             }
@@ -112,7 +114,7 @@ public class LoginServlet extends HttpServlet {
                 "<html><head><title>Login Error</title></head><body>" +
                 "<h2>Login Error</h2>" +
                 "<p>Login failed due to server error, Please try again.</p>" +
-                "<p><a href='" + contextPath + "/login.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
         }

@@ -1,5 +1,6 @@
 package entity;
 
+//Interface person with common methods of all the entities implementing them
 public interface Person {
     int getId();
     String getName();

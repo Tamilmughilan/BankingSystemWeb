@@ -1,6 +1,9 @@
 package entity;
 
+//New entity added after introducing authentication
 public class AuthenticationResult {
+	
+	//Attributes 
     private final boolean success;
     private final String role;
     private final int userId;

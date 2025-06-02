@@ -28,7 +28,7 @@ public abstract class AbstractDataStorage implements DataStorage {
     public abstract Employee getEmployeeByEmail(String email);
     public abstract Manager getManager(int employeeId);
     @Override
-    public abstract String getSaltForEmployee(int employeeId) throws SQLException; 
+    public abstract String getSaltForEmployee(int employeeId) ; 
     
     // Account operations
     public abstract int saveAccount(SavingsAccount account);

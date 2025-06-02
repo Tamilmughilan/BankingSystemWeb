@@ -38,20 +38,20 @@ public class SignupServlet extends HttpServlet {
             String contextPath = request.getContextPath();
             switch (role) {
                 case "CUSTOMER":
-                    response.sendRedirect(contextPath + "/account.html");
+                    response.sendRedirect(contextPath + "/account.jsp");
                     break;
                 case "EMPLOYEE":
                 case "MANAGER":
-                    response.sendRedirect(contextPath + "/customer.html");
+                    response.sendRedirect(contextPath + "/customer.jsp");
                     break;
                 default:
-                    response.sendRedirect(contextPath + "/signup.html");
+                    response.sendRedirect(contextPath + "/signup.jsp");
             }
             return;
         }
         
         // Show signup page
-        response.sendRedirect(request.getContextPath() + "/signup.html");
+        response.sendRedirect(request.getContextPath() + "/signup.jsp");
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup error</h2>" +
                 "<p>Some fields are missing.</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
             return;
@@ -89,7 +89,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup Error</h2>" +
                 "<p>Passwords do not match.</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
             return;
@@ -101,7 +101,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup Error</h2>" +
                 "<p>Password must be at least 6 characters long.</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
             return;
@@ -119,7 +119,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup Error</h2>" +
                 "<p>Invalid branch ID.</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
             return;
@@ -134,7 +134,7 @@ public class SignupServlet extends HttpServlet {
                     "<html><head><title>Signup Error</title></head><body>" +
                     "<h2>Signup Error</h2>" +
                     "<p>Email already exists. Please use a different email.</p>" +
-                    "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                    "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                     "</body></html>"
                 );
                 return;
@@ -161,7 +161,7 @@ public class SignupServlet extends HttpServlet {
                 	    "<html><head><title>Signup Successful</title></head><body>" +
                 	    "<h2>Signup Successful!</h2>" +
                 	    "<p>Welcome " + name.trim() + "! Your customer ID is: " + customerId + "</p>" +
-                	    "<p><a href='" + contextPath + "/account.html'>Go to your account</a></p>" +
+                	    "<p><a href='" + contextPath + "/account.jsp'>Go to your account</a></p>" +
                 	    "</body></html>"
                 	);
 
@@ -171,7 +171,7 @@ public class SignupServlet extends HttpServlet {
                     "<html><head><title>Signup Failed</title></head><body>" +
                     "<h2>Signup Failed</h2>" +
                     "<p>Signup failed. Please try again.</p>" +
-                    "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                    "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                     "</body></html>"
                 );
             }
@@ -181,7 +181,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup Error</h2>" +
                 "<p>Signup failed: " + e.getMessage() + "</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
         } catch (Exception e) {
@@ -191,7 +191,7 @@ public class SignupServlet extends HttpServlet {
                 "<html><head><title>Signup Error</title></head><body>" +
                 "<h2>Signup Error</h2>" +
                 "<p>Signup failed due to server error. Please try again.</p>" +
-                "<p><a href='" + contextPath + "/signup.html'>Try Again</a></p>" +
+                "<p><a href='" + contextPath + "/signup.jsp'>Try Again</a></p>" +
                 "</body></html>"
             );
         }

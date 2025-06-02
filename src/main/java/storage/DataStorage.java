@@ -22,7 +22,7 @@ public interface DataStorage {
     Employee getEmployee(int employeeId);
     Employee getEmployeeByEmail(String email);
     Manager getManager(int employeeId);
-    String getSaltForEmployee(int employeeId) throws SQLException;
+    String getSaltForEmployee(int employeeId);
 
     // Account operations
     int saveAccount(SavingsAccount account);

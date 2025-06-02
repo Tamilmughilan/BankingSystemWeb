@@ -36,11 +36,11 @@ public class LogoutServlet extends HttpServlet {
                 "<h2>Logout Successful</h2>" +
                 (userName != null ? "<p>Goodbye " + userName + "!</p>" : "") +
                 "<p>You have been logged out successfully.</p>" +
-                "<p><a href='" + contextPath + "/login.html'>Return to login page</a></p>" +
+                "<p><a href='" + contextPath + "/login.jsp'>Return to login page</a></p>" +
                 "</body></html>"
             );
         } else {
-            response.sendRedirect(contextPath + "/login.html");
+            response.sendRedirect(contextPath + "/login.jsp");
         }
     }
 

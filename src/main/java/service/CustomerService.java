@@ -28,8 +28,7 @@ public class CustomerService {
                                         String hashedPassword, String salt) {
        
         Customer customer = new Customer(0, name, phone, email, branchId);
-        customer.setPassword(hashedPassword);
-        
+        customer.setPassword(hashedPassword);        
         if (!customer.isValidCustomer()) {
             throw new IllegalArgumentException("Invalid customer data provided");
         }

@@ -1,0 +1,65 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Management</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Management</h1>
+		 <p>Hello, <%= session.getAttribute("userName") %>! (Role: <%= session.getAttribute("role") %>)</p>
+        <div class="section">
+            <h2>Get Customer</h2>
+            <form action="customer" method="get">
+                <input type="hidden" name="action" value="get">
+                <p>Storage Type: 
+                    <select name="storageType" required>
+                        <option value="database">Database Storage</option>
+                        <option value="collection">Collection Storage</option>
+                    </select>
+                </p>
+                <p>Customer ID: <input type="number" name="customerId" required></p>
+                <p><input type="submit" value="Get Customer" class="button"></p>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Update Customer</h2>
+            <form action="customer" method="post">
+                <input type="hidden" name="action" value="update">
+                <p>Storage Type: 
+                    <select name="storageType" required>
+                        <option value="database">Database Storage</option>
+                    </select>
+                </p>
+                <p>Customer ID: <input type="number" name="customerId" required></p>
+                <p>Name: <input type="text" name="name" required></p>
+                <p>Phone: <input type="text" name="phone" required></p>
+                <p>Email: <input type="email" name="email" required></p>
+                <p>Branch ID: <input type="number" name="branchId" required></p>
+                <p><input type="submit" value="Update Customer" class="button"></p>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Delete Customer</h2>
+            <form action="customer" method="post" onsubmit="return confirm('Are you sure?');">
+                <input type="hidden" name="action" value="delete">
+                <p>Storage Type: 
+                    <select name="storageType" required>
+                        <option value="database">Database Storage</option>
+                    </select>
+                </p>
+                <p>Customer ID: <input type="number" name="customerId" required></p>
+                <p><input type="submit" value="Delete Customer" class="button danger"></p>
+            </form>
+        </div>
+        
+        <div class="menu">
+            <a href="index.jsp" class="button">Home</a>
+            <a href="logout" class="button">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

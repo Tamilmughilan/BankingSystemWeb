@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,17 +16,14 @@
                     <label for="name">Full Name:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="phone">Phone Number:</label>
                     <input type="tel" id="phone" name="phone" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="branchId">Branch ID:</label>
                     <select id="branchId" name="branchId" required>
@@ -35,34 +33,27 @@
                         <option value="3">South Branch</option>
                     </select>
                 </div>
-                
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required minlength="6">
                 </div>
-                
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password:</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
                 </div>
-                
                 <div class="form-group">
                     <button type="submit">Sign Up</button>
                 </div>
             </form>
-            
             <div class="links">
-                <p>Already have an account? <a href="login">Login here</a></p>
+                <p>Already have an account? <a href="login.jsp">Login here</a></p>
             </div>
         </div>
     </div>
-    
     <script>
-        // Simple password confirmation validation
         document.querySelector('form').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            
             if (password !== confirmPassword) {
                 e.preventDefault();
                 alert('Passwords do not match!');

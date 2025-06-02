@@ -1,13 +1,16 @@
 package entity;
 
+//Concrete implementation of abstract Customer
 public class Customer extends AbstractCustomer {
     private int branch_id;
-
+    
+    //Constructor
     public Customer(int id, String name, String phone, String email, int branch_id) {
         super(id, name, phone, email);
         this.branch_id = branch_id;
     }
 
+    //Getters and Setters
     public void setId(int id) {
         this.id = id;
     }
