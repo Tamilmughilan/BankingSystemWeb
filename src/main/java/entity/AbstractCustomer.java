@@ -9,9 +9,7 @@ public abstract class AbstractCustomer implements Person {
     protected String email;
     protected String password;
     
-    //Constructor
     public AbstractCustomer(int id, String name, String phone, String email) {
-        super();
         this.id = id;
         this.name = name;
         this.phone = phone;

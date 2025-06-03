@@ -124,8 +124,10 @@ public class CollectionStorage extends AbstractDataStorage {
     public int saveAccount(SavingsAccount account) {
         if (account.getAccountNo() == 0) {
             int accountNo = nextAccountId++;
-            SavingsAccount newAccount = new SavingsAccount(accountNo, account.getCustomerId(), 
-                    account.getBalance(), account.getBranchId());
+            SavingsAccount newAccount = new SavingsAccount.Builder(account.getCustomerId(), account.getBranchId())
+                                                    .accountNo(accountNo)
+                                                    .balance(account.getBalance())
+                                                    .build();
             accounts.put(accountNo, newAccount);
             return accountNo;
         } else {
@@ -133,6 +135,7 @@ public class CollectionStorage extends AbstractDataStorage {
             return account.getAccountNo();
         }
     }
+
 
     @Override
     public SavingsAccount getAccount(int accountNo) {

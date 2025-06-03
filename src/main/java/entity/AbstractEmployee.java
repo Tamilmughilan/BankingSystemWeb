@@ -1,6 +1,5 @@
 package entity;
 
-//Abstract class implementing person interface
 public abstract class AbstractEmployee implements Person {
     protected int id;
     protected String name;
@@ -8,7 +7,6 @@ public abstract class AbstractEmployee implements Person {
     protected String role;
     protected String password;
     
-    //Constructos
     protected AbstractEmployee(int id, String name, String email, String role, String password) {
         this.id = id;
         this.name = name;
@@ -16,6 +14,7 @@ public abstract class AbstractEmployee implements Person {
         this.role = role;
         this.password = password;
     }
+
     
     //New getter and setter added after adding password 
     public String getPassword() {

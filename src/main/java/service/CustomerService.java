@@ -13,33 +13,28 @@ public class CustomerService {
     }
     
     public int createCustomer(String name, String phone, String email, int branchId) {
-        // Business logic validation
-        Customer customer = new Customer(0, name, phone, email, branchId);
-        
-        if (!customer.isValidCustomer()) {
-            throw new IllegalArgumentException("Invalid customer data provided");
-        }
-        
-        // Delegate to storage layer
+        Customer customer = new Customer.Builder(name, email, branchId)
+                                      .phone(phone)
+                                      .build();
         return dataStorage.saveCustomer(customer);
     }
-    
-    public int createCustomerWithPassword(String name, String phone, String email, int branchId, 
-                                        String hashedPassword, String salt) {
-       
-        Customer customer = new Customer(0, name, phone, email, branchId);
-        customer.setPassword(hashedPassword);        
-        if (!customer.isValidCustomer()) {
-            throw new IllegalArgumentException("Invalid customer data provided");
-        }
-        
-        // Delegate to storage layer
+
+    public int createCustomerWithPassword(String name, String phone, String email, 
+                                        int branchId, String password, String salt) {
+        Customer customer = new Customer.Builder(name, email, branchId)
+                                      .phone(phone)
+                                      .password(password)
+                                      .salt(salt)
+                                      .build();
         return dataStorage.saveCustomerWithPassword(customer, salt);
     }
+
     public void updateCustomer(int customerId, String name, String phone, 
             String email, int branchId) throws SQLException {
-			Customer customer = new Customer(customerId, name, phone, email, branchId);
-			if (!customer.isValidCustomer()) {
+    	Customer customer = new Customer.Builder(name, email, branchId)
+                .id(customerId)
+                .phone(phone)
+                .build();			if (!customer.isValidCustomer()) {
 			throw new IllegalArgumentException("Invalid customer data");
 			}
 			dataStorage.updateCustomer(customer);

@@ -21,12 +21,29 @@ public class CustomerServlet extends HttpServlet {
         } else if ("collection".equalsIgnoreCase(storageType)) {
             return new CollectionStorage();
         } else {
-            // Default to database if not specified
             return new DatabaseStorage();
         }
     }
     
-    //GET - Customer details
+    private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"success\":").append(success).append(",");
+        json.append("\"message\":\"").append(message.replace("\"", "\\\"")).append("\"");
+        
+        if (data != null) {
+            json.append(",\"data\":\"").append(data.toString().replace("\"", "\\\"").replace("\n", "\\n")).append("\"");
+        }
+        
+        json.append("}");
+        out.print(json.toString());
+        out.flush();
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,83 +51,153 @@ public class CustomerServlet extends HttpServlet {
         String customerId = request.getParameter("customerId");
         String storageType = request.getParameter("storageType");
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
         if ("get".equals(action) && customerId != null) {
             try {
                 int id = Integer.parseInt(customerId);
                 
-                // Create service with user selected storage - Dependency Injection
                 DataStorage dataStorage = getDataStorage(storageType);
                 CustomerService customerService = new CustomerService(dataStorage);
                 
                 Customer customer = customerService.getCustomer(id);
-
-                out.println("<html><body>");
-                if (customer != null) {
-                    out.println("<h2>Customer Details</h2>");
-                    out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
-                    out.println(customer.toString().replace("\n", "<br>"));
+                
+                String ajaxHeader = request.getHeader("X-Requested-With");
+                
+                if (customer == null) {
+                    // Customer not found
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, false, "Customer not found with ID: " + id, null);
+                    } else {
+                        request.setAttribute("errorMessage", "Customer not found with ID: " + id);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.getRequestDispatcher("customer.jsp").forward(request, response);
+                    }
                 } else {
-                    out.println("<h2>Customer Not Found</h2>");
+                    // Customer found
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, true, "Customer retrieved successfully", customer);
+                    } else {
+                        request.setAttribute("customer", customer);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.setAttribute("showCustomerDetails", true);
+                        request.getRequestDispatcher("customer.jsp").forward(request, response);
+                    }
                 }
-                out.println("<br><a href='customer.jsp'>Back</a>");
-                out.println("</body></html>");
             } catch (NumberFormatException e) {
-                out.println("<html><body><h2>Invalid Customer ID</h2></body></html>");
-            } catch (SQLException e) {
-				e.printStackTrace();
-			}
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    sendJsonResponse(response, false, "Invalid Customer ID format", null);
+                } else {
+                    request.setAttribute("errorMessage", "Invalid Customer ID format");
+                    request.getRequestDispatcher("customer.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                String errorMsg = "Database error: " + e.getMessage();
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    sendJsonResponse(response, false, errorMsg, null);
+                } else {
+                    request.setAttribute("errorMessage", errorMsg);
+                    request.getRequestDispatcher("customer.jsp").forward(request, response);
+                }
+            }
         } else {
-        	
             response.sendRedirect("customer.jsp");
         }
     }
     
-    //Before hitting any Servlet , the user request passes through certain Filters for Rate limiting, logging and authentication
-    
-    //POST - Updating and deleting Customers
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String storageType = request.getParameter("storageType");
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
         try {
             DataStorage dataStorage = getDataStorage(storageType);
             CustomerService customerService = new CustomerService(dataStorage);
             
             if ("update".equals(action)) {
-                //Getting details to update
-                int customerId = Integer.parseInt(request.getParameter("customerId"));
-                String name = request.getParameter("name");
-                String phone = request.getParameter("phone");
-                String email = request.getParameter("email");
-                int branchId = Integer.parseInt(request.getParameter("branchId"));
-                
-                customerService.updateCustomer(customerId, name, phone, email, branchId);
-                out.println("<h2>Customer Updated Successfully</h2>");
+                try {
+                    int customerId = Integer.parseInt(request.getParameter("customerId"));
+                    String name = request.getParameter("name");
+                    String phone = request.getParameter("phone");
+                    String email = request.getParameter("email");
+                    int branchId = Integer.parseInt(request.getParameter("branchId"));
+                    
+                    // Validate inputs
+                    if (name == null || name.trim().isEmpty()) {
+                        request.setAttribute("errorMessage", "Customer name is required");
+                    } else if (email == null || email.trim().isEmpty()) {
+                        request.setAttribute("errorMessage", "Customer email is required");
+                    } else if (phone == null || phone.trim().isEmpty()) {
+                        request.setAttribute("errorMessage", "Customer phone is required");
+                    } else {
+                        // First check if customer exists
+                        Customer existingCustomer = customerService.getCustomer(customerId);
+                        if (existingCustomer == null) {
+                            request.setAttribute("errorMessage", "Customer not found with ID: " + customerId);
+                        } else {
+                            customerService.updateCustomer(customerId, name.trim(), phone.trim(), email.trim(), branchId);
+                            request.setAttribute("successMessage", "Customer Updated Successfully");
+                            request.setAttribute("showUpdateResult", true);
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Invalid input format. Please check all numeric fields.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error updating customer: " + e.getMessage());
+                }
                 
             } else if ("delete".equals(action)) {
-                // Getting id to delete
-                int customerId = Integer.parseInt(request.getParameter("customerId"));
-                customerService.deleteCustomer(customerId);
-                out.println("<h2>Customer Deleted Successfully</h2>");
+                try {
+                    int customerId = Integer.parseInt(request.getParameter("customerId"));
+                    
+                    // First check if customer exists
+                    Customer existingCustomer = customerService.getCustomer(customerId);
+                    if (existingCustomer == null) {
+                        request.setAttribute("errorMessage", "Customer not found with ID: " + customerId);
+                    } else {
+                        boolean deleted = customerService.deleteCustomer(customerId);
+                        if (deleted) {
+                            request.setAttribute("successMessage", "Customer Deleted Successfully");
+                            request.setAttribute("showDeleteResult", true);
+                        } else {
+                            request.setAttribute("errorMessage", "Failed to delete customer. Customer may have associated accounts.");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Invalid Customer ID format");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error deleting customer: " + e.getMessage());
+                }
                 
             } else {
-                throw new ServletException("Invalid action");
+                request.setAttribute("errorMessage", "Invalid action specified");
             }
             
-            out.println("<a href='customer.jsp'>Back</a>");
-            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Database connection error: " + e.getMessage());
         } catch (Exception e) {
-            out.println("<h2>Error: " + e.getMessage() + "</h2>");
-            out.println("<a href='customer.jsp'>Back</a>");
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Unexpected error: " + e.getMessage());
+        }
+        
+        // Handle AJAX vs regular form submission
+        String ajaxHeader = request.getHeader("X-Requested-With");
+        if ("XMLHttpRequest".equals(ajaxHeader)) {
+            String successMsg = (String) request.getAttribute("successMessage");
+            String errorMsg = (String) request.getAttribute("errorMessage");
+            
+            if (successMsg != null) {
+                sendJsonResponse(response, true, successMsg, null);
+            } else if (errorMsg != null) {
+                sendJsonResponse(response, false, errorMsg, null);
+            } else {
+                sendJsonResponse(response, false, "Unknown error occurred", null);
+            }
+        } else {
+            request.getRequestDispatcher("customer.jsp").forward(request, response);
         }
     }
-
 }

@@ -33,7 +33,7 @@ h2 {
 }
 
 .button {
-    background-color: #007bff;
+    background-color: #8080c0;
     color: white;
     padding: 10px 20px;
     text-decoration: none;
@@ -45,7 +45,7 @@ h2 {
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #8000ff;
 }
 
 input[type="text"], input[type="email"], input[type="number"] {

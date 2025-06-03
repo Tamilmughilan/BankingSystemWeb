@@ -111,10 +111,13 @@ public class DatabaseStorage extends AbstractDataStorage {
             stmt.setString(3, customer.getEmail());
             stmt.setInt(4, customer.getBranchId());
             stmt.setInt(5, customer.getId());
-            stmt.executeUpdate();
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Customer update failed - no rows affected. Customer may not exist.");
+            }
         }
     }
-
 
 
     @Override
@@ -125,16 +128,16 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setInt(1, customerId);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Customer customer = new Customer(
-                        rs.getInt("customer_id"),
+            	if (rs.next()) {
+                    return new Customer.Builder(
                         rs.getString("name"),
-                        rs.getString("phone"),
                         rs.getString("email"),
                         rs.getInt("branch_id")
-                    );
-                    customer.setPassword(rs.getString("password"));
-                    return customer;
+                    )
+                    .id(rs.getInt("customer_id"))
+                    .phone(rs.getString("phone"))
+                    .password(rs.getString("password"))
+                    .build();
                 }
             }
         } catch (SQLException e) {
@@ -151,16 +154,16 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Customer customer = new Customer(
-                        rs.getInt("customer_id"),
+            	if (rs.next()) {
+                    return new Customer.Builder(
                         rs.getString("name"),
-                        rs.getString("phone"),
                         rs.getString("email"),
                         rs.getInt("branch_id")
-                    );
-                    customer.setPassword(rs.getString("password"));
-                    return customer;
+                    )
+                    .id(rs.getInt("customer_id"))
+                    .phone(rs.getString("phone"))
+                    .password(rs.getString("password"))
+                    .build();
                 }
             }
         } catch (SQLException e) {
@@ -191,15 +194,16 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setInt(1, branchId);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Customer customer = new Customer(
-                        rs.getInt("customer_id"),
+            	while (rs.next()) {
+                    Customer customer = new Customer.Builder(
                         rs.getString("name"),
-                        rs.getString("phone"),
                         rs.getString("email"),
                         rs.getInt("branch_id")
-                    );
-                    customer.setPassword(rs.getString("password"));
+                    )
+                    .id(rs.getInt("customer_id"))
+                    .phone(rs.getString("phone"))
+                    .password(rs.getString("password"))
+                    .build();
                     customers.add(customer);
                 }
             }
@@ -326,27 +330,20 @@ public class DatabaseStorage extends AbstractDataStorage {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String role = rs.getString("role");
-                    Employee employee;
-                    
-                    if ("MANAGER".equals(role)) {
-                        employee = new Manager(
-                            rs.getInt("employee_id"),
-                            rs.getString("name"),
-                            rs.getString("email"),
-                            rs.getInt("branch_id"),
-                            rs.getString("password")
-                        );
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    int branchId = rs.getInt("branch_id");
+                    String password = rs.getString("password");
+                    int id = rs.getInt("employee_id");
+
+                    if ("MANAGER".equalsIgnoreCase(role)) {
+                        return new Manager(id, name, email, branchId, password);
                     } else {
-                        employee = new Employee(
-                            rs.getInt("employee_id"),
-                            rs.getString("name"),
-                            rs.getString("email"),
-                            role,
-                            rs.getInt("branch_id"),
-                            rs.getString("password")
-                        );
+                        return new Employee.Builder(name, email, role, branchId)
+                            .id(id)
+                            .password(password)
+                            .build();
                     }
-                    return employee;
                 }
             }
         } catch (SQLException e) {
@@ -365,27 +362,19 @@ public class DatabaseStorage extends AbstractDataStorage {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String role = rs.getString("role");
-                    Employee employee;
-                    
+                    String name = rs.getString("name");
+                    int branchId = rs.getInt("branch_id");
+                    String password = rs.getString("password");
+                    int id = rs.getInt("employee_id");
+
                     if ("MANAGER".equalsIgnoreCase(role)) {
-                        employee = new Manager(
-                            rs.getInt("employee_id"),
-                            rs.getString("name"),
-                            rs.getString("email"),
-                            rs.getInt("branch_id"),
-                            rs.getString("password")
-                            );
+                        return new Manager(id, name, email, branchId, password);
                     } else {
-                        employee = new Employee(
-                            rs.getInt("employee_id"),
-                            rs.getString("name"),
-                            rs.getString("email"),
-                            role,
-                            rs.getInt("branch_id"),
-                            rs.getString("password")
-                        );
+                        return new Employee.Builder(name, email, role, branchId)
+                            .id(id)
+                            .password(password)
+                            .build();
                     }
-                    return employee;
                 }
             }
         } catch (SQLException e) {
@@ -393,6 +382,7 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
         return null;
     }
+
 
     @Override
     public Manager getManager(int employeeId) {
@@ -417,7 +407,7 @@ public class DatabaseStorage extends AbstractDataStorage {
 
 
     // Account operations
-    @Override
+    @Override 
     public int saveAccount(SavingsAccount account) {
         String sql = "INSERT INTO accounts (customer_id, balance, account_type, branch_id) VALUES (?, ?, ?, ?)";
         try (Connection conn = dbConnection.getConnection();
@@ -436,10 +426,15 @@ public class DatabaseStorage extends AbstractDataStorage {
                     }
                 }
             }
+            return 0; // Return 0 if account creation failed
         } catch (SQLException e) {
+            // Check if it's a foreign key constraint violation 
+            if (e.getMessage().contains("foreign key constraint") || 
+                e.getMessage().contains("Cannot add or update a child row")) {
+                throw new RuntimeException("Customer ID does not exist", e);
+            }
             throw new RuntimeException("Error saving account", e);
         }
-        return 0;
     }
 
     @Override
@@ -450,13 +445,14 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setInt(1, accountNo);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new SavingsAccount(
-                        rs.getInt("account_no"),
+            	if (rs.next()) {
+                    return new SavingsAccount.Builder(
                         rs.getInt("customer_id"),
-                        rs.getDouble("balance"),
                         rs.getInt("branch_id")
-                    );
+                    )
+                    .accountNo(rs.getInt("account_no"))
+                    .balance(rs.getDouble("balance"))
+                    .build();
                 }
             }
         } catch (SQLException e) {
@@ -501,13 +497,14 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setInt(1, branchId);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    accounts.add(new SavingsAccount(
-                        rs.getInt("account_no"),
+            	while (rs.next()) {
+                    accounts.add(new SavingsAccount.Builder(
                         rs.getInt("customer_id"),
-                        rs.getDouble("balance"),
                         rs.getInt("branch_id")
-                    ));
+                    )
+                    .accountNo(rs.getInt("account_no"))
+                    .balance(rs.getDouble("balance"))
+                    .build());
                 }
             }
         } catch (SQLException e) {
@@ -525,13 +522,14 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             stmt.setInt(1, customerId);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    accounts.add(new SavingsAccount(
-                        rs.getInt("account_no"),
+            	while (rs.next()) {
+                    accounts.add(new SavingsAccount.Builder(
                         rs.getInt("customer_id"),
-                        rs.getDouble("balance"),
                         rs.getInt("branch_id")
-                    ));
+                    )
+                    .accountNo(rs.getInt("account_no"))
+                    .balance(rs.getDouble("balance"))
+                    .build());
                 }
             }
         } catch (SQLException e) {
@@ -646,6 +644,18 @@ public class DatabaseStorage extends AbstractDataStorage {
         try {
             conn = dbConnection.getConnection();
             conn.setAutoCommit(false);
+            
+            // First check if account exists
+            String checkSql = "SELECT account_no FROM accounts WHERE account_no = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                checkStmt.setInt(1, accountNo);
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (!rs.next()) {
+                        conn.rollback();
+                        return false; // Account doesn't exist
+                    }
+                }
+            }
             
             String sql = "UPDATE accounts SET balance = balance + ? WHERE account_no = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {

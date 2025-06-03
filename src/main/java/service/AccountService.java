@@ -17,11 +17,12 @@ public class AccountService {
         }
 
         if (initialBalance < 100.0) {
-            throw new IllegalArgumentException("Initial balance must be at least $100 for savings account");
+            throw new IllegalArgumentException("Initial balance must be at least 100 for savings account");
         }
 
-        SavingsAccount account = new SavingsAccount(0, customerId, initialBalance, branchID);
-
+        SavingsAccount account = new SavingsAccount.Builder(customerId, branchID)
+                .balance(initialBalance)
+                .build();
         if (!account.isValidAccount()) {
             throw new IllegalArgumentException("Invalid account data");
         }

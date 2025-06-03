@@ -21,12 +21,29 @@ public class AccountServlet extends HttpServlet {
         } else if ("collection".equalsIgnoreCase(storageType)) {
             return new CollectionStorage();
         } else {
-            //Default
             return new DatabaseStorage();
         }
     }
     
-    //GET - Account details for a particular Account number
+    private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"success\":").append(success).append(",");
+        json.append("\"message\":\"").append(message.replace("\"", "\\\"")).append("\"");
+        
+        if (data != null) {
+            json.append(",\"data\":\"").append(data.toString().replace("\"", "\\\"").replace("\n", "\\n")).append("\"");
+        }
+        
+        json.append("}");
+        out.print(json.toString());
+        out.flush();
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -40,122 +57,182 @@ public class AccountServlet extends HttpServlet {
         if ("get".equals(action) && accountNo != null) {
             try {
                 int accNo = Integer.parseInt(accountNo);
-                
-                //Creates a service with user selected storage
                 DataStorage dataStorage = getDataStorage(storageType);
                 AccountService accountService = new AccountService(dataStorage);
-                
                 SavingsAccount account = accountService.getAccount(accNo);
                 
-                out.println("<html><body>");
-                if (account != null) {
-                    out.println("<h2>Account Details</h2>");
-                    out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
-                    out.println(account.toString());
+                String ajaxHeader = request.getHeader("X-Requested-With");
+                
+                if (account == null) {
+                    // Account not found
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, false, "Account not found with account number: " + accNo, null);
+                    } else {
+                        request.setAttribute("errorMessage", "Account not found with account number: " + accNo);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
                 } else {
-                    out.println("<h2>Account not found</h2>");
+                    // Account found
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, true, "Account retrieved successfully", account);
+                    } else {
+                        request.setAttribute("account", account);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.setAttribute("showAccountDetails", true);
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
                 }
-                out.println("<br><a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
             } catch (NumberFormatException e) {
-                out.println("<html><body><h2>Invalid Account Number</h2></body></html>");
-            } catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    sendJsonResponse(response, false, "Invalid Account Number format", null);
+                } else {
+                    request.setAttribute("errorMessage", "Invalid Account Number format");
+                    request.getRequestDispatcher("account.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                String errorMsg = "Database error: " + e.getMessage();
+                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    sendJsonResponse(response, false, errorMsg, null);
+                } else {
+                    request.setAttribute("errorMessage", errorMsg);
+                    request.getRequestDispatcher("account.jsp").forward(request, response);
+                }
+            }
         } else {
             response.sendRedirect("account.jsp");
         }
     }
     
-    //POST - Creating an Account, Withdraw from an account, Deposit to an account
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String storageType = request.getParameter("storageType");
         
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        
-       
-        DataStorage dataStorage = null;
-		try {
-			dataStorage = getDataStorage(storageType);
-		} catch (SQLException e) {
-		
-			e.printStackTrace();
-		}
-        AccountService accountService = new AccountService(dataStorage);
-        
-        if ("create".equals(action)) {
-            try {
-                int customerId = Integer.parseInt(request.getParameter("customerId"));
-                double balance = Double.parseDouble(request.getParameter("balance"));
-                int branchId = Integer.parseInt(request.getParameter("branchId"));
-                
-                int accountNo = accountService.createSavingsAccount(customerId, balance, branchId);
-                
-                out.println("<html><body>");
-                out.println("<h2>Account Created Successfully</h2>");
-                out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
-                out.println("<p>Account Number: " + accountNo + "</p>");
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
-            } catch (Exception e) {
-                out.println("<html><body>");
-                out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
-            }
-        }
-        //Withdraw
-        else if ("withdraw".equals(action)) {
-            try {
-                int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-                double amount = Double.parseDouble(request.getParameter("amount"));
-                
-                boolean success = accountService.performWithdrawal(accountNo, amount);
-                
-                out.println("<html><body>");
-                out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
-                if (success) {
-                    out.println("<h2>Withdrawal Successful</h2>");
-                } else {
-                    out.println("<h2>Withdrawal Failed</h2>");
+        try {
+            DataStorage dataStorage = getDataStorage(storageType);
+            AccountService accountService = new AccountService(dataStorage);
+            
+            if ("create".equals(action)) {
+                try {
+                    int customerId = Integer.parseInt(request.getParameter("customerId"));
+                    double balance = Double.parseDouble(request.getParameter("balance"));
+                    int branchId = Integer.parseInt(request.getParameter("branchId"));
+                    
+                    // Validate minimum balance
+                    if (balance < 100) {
+                        request.setAttribute("errorMessage", "Minimum balance of 100 is required");
+                    } else {
+                        int accountNo = accountService.createSavingsAccount(customerId, balance, branchId);
+                        
+                        if (accountNo > 0) {
+                            request.setAttribute("successMessage", "User account created successfully");
+                            request.setAttribute("newAccountNo", accountNo);
+                            request.setAttribute("showCreateResult", true);
+                        } else {
+                            request.setAttribute("errorMessage", "Failed to create account. Customer ID may not exist or other database error occurred.");
+                        }
+                    }
+                    request.setAttribute("storageType", storageType != null ? storageType : "database");
+                    
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Invalid input format. Please check all numeric fields.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error creating account: " + e.getMessage());
                 }
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
-            } catch (Exception e) {
-                out.println("<html><body>");
-                out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
             }
-        }
-        //Deposit
-        else if ("deposit".equals(action)) {
-            try {
-                int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-                double amount = Double.parseDouble(request.getParameter("amount"));
-                
-                boolean success = accountService.performDeposit(accountNo, amount);
-                
-                out.println("<html><body>");
-                out.println("<p><strong>Storage Type:</strong> " + (storageType != null ? storageType : "database") + "</p>");
-                if (success) {
-                    out.println("<h2>Deposit Successful</h2>");
-                } else {
-                    out.println("<h2>Deposit Failed</h2>");
+            
+            else if ("withdraw".equals(action)) {
+                try {
+                    int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+                    double amount = Double.parseDouble(request.getParameter("amount"));
+                    
+                    if (amount <= 0) {
+                        request.setAttribute("errorMessage", "Withdrawal amount must be positive");
+                    } else {
+                        // First check if account exists
+                        SavingsAccount account = accountService.getAccount(accountNo);
+                        if (account == null) {
+                            request.setAttribute("errorMessage", "Account not found with account number: " + accountNo);
+                        } else {
+                            boolean success = accountService.performWithdrawal(accountNo, amount);
+                            if (success) {
+                                request.setAttribute("successMessage", "Withdrawal was successful");
+                            } else {
+                                request.setAttribute("errorMessage", "Withdrawal Failed - Insufficient balance or account error");
+                            }
+                        }
+                    }
+                    request.setAttribute("storageType", storageType != null ? storageType : "database");
+                    request.setAttribute("showWithdrawResult", true);
+                    
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Invalid input format. Please check all numeric fields.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error during withdrawal: " + e.getMessage());
                 }
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
-            } catch (Exception e) {
-                out.println("<html><body>");
-                out.println("<h2>Error: " + e.getMessage() + "</h2>");
-                out.println("<a href='account.jsp'>Back</a>");
-                out.println("</body></html>");
             }
+            
+            else if ("deposit".equals(action)) {
+                try {
+                    int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+                    double amount = Double.parseDouble(request.getParameter("amount"));
+                    
+                    if (amount <= 0) {
+                        request.setAttribute("errorMessage", "Deposit amount must be positive");
+                    } else {
+                        // First check if account exists
+                        SavingsAccount account = accountService.getAccount(accountNo);
+                        if (account == null) {
+                            request.setAttribute("errorMessage", "Account not found with account number: " + accountNo);
+                        } else {
+                            boolean success = accountService.performDeposit(accountNo, amount);
+                            if (success) {
+                                request.setAttribute("successMessage", "Deposit Successful");
+                            } else {
+                                request.setAttribute("errorMessage", "Deposit Failed - Account error occurred");
+                            }
+                        }
+                    }
+                    request.setAttribute("storageType", storageType != null ? storageType : "database");
+                    request.setAttribute("showDepositResult", true);
+                    
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Invalid input format. Please check all numeric fields.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error during deposit: " + e.getMessage());
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Database connection error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Unexpected error: " + e.getMessage());
+        }
+        
+        // Handle AJAX vs regular form submission
+        String ajaxHeader = request.getHeader("X-Requested-With");
+        if ("XMLHttpRequest".equals(ajaxHeader)) {
+            String successMsg = (String) request.getAttribute("successMessage");
+            String errorMsg = (String) request.getAttribute("errorMessage");
+            
+            if (successMsg != null) {
+                Object newAccountNo = request.getAttribute("newAccountNo");
+                sendJsonResponse(response, true, successMsg, newAccountNo);
+            } else if (errorMsg != null) {
+                sendJsonResponse(response, false, errorMsg, null);
+            } else {
+                sendJsonResponse(response, false, "Unknown error occurred", null);
+            }
+        } else {
+            request.getRequestDispatcher("account.jsp").forward(request, response);
         }
     }
 }

@@ -1,34 +1,54 @@
 package entity;
 
-//Concrete implementation of abstract Customer
 public class Customer extends AbstractCustomer {
-    private int branch_id;
-    
-    //Constructor
-    public Customer(int id, String name, String phone, String email, int branch_id) {
-        super(id, name, phone, email);
-        this.branch_id = branch_id;
+    private final int branch_id;
+    private String salt; // Customer-specific field
+
+    private Customer(Builder builder) {
+        super(builder.id, builder.name, builder.phone, builder.email);
+        this.branch_id = builder.branchId;
+        this.password = builder.password;
+        this.salt = builder.salt;
     }
 
-    //Getters and Setters
-    public void setId(int id) {
-        this.id = id;
+    public static class Builder {
+        // Required fields
+        private final String name;
+        private final String email;
+        private final int branchId;
+        
+        // Optional fields
+        private int id = 0;
+        private String phone;
+        private String password;
+        private String salt;
+
+        public Builder(String name, String email, int branchId) {
+            this.name = name;
+            this.email = email;
+            this.branchId = branchId;
+        }
+
+        // Builder methods
+        public Builder id(int id) { this.id = id; return this; }
+        public Builder phone(String phone) { this.phone = phone; return this; }
+        public Builder password(String password) { this.password = password; return this; }
+        public Builder salt(String salt) { this.salt = salt; return this; }
+
+        public Customer build() {
+            return new Customer(this);
+        }
     }
 
-    public void setBranchId(int branch_id) {
-        this.branch_id = branch_id;
-    }
-
-    public int getBranchId() {
-        return branch_id;
-    }
-
-    public String getDisplayName() {
-        return "\nCustomer: " + name + " (" + id + ")";
-    }
+    // Getters
+    public int getBranchId() { return branch_id; }
+    public String getSalt() { return salt; }
 
     @Override
     public String toString() {
-        return getDisplayName() + "\nPhone: " + phone + "\nEmail: " + email + "\nBranch ID: " + branch_id;
+        return "Customer: " + name + " (" + id + ")\n" +
+               "Phone: " + phone + "\n" +
+               "Email: " + email + "\n" +
+               "Branch ID: " + branch_id;
     }
 }
