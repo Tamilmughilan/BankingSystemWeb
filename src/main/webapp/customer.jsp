@@ -11,7 +11,7 @@
         <h1>Customer Management</h1>
 		 <p>Hello, <%= session.getAttribute("userName") %>! (Role: <%= session.getAttribute("role") %>)</p>
         
-        <!-- Server-side messages (for non-AJAX requests) -->
+        
         <% if (request.getAttribute("successMessage") != null) { %>
             <div class="success-message">
                 <h2><%= request.getAttribute("successMessage") %></h2>
@@ -38,7 +38,7 @@
             </div>
         <% } %>
         
-        <!-- AJAX message container -->
+        
         <div id="customer-result"></div>
         
         <div class="section">
@@ -60,6 +60,7 @@
             <h2>Update Customer</h2>
             <form id="updateCustomerForm" action="customer" method="post">
                 <input type="hidden" name="action" value="update">
+                <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <p>Storage Type: 
                     <select name="storageType" required>
                         <option value="database">Database Storage</option>
@@ -78,6 +79,7 @@
             <h2>Delete Customer</h2>
             <form id="deleteCustomerForm" action="customer" method="post">
                 <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <p>Storage Type: 
                     <select name="storageType" required>
                         <option value="database">Database Storage</option>
@@ -97,6 +99,9 @@
     <script>
     $(document).ready(function() {
         
+        //Retrieve csrf token of the session
+        var csrfToken = '<%= session.getAttribute("csrfToken") %>';
+        
         // Clear previous messages function
         function clearMessages() {
             $('#customer-result').empty();
@@ -107,7 +112,7 @@
             e.preventDefault();
             clearMessages();
             
-            // Show loading message
+            //loading message
             $('#customer-result').html('<div class="info-message"><h3>Loading customer details...</h3></div>');
             
             $.ajax({
@@ -118,7 +123,7 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 success: function(response) {
-                    console.log('Get Customer Response:', response); // Debug log
+                    console.log('Get Customer Response:', response);
                     $('#customer-result').empty();
                     
                     if (response.success) {
@@ -135,7 +140,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.log('Get Customer Error:', xhr.responseText); // Debug log
+                    console.log('Get Customer Error:', xhr.responseText);
                     $('#customer-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
                 }
             });
@@ -149,15 +154,21 @@
             // Show loading message
             $('#customer-result').html('<div class="info-message"><h3>Updating customer...</h3></div>');
             
+            //CSRF token to the form data
+            var formData = $(this).serialize();
+            if (formData.indexOf('csrfToken') === -1) {
+                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+            }
+            
             $.ajax({
                 url: 'customer',
                 type: 'POST',
-                data: $(this).serialize(),
+                data: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 success: function(response) {
-                    console.log('Update Customer Response:', response); // Debug log
+                    console.log('Update Customer Response:', response);
                     $('#customer-result').empty();
                     
                     if (response.success) {
@@ -169,7 +180,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.log('Update Customer Error:', xhr.responseText); // Debug log
+                    console.log('Update Customer Error:', xhr.responseText);
                     $('#customer-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
                 }
             });
@@ -185,15 +196,21 @@
                 // Show loading message
                 $('#customer-result').html('<div class="info-message"><h3>Deleting customer...</h3></div>');
                 
+                // Add CSRF token to the form data
+                var formData = $(this).serialize();
+                if (formData.indexOf('csrfToken') === -1) {
+                    formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+                }
+                
                 $.ajax({
                     url: 'customer',
                     type: 'POST',
-                    data: $(this).serialize(),
+                    data: formData,
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     success: function(response) {
-                        console.log('Delete Customer Response:', response); // Debug log
+                        console.log('Delete Customer Response:', response);
                         $('#customer-result').empty();
                         
                         if (response.success) {
@@ -205,7 +222,7 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.log('Delete Customer Error:', xhr.responseText); // Debug log
+                        console.log('Delete Customer Error:', xhr.responseText);
                         $('#customer-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
                     }
                 });

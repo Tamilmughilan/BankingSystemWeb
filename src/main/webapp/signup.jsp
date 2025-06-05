@@ -12,6 +12,7 @@
         <div class="form-container">
             <h2>Create Customer Account</h2>
             <form action="signup" method="post">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <div class="form-group">
                     <label for="name">Full Name:</label>
                     <input type="text" id="name" name="name" required>

@@ -17,12 +17,12 @@
             </div>
         </div>
         
-        <!-- Message containers for AJAX responses -->
+        
         <div id="result-message"></div>
 		<div id="account-details"></div>
 		<div id="transaction-result"></div>
         
-        <!-- Server-side messages (for non-AJAX requests) -->
+       
         <% if (request.getAttribute("successMessage") != null){ %>
         	<div class="success-message">
         		<h2><%= request.getAttribute("successMessage") %></h2>
@@ -59,6 +59,8 @@
             <h2>Create New Savings Account</h2>
             <form id="createAccountForm" action="account" method="post">
                 <input type="hidden" name="action" value="create">
+                <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                
                 <input type="hidden" name="storageType" value="database">
                 <div class="form-group">
                     <label for="customerId">Customer ID:</label>
@@ -99,6 +101,8 @@
             <form id="depositForm" action="account" method="post">
                 <input type="hidden" name="action" value="deposit">
                 <input type="hidden" name="storageType" value="database">
+                <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                
                 <div class="form-group">
                     <label for="depositAccountNo">Account Number:</label>
                     <input type="number" id="depositAccountNo" name="accountNo" required placeholder="Enter account number">
@@ -131,6 +135,9 @@
     
     <script>
     $(document).ready(function(){
+    	
+    	//Retrieve csrf token of the session
+        var csrfToken = '<%= session.getAttribute("csrfToken") %>';
         
         //Clearing previous messages 
         function clearMessages() {
@@ -147,6 +154,11 @@
             
             $('#result-message').html('<div class="info-message"><h3>Processing...</h3></div>');
             
+            var formData = $(this).serialize();
+            if (formData.indexOf('csrfToken') === -1) {
+                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+            }
+            
             $.ajax({
                 url: 'account',
                 type: 'POST',
@@ -155,7 +167,7 @@
                     'X-Requested-With' : 'XMLHttpRequest'
                 },
                 success: function(response){
-                    console.log('Create Account Response:', response); // Debug log
+                    console.log('Create Account Response:', response); 
                     $('#result-message').empty();
                     
                     if (response.success) {
@@ -218,22 +230,27 @@
         });
         
         // Deposit Form
-        $('#depositForm').on('submit', function(e) {
+        $('#depositForm').on('submit',function(e) {
             e.preventDefault();
             clearMessages();
             
             // Show loading message
             $('#transaction-result').html('<div class="info-message"><h3>Processing deposit...</h3></div>');
             
+            var formData = $(this).serialize();
+            if (formData.indexOf('csrfToken') === -1) {
+                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+            }
+            
             $.ajax({
                 url: 'account',
                 type: 'POST',
                 data: $(this).serialize(),
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With':'XMLHttpRequest'
                 },
                 success: function(response) {
-                    console.log('Deposit Response:', response); // Debug log
+                    console.log('Deposit Response: ', response); // Debug log
                     $('#transaction-result').empty();
                     
                     if (response.success) {
@@ -252,7 +269,7 @@
         });
 
         // Withdraw Form
-        $('#withdrawForm').on('submit', function(e) {
+        $('#withdrawForm').on('submit',function(e) {
             e.preventDefault();
             clearMessages();
             

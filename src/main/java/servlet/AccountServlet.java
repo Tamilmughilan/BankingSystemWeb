@@ -217,7 +217,7 @@ public class AccountServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Unexpected error: " + e.getMessage());
         }
         
-        // Handle AJAX vs regular form submission
+        // Handle AJAX and regular form submission
         String ajaxHeader = request.getHeader("X-Requested-With");
         if ("XMLHttpRequest".equals(ajaxHeader)) {
             String successMsg = (String) request.getAttribute("successMessage");

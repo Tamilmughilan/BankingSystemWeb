@@ -15,6 +15,7 @@
                 <p class="error">Login failed. Please try again.</p>
             <% } %>
             <form action="login" method="post">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
