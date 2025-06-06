@@ -2,7 +2,7 @@ package entity;
 
 public class Customer extends AbstractCustomer {
     private final int branch_id;
-    private String salt; // Customer-specific field
+    private String salt; 
 
     private Customer(Builder builder) {
         super(builder.id, builder.name, builder.phone, builder.email);

@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import entity.Customer;
 import storage.DataStorage;
@@ -48,5 +49,19 @@ public class CustomerService {
     
     public boolean deleteCustomer(int customerId) {
         return dataStorage.deleteCustomer(customerId);
+    }
+    
+    public Customer getCustomerByEmail(String email) {
+        return dataStorage.getCustomerByEmail(email);
+    }
+  
+
+    public List<Customer> getCustomersByBranch(int branchId) {
+        return dataStorage.getCustomersByBranch(branchId);
+    }
+    
+
+    public String getSaltForCustomer(int customerId) { 
+        return dataStorage.getSaltForCustomer(customerId);
     }
 }

@@ -2,6 +2,7 @@ package storage;
 
 import entity.*;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -179,7 +180,7 @@ public class CollectionStorage extends AbstractDataStorage {
 
     // Transaction operations (for consistency with DatabaseStorage)
     @Override
-    public boolean withdrawFromAccount(int accountNo, double amount) {
+    public boolean withdrawFromAccount(int accountNo, BigDecimal amount) {
         SavingsAccount account = accounts.get(accountNo);
         if (account != null && account.canWithdraw(amount)) {
             if (account.withdraw(amount)) {
@@ -191,7 +192,7 @@ public class CollectionStorage extends AbstractDataStorage {
     }
 
     @Override
-    public boolean depositToAccount(int accountNo, double amount) {
+    public boolean depositToAccount(int accountNo, BigDecimal amount) {
         SavingsAccount account = accounts.get(accountNo);
         if (account != null) {
             account.deposit(amount);
@@ -205,6 +206,24 @@ public class CollectionStorage extends AbstractDataStorage {
 	public void updateCustomer(Customer customer) throws SQLException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int addCustomerToAccount(int customerId, int accountNo, String role) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean removeCustomerFromAccount(int customerId, int accountNo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Customer> getCustomersByAccount(int accountNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }

@@ -1,43 +1,123 @@
 package servlet;
-import service.AuthenticationService;
 
-import storage.DataStorage;
-import storage.DatabaseStorage;
-import entity.AuthenticationResult;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import entity.AuthenticationResult;
+import service.AuthenticationService;
+import storage.DataStorage;
+import storage.DatabaseStorage;
+import util.OTPUtil;
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private DataStorage dataStorage;
-    //Uses the Authentication entity for role based features
     private AuthenticationService authService;
-
+    
     @Override
     public void init() throws ServletException {
         try {
-            this.dataStorage = new DatabaseStorage();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Failed to initialize database storage", e);
-        }
+			this.dataStorage = new DatabaseStorage();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         this.authService = new AuthenticationService(dataStorage);
     }
-    
-    //Takes to user to the dashboard respective to their role - SOLID principle
+      
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // If user is already logged in, redirect to appropriate dashboard
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("role") != null) {
-            String role = (String) session.getAttribute("role");
+        //Redirect to login page
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
+        
+        if ("verifyOTP".equals(action)) {
+            handleOTPVerification(request, response);
+        } else {
+            handleLogin(request, response);
+        }
+    }
+    
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        
+        try {
+            AuthenticationResult result = authService.authenticate(email, password);
+            
+            if (result.isSuccess()) {
+                //Storing user info in sesion
+                HttpSession session = request.getSession();
+                session.setAttribute("pendingAuth", result);
+                session.setAttribute("pendingEmail", email);
+                
+                // Generate and display OTP 
+                String otp = OTPUtil.generateOTP();
+                System.out.println(" OTP for " + email + ": " + otp + " ");
+                
+                // Set attributes to show OTP form on same page
+                request.setAttribute("showOTPForm", true);
+                request.setAttribute("email", email);
+                request.setAttribute("message", "Password verified! Please enter the OTP sent to your registered contact.");
+                
+                // Forward back to login page with OTP form visible
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                
+            } else {
+                request.setAttribute("loginFailed", true);
+                request.setAttribute("email", email); // Preserve email
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("loginFailed", true);
+            request.setAttribute("email", email); // Preserve email
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
+    }
+    
+    private void handleOTPVerification(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String enteredOTP = request.getParameter("otp");
+        HttpSession session = request.getSession();
+        
+        AuthenticationResult pendingAuth = (AuthenticationResult) session.getAttribute("pendingAuth");
+        String email = (String) session.getAttribute("pendingEmail");
+        
+        if (pendingAuth == null) {
+            request.setAttribute("loginFailed", true);
+            request.setAttribute("errorMessage", "Session expired. Please login again.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+        
+        if (OTPUtil.verifyOTP(enteredOTP)) {
+            // OTP is valid, complete the login
+            session.setAttribute("role", pendingAuth.getRole());
+            session.setAttribute("userId", pendingAuth.getUserId());
+            session.setAttribute("userName", pendingAuth.getUserName());
+            
+            // Clean up pending auth data
+            session.removeAttribute("pendingAuth");
+            session.removeAttribute("pendingEmail");
+            
+            // Redirect based on role
             String contextPath = request.getContextPath();
-            switch (role) {
+            switch (pendingAuth.getRole()) {
                 case "CUSTOMER":
                     response.sendRedirect(contextPath + "/account.jsp");
                     break;
@@ -48,75 +128,14 @@ public class LoginServlet extends HttpServlet {
                 default:
                     response.sendRedirect(contextPath + "/login.jsp");
             }
-            return;
-        }
-
-        // Show login page
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String contextPath = request.getContextPath();
-
-        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
-            response.setContentType("text/html");
-            response.getWriter().println(
-                "<html><head><title>Login Error</title></head><body>" +
-                "<h2>Login Error</h2>" +
-                "<p>Email and password are required.</p>" +
-                "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
-                "</body></html>"
-            );
-            return;
-        }
-
-        try {
-            AuthenticationResult result = authService.authenticate(email.trim(), password.trim());
-
-            if (result.isSuccess()) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("role", result.getRole());
-                session.setAttribute("userId", result.getUserId());
-                session.setAttribute("userName", result.getUserName());
-                session.setAttribute("email", email.trim());
-
-                // Redirect based on role
-                switch (result.getRole()) {
-                    case "CUSTOMER":
-                        response.sendRedirect(contextPath + "/account.jsp");
-                        break;
-                    case "EMPLOYEE":
-                    case "MANAGER":
-                        response.sendRedirect(contextPath + "/index.jsp");
-                        break;
-                    default:
-                        response.sendRedirect(contextPath + "/login.jsp");
-                }
-            } else {
-                response.setContentType("text/html");
-                response.getWriter().println(
-                    "<html><head><title>Login Failed</title></head><body>" +
-                    "<h2>Login Failed</h2>" +
-                    "<p>Invalid credentials. Try again</p>" +
-                    "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
-                    "</body></html>"
-                );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setContentType("text/html");
-            response.getWriter().println(
-                "<html><head><title>Login Error</title></head><body>" +
-                "<h2>Login Error</h2>" +
-                "<p>Login failed due to server error, Please try again.</p>" +
-                "<p><a href='" + contextPath + "/login.jsp'>Try Again</a></p>" +
-                "</body></html>"
-            );
+            
+        } else {
+            // OTP is invalid show OTP form again with error
+            request.setAttribute("showOTPForm", true);
+            request.setAttribute("email", email);
+            request.setAttribute("otpFailed", true);
+            request.setAttribute("errorMessage", "Invalid OTP. Please try again.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 }

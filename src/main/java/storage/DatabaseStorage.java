@@ -1,8 +1,10 @@
 package storage;
 
 import entity.*;
+
 import java.sql.*;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class DatabaseStorage extends AbstractDataStorage {
@@ -414,7 +416,7 @@ public class DatabaseStorage extends AbstractDataStorage {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setInt(1, account.getCustomerId());
-            stmt.setDouble(2, account.getBalance());
+            stmt.setBigDecimal(2, account.getBalance());
             stmt.setString(3, account.getAccountType());
             stmt.setInt(4, account.getBranchId());
             
@@ -451,7 +453,7 @@ public class DatabaseStorage extends AbstractDataStorage {
                         rs.getInt("branch_id")
                     )
                     .accountNo(rs.getInt("account_no"))
-                    .balance(rs.getDouble("balance"))
+                    .balance(rs.getBigDecimal("balance"))
                     .build();
                 }
             }
@@ -467,7 +469,7 @@ public class DatabaseStorage extends AbstractDataStorage {
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setDouble(1, account.getBalance());
+            stmt.setBigDecimal(1, account.getBalance());
             stmt.setInt(2, account.getAccountNo());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -503,7 +505,7 @@ public class DatabaseStorage extends AbstractDataStorage {
                         rs.getInt("branch_id")
                     )
                     .accountNo(rs.getInt("account_no"))
-                    .balance(rs.getDouble("balance"))
+                    .balance(rs.getBigDecimal("balance"))
                     .build());
                 }
             }
@@ -516,19 +518,21 @@ public class DatabaseStorage extends AbstractDataStorage {
     @Override
     public List<SavingsAccount> getAccountsByCustomer(int customerId) {
         List<SavingsAccount> accounts = new ArrayList<>();
-        String sql = "SELECT * FROM accounts WHERE customer_id = ?";
+        String sql = "SELECT a.* FROM accounts a " +
+                     "JOIN customer_accounts ca ON a.account_no = ca.account_no " +
+                     "WHERE ca.customer_id = ?";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, customerId);
             try (ResultSet rs = stmt.executeQuery()) {
-            	while (rs.next()) {
+                while (rs.next()) {
                     accounts.add(new SavingsAccount.Builder(
                         rs.getInt("customer_id"),
                         rs.getInt("branch_id")
                     )
                     .accountNo(rs.getInt("account_no"))
-                    .balance(rs.getDouble("balance"))
+                    .balance(rs.getBigDecimal("balance"))
                     .build());
                 }
             }
@@ -577,7 +581,7 @@ public class DatabaseStorage extends AbstractDataStorage {
 
     // Transaction operations
     @Override
-    public boolean withdrawFromAccount(int accountNo, double amount) {
+    public boolean withdrawFromAccount(int accountNo, BigDecimal amount) {
         Connection conn = null;
         try {
             conn = dbConnection.getConnection();
@@ -586,12 +590,12 @@ public class DatabaseStorage extends AbstractDataStorage {
             String selectSql = "SELECT balance FROM accounts WHERE account_no = ? FOR UPDATE";
             String updateSql = "UPDATE accounts SET balance = balance - ? WHERE account_no = ? AND balance >= ?";
             
-            double currentBalance;
+            BigDecimal currentBalance;
             try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
                 selectStmt.setInt(1, accountNo);
                 try (ResultSet rs = selectStmt.executeQuery()) {
                     if (rs.next()) {
-                        currentBalance = rs.getDouble("balance");
+                        currentBalance = rs.getBigDecimal("balance");
                     } else {
                         conn.rollback();
                         return false;
@@ -599,15 +603,15 @@ public class DatabaseStorage extends AbstractDataStorage {
                 }
             }
             
-            if (currentBalance < amount) {
+            if (currentBalance.compareTo(amount) < 0) {
                 conn.rollback();
                 return false;
             }
             
             try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
-                updateStmt.setDouble(1, amount);
+                updateStmt.setBigDecimal(1, amount);
                 updateStmt.setInt(2, accountNo);
-                updateStmt.setDouble(3, amount);
+                updateStmt.setBigDecimal(3, amount);
                 
                 int rowsAffected = updateStmt.executeUpdate();
                 if (rowsAffected > 0) {
@@ -637,9 +641,76 @@ public class DatabaseStorage extends AbstractDataStorage {
             }
         }
     }
+    
+    public int addCustomerToAccount(int customerId, int accountNo, String role) {
+        String sql = "INSERT INTO customer_accounts (customer_id, account_no, account_role) VALUES (?, ?, ?)";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            stmt.setInt(1, customerId);
+            stmt.setInt(2, accountNo);
+            stmt.setString(3, role);
+            
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
+                    }
+                }
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error adding customer to account", e);
+        }
+    }
+    
+    public boolean removeCustomerFromAccount(int customerId, int accountNo) {
+        String sql = "DELETE FROM customer_accounts WHERE customer_id = ? AND account_no = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, customerId);
+            stmt.setInt(2, accountNo);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error removing customer from account", e);
+        }
+    }
+    
+    public List<Customer> getCustomersByAccount(int accountNo) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT c.* FROM customers c " +
+                     "JOIN customer_accounts ca ON c.customer_id = ca.customer_id " +
+                     "WHERE ca.account_no = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, accountNo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Customer customer = new Customer.Builder(
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getInt("branch_id")
+                    )
+                    .id(rs.getInt("customer_id"))
+                    .phone(rs.getString("phone"))
+                    .password(rs.getString("password"))
+                    .build();
+                    customers.add(customer);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving customers by account", e);
+        }
+        return customers;
+    }
+
+
 
     @Override
-    public boolean depositToAccount(int accountNo, double amount) {
+    public boolean depositToAccount(int accountNo, BigDecimal amount) {
         Connection conn = null;
         try {
             conn = dbConnection.getConnection();
@@ -659,7 +730,7 @@ public class DatabaseStorage extends AbstractDataStorage {
             
             String sql = "UPDATE accounts SET balance = balance + ? WHERE account_no = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setDouble(1, amount);
+                stmt.setBigDecimal(1, amount);
                 stmt.setInt(2, accountNo);
                 
                 int rowsAffected = stmt.executeUpdate();

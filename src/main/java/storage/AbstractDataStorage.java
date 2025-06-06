@@ -2,6 +2,7 @@ package storage;
 
 import entity.*;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,8 +44,8 @@ public abstract class AbstractDataStorage implements DataStorage {
     public abstract Branch getBranch(int branchId);
 
     // Transaction operations
-    public abstract boolean withdrawFromAccount(int accountNo, double amount);
-    public abstract boolean depositToAccount(int accountNo, double amount);
+    public abstract boolean withdrawFromAccount(int accountNo, BigDecimal amount);
+    public abstract boolean depositToAccount(int accountNo, BigDecimal amount);
 
     @Override
     public abstract void updateCustomer(Customer customer) throws SQLException;

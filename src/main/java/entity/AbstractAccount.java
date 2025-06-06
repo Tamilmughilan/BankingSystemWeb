@@ -1,56 +1,54 @@
 package entity;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-//All the abstract methods must be implemented
-//Common methods are defined
 public abstract class AbstractAccount {
-	//States of the account object
     protected int accountNo;
     protected int customerId;
-    protected double balance;
+    protected BigDecimal balance;  //updated from double to Big Decimal
     protected String accountType;
     
-    //Constructor
-    protected AbstractAccount(int accountNo, int customerId, double balance, String accountType) {
+    //constructor
+    protected AbstractAccount(int accountNo, int customerId, BigDecimal balance, String accountType) {
         this.accountNo = accountNo;
         this.customerId = customerId;
         this.balance = balance;
         this.accountType = accountType;
     }
     
-    //GET - branch ID of an account
     public abstract int getBranchId();
     
-    //Withdraw eligibility
-    public boolean canWithdraw(double amount) {
-        return amount > 0 && amount <= balance;
+    // withdrawal eligibility
+    public boolean canWithdraw(BigDecimal amount) {
+        return amount.compareTo(BigDecimal.ZERO) > 0 && 
+               amount.compareTo(balance) <= 0;
     }
 
-    //Account methods - withdraw and deposit
-    public boolean withdraw(double amount) {
+    // account methods
+    public boolean withdraw(BigDecimal amount) {
         if (canWithdraw(amount)) {
-            balance -= amount;
+            balance = balance.subtract(amount);
             return true;
         }
         return false;
     }
 
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
+    public void deposit(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) > 0) {
+            balance = balance.add(amount);
         }
     }
     
-    //Validation
+   //validation
     public boolean isValidAccount() {
-        return customerId > 0 && balance >= 0;
+        return customerId > 0 && balance.compareTo(BigDecimal.ZERO) >= 0;
     }
     
-    //Getters
+    //getters/setters
     public int getAccountNo() { return accountNo; }
     public int getCustomerId() { return customerId; }
-    public double getBalance() { return balance; }
+    public BigDecimal getBalance() { return balance; }  
     public String getAccountType() { return accountType; }
     
-    //Setter
-    public void setBalance(double balance) { this.balance = balance; }
+    public void setBalance(BigDecimal balance) { this.balance = balance; }  // Changed parameter type
 }
