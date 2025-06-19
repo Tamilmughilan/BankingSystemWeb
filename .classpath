@@ -14,5 +14,8 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Users/TAMIL MUGHILAN/Downloads/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/TAMIL MUGHILAN/eclipse-workspace/BankingSystemWeb/src/main/webapp/WEB-INF/lib/mongodb-driver-sync-4.11.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/TAMIL MUGHILAN/eclipse-workspace/BankingSystemWeb/src/main/webapp/WEB-INF/lib/mongodb-driver-core-4.11.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/TAMIL MUGHILAN/eclipse-workspace/BankingSystemWeb/src/main/webapp/WEB-INF/lib/bson-4.11.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

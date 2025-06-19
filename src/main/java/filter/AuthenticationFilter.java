@@ -9,90 +9,107 @@ public class AuthenticationFilter implements Filter {
     
     private static final Set<String> openPaths = Set.of(
         "/login", "/signup", "/logout", 
-        "/login.jsp", "/signup.jsp", "/style.css"
+        "/login.jsp", "/signup.jsp", "/index.jsp",
+        "/style.css"
     );
     
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
             throws IOException, ServletException {
-        
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+
         String path = req.getServletPath();
+        String uri = req.getRequestURI();
         String contextPath = req.getContextPath();
-        HttpSession session = req.getSession(false);
+       
+       
         
-        System.out.println("AuthFilter: Processing path: " + path);
-        
-        // Only redirect for root paths, NOT /index.jsp
+  
+        if (isStaticResource(uri) || isStaticResource(path)) {
+            System.out.println("AuthFilter: Allowing static resource: " + uri);
+            chain.doFilter(req, res);
+            return;
+        }
+
+
+        if (openPaths.contains(path)) {
+            System.out.println("AuthFilter: Allowing open path: " + path);
+            chain.doFilter(req, res);
+            return;
+        }
+
+    
         if (path.equals("/") || path.equals("")) {
+            HttpSession session = req.getSession(false);
             if (session != null && session.getAttribute("role") != null) {
                 String role = (String) session.getAttribute("role");
                 redirectBasedOnRole(role, res, contextPath);
                 return;
             } else {
-                res.sendRedirect(contextPath + "/login.jsp");
+                res.sendRedirect(contextPath + "/index.jsp");
                 return;
             }
         }
-        
-        // Add /index.jsp to open paths so authenticated users can access it
-        if (openPaths.contains(path) || path.equals("/index.jsp") || path.endsWith(".css") || path.endsWith(".js")) {
-            chain.doFilter(req, res);
-            return;
-        }
-        
-        // Check if user is logged in for protected resources
+
+     
+        HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("role") == null) {
-            System.out.println("AuthFilter: No valid session, redirecting to login");
+            System.out.println("AuthFilter: No valid session for path: " + path + ", redirecting to login");
+     
             res.sendRedirect(contextPath + "/login.jsp");
             return;
         }
-        
+
+      
         String role = (String) session.getAttribute("role");
         String action = req.getParameter("action");
-        
-        System.out.println("AuthFilter: User role: " + role + ", Action: " + action + ", Path: " + path);
-        
-        // Role-based access control
+
         switch (role) {
             case "MANAGER":
-                // Managers have access to all operations
                 chain.doFilter(req, res);
                 break;
-                
             case "EMPLOYEE":
-                // Employees can do everything except delete
                 if ("delete".equals(action)) {
                     sendAccessDenied(res, "Only managers can delete records.");
                     return;
                 }
-                
                 chain.doFilter(req, res);
                 break;
-                
             case "CUSTOMER":
-                // Customers are restricted to account operations only
                 if (path.equals("/customer") || path.equals("/customer.jsp")) {
                     sendAccessDenied(res, "Access denied. Customers cannot access customer management.");
                     return;
                 }
-                // Only allow account related paths for customers
                 if (path.equals("/account") || path.equals("/account.jsp")) {
                     chain.doFilter(req, res);
                 } else {
-                    // if they access any other path
                     res.sendRedirect(contextPath + "/account.jsp");
-                    return;
                 }
                 break;
-                
             default:
                 sendAccessDenied(res, "Invalid role.");
-                return;
         }
     }
     
+    private boolean isStaticResource(String path) {
+        if (path == null) return false;
+        String lowercasePath = path.toLowerCase();
+        return lowercasePath.endsWith(".css") || 
+               lowercasePath.endsWith(".js") || 
+               lowercasePath.endsWith(".png") || 
+               lowercasePath.endsWith(".jpg") || 
+               lowercasePath.endsWith(".jpeg") || 
+               lowercasePath.endsWith(".gif") ||
+               lowercasePath.endsWith(".ico") ||
+               lowercasePath.endsWith(".svg") ||
+               lowercasePath.endsWith(".woff") ||
+               lowercasePath.endsWith(".woff2") ||
+               lowercasePath.endsWith(".ttf") ||
+               lowercasePath.endsWith(".eot");
+    }
+
     private void redirectBasedOnRole(String role, HttpServletResponse response, String contextPath) throws IOException {
         switch (role) {
             case "CUSTOMER":

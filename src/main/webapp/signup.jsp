@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banking System - Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+<!-- Make sure this path is correct -->
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -51,7 +52,7 @@
             </div>
         </div>
     </div>
-    <script>
+    <script nonce="<%= request.getAttribute("cspNonce") %>">
         document.querySelector('form').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;

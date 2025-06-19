@@ -5,13 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banking System - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .login-form.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-    </style>
+<!-- Make sure this path is correct -->
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="container">

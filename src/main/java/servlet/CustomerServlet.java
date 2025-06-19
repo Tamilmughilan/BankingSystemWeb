@@ -9,6 +9,7 @@ import java.util.List;
 import service.CustomerService;
 import storage.DataStorage;
 import storage.DatabaseStorage;
+import storage.MongoDBStorage;
 import storage.CollectionStorage;
 import entity.Customer;
 import java.io.IOException;
@@ -17,15 +18,17 @@ import java.io.PrintWriter;
 @WebServlet("/customer")
 public class CustomerServlet extends HttpServlet {
     
-    private DataStorage getDataStorage(String storageType) throws SQLException {
-        if ("database".equalsIgnoreCase(storageType)) {
-            return new DatabaseStorage();
-        } else if ("collection".equalsIgnoreCase(storageType)) {
-            return new CollectionStorage();
-        } else {
-            return new DatabaseStorage();
-        }
-    }
+	private DataStorage getDataStorage(String storageType) throws SQLException {
+	    if ("database".equalsIgnoreCase(storageType)) {
+	        return new DatabaseStorage();
+	    } else if ("collection".equalsIgnoreCase(storageType)) {
+	        return new CollectionStorage();
+	    } else if ("mongodb".equalsIgnoreCase(storageType)) {
+	        return new MongoDBStorage();
+	    } else {
+	        return new DatabaseStorage(); // default
+	    }
+	}
     
     private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
         response.setContentType("application/json");

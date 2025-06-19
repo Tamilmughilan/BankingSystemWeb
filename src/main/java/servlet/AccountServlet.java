@@ -1,6 +1,7 @@
 package servlet;
 
 import javax.servlet.*;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.sql.*;
@@ -12,6 +13,7 @@ import java.util.Map;
 import service.AccountService;
 import storage.DataStorage;
 import storage.DatabaseStorage;
+import storage.MongoDBStorage;
 import storage.CollectionStorage;
 import entity.Customer;
 import entity.SavingsAccount;
@@ -22,16 +24,17 @@ import java.math.BigDecimal;
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
     
-    private DataStorage getDataStorage(String storageType) throws SQLException {
-        if ("database".equalsIgnoreCase(storageType)) {
-            return new DatabaseStorage();
-        } else if ("collection".equalsIgnoreCase(storageType)) {
-            return new CollectionStorage();
-        } else {
-            return new DatabaseStorage();
-        }
-    }
-    
+	private DataStorage getDataStorage(String storageType) throws SQLException {
+	    if ("database".equalsIgnoreCase(storageType)) {
+	        return new DatabaseStorage();
+	    } else if ("collection".equalsIgnoreCase(storageType)) {
+	        return new CollectionStorage();
+	    } else if ("mongodb".equalsIgnoreCase(storageType)) {
+	        return new MongoDBStorage();
+	    } else {
+	        return new DatabaseStorage(); 
+	    }
+	}
     private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

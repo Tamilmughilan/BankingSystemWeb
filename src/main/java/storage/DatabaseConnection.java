@@ -6,8 +6,16 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static DatabaseConnection instance;
     
-    
-    private final String url = "jdbc:mysql://localhost:3306/BankingSystem?useSSL=false&serverTimezone=UTC&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true";
+ 
+    private final String url = "jdbc:mysql://localhost:3306/BankingSystem?" +
+        "useSSL=true&" +
+        "serverTimezone=UTC&" +
+        "autoReconnect=true&" +
+        "useUnicode=true&" +
+        "characterEncoding=UTF-8&" +
+        "allowPublicKeyRetrieval=false&" +
+        "connectTimeout=5000&" +
+        "socketTimeout=10000";
     private final String USER = "root";
     private final String PASSWORD = "root";
     

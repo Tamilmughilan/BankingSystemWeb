@@ -5,35 +5,75 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Management</title>
+    <title>Customer Management</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="container">
-       
-        <div class="header">
-            <h1>Account Management</h1>
-            <div class="nav-container">
-                <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-                    <a href="customer.jsp" class="button">Customer Management</a>
-                <% } %>
-                <a href="index.jsp" class="button">Home</a>
-                <a href="logout" class="button logout-btn">Logout</a>
+        
+        <nav class="top-navbar">
+            <div class="nav-brand">
+                <h2>Banking System</h2>
             </div>
+            <div class="nav-links">
+                <a href="index.jsp" class="nav-button">Home</a>
+                <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+                    <a href="customer.jsp" class="nav-button">Customer Management</a>
+                <% } %>
+                <a href="account.jsp" class="nav-button active">Account Management</a>
+                <a href="profile.jsp" class="nav-button user-profile">
+                    <%= session.getAttribute("userName") %> (<%= session.getAttribute("role") %>)
+                </a>
+                <a href="logout" class="nav-button logout">Logout</a>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Account Management</h1>
         </div>
         
-        <p class="welcome-text">Welcome <%= session.getAttribute("userName") %>! (Role: <%= session.getAttribute("role") %>)</p>
-        
-        
+       
+		<div class="storage-selection">
+		    <h3>Select Storage Type</h3>
+		    <div class="storage-options">
+		        <label class="storage-option">
+		            <input type="radio" name="storageType" value="database" checked>
+		            <span>MySQL Database</span>
+		        </label>
+		        <label class="storage-option">
+		            <input type="radio" name="storageType" value="mongodb">
+		            <span>MongoDB</span>
+		        </label>
+		        <label class="storage-option">
+		            <input type="radio" name="storageType" value="collection">
+		            <span>In-Memory Collection</span>
+		        </label>
+		    </div>
+		</div>
+
+        <!-- Operation Buttons -->
+        <div class="operation-buttons">
+<% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+<button data-section="create-account" class="operation-btn">Create Account</button>
+<% } %>
+<button data-section="transactions" class="operation-btn">Transactions</button>
+<button data-section="view-accounts" class="operation-btn">View Accounts</button>
+<% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+<button data-section="joint-accounts" class="operation-btn">Joint Accounts</button>
+<% } %>
+</div>
+
+        <!-- Dynamic Result Areas -->
         <div id="result-message"></div>
         <div id="account-details"></div>
         <div id="account-list"></div>
         <div id="transaction-result"></div>
-        
-        
+
+        <!-- Server-side Messages -->
         <% if (request.getAttribute("successMessage") != null) { %>
             <div class="success-message">
-                <h2><%= request.getAttribute("successMessage") %></h2>
+                <h3><%= request.getAttribute("successMessage") %></h3>
                 <% if (request.getAttribute("showCreateResult") != null && request.getAttribute("newAccountNo") != null) { %>
                     <p><strong>Storage Type:</strong> <%= request.getAttribute("storageType") %></p>
                     <p><strong>New Account Number:</strong> <%= request.getAttribute("newAccountNo") %></p>
@@ -45,41 +85,15 @@
         
         <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-message">
-                <h2><%= request.getAttribute("errorMessage") %></h2>
+                <h3><%= request.getAttribute("errorMessage") %></h3>
             </div>
         <% } %>
-        
-        <% if (request.getAttribute("showAccountDetails") != null && request.getAttribute("account") != null) { %>
-            <div class="account-details">
-                <h2>Account Details</h2>
-                <p><strong>Storage Type:</strong> <%= request.getAttribute("storageType") %></p>
-                <div class="account-info">
-                    <%= request.getAttribute("account").toString().replace("\n", "<br>") %>
-                </div>
-            </div>
-        <% } %>
-        
-        <% if (request.getAttribute("showAccountsList") != null && request.getAttribute("accounts") != null) { %>
-            <div class="accounts-list">
-                <h2>Accounts List</h2>
-                <p><strong>Storage Type:</strong> <%= request.getAttribute("storageType") %></p>
-                <div class="accounts-info">
-                    <% 
-                    java.util.List<?> accounts = (java.util.List<?>) request.getAttribute("accounts");
-                    for (Object account : accounts) {
-                    %>
-                        <div class="account-item">
-                            <%= account.toString().replace("\n", "<br>") %>
-                        </div>
-                        <hr>
-                    <% } %>
-                </div>
-            </div>
-        <% } %>
+
+        <!-- Create Account Section -->
         <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-        <div class="section">
+        <div id="create-account" class="content-section">
             <h3>Create New Savings Account</h3>
-            <form id="createAccountForm" action="account" method="post">
+            <form id="createAccountForm" action="account" method="post" class="form-container">
                 <input type="hidden" name="action" value="create">
                 <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <input type="hidden" name="storageType" value="database">
@@ -105,76 +119,24 @@
                     </select>
                 </div>
                 
-                <input type="submit" value="Create Account" class="button submit-btn">
+                <button type="submit" class="submit-btn">Create Account</button>
             </form>
         </div>
         <% } %>
 
-       
-        <div class="section">
-            <h3>View Account Details</h3>
-            <form id="viewAccountForm" action="account" method="get">
-                <input type="hidden" name="action" value="get">
-                <input type="hidden" name="storageType" value="database">
-                
-                <div class="form-group">
-                    <label for="accountNo">Account Number:</label>
-                    <input type="number" id="accountNo" name="accountNo" required placeholder="Enter account number">
-                </div>
-                
-                <input type="submit" value="View Account" class="button info-btn">
-            </form>
-        </div>
-
-        
-        <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-        <div class="section">
-            <h3>View Accounts by Branch</h3>
-            <form id="viewAccountsByBranchForm" action="account" method="get">
-                <input type="hidden" name="action" value="getByBranch">
-                <input type="hidden" name="storageType" value="database">
-                
-                <div class="form-group">
-                    <label for="branchIdFilter">Branch:</label>
-                    <select id="branchIdFilter" name="branchId" required>
-                        <option value="">Select Branch</option>
-                        <option value="1">Main Branch</option>
-                        <option value="2">Anna Nagar Branch</option>
-                        <option value="3">Adyar Branch</option>
-                    </select>
-                </div>
-                
-                <input type="submit" value="View Branch Accounts" class="button info-btn">
-            </form>
-        </div>
-        <% } %>
-
-        
-        <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-        <div class="section">
-            <h3>View Accounts by Customer</h3>
-            <form id="viewAccountsByCustomerForm" action="account" method="get">
-                <input type="hidden" name="action" value="getByCustomer">
-                <input type="hidden" name="storageType" value="database">
-                
-                <div class="form-group">
-                    <label for="customerIdFilter">Customer ID:</label>
-                    <input type="number" id="customerIdFilter" name="customerId" required placeholder="Enter customer ID">
-                </div>
-                
-                <input type="submit" value="View Customer Accounts" class="button info-btn">
-            </form>
-        </div>
-        <% } %>
-
-        
-        <div class="transaction-section">
+        <!-- Transactions Section -->
+        <div id="transactions" class="content-section">
             <h3>Account Transactions</h3>
             
-            
-            <div class="section">
+            <div class="transaction-tabs">
+    <button class="tab-btn active">Deposit</button>
+    <button class="tab-btn">Withdraw</button>
+</div>
+
+            <!-- Deposit Form -->
+            <div id="deposit" class="tab-content active">
                 <h4>Deposit Money</h4>
-                <form id="depositForm" action="account" method="post">
+                <form id="depositForm" action="account" method="post" class="form-container">
                     <input type="hidden" name="action" value="deposit">
                     <input type="hidden" name="storageType" value="database">
                     <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
@@ -182,22 +144,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="depositAccountNo">Account Number:</label>
-                            <input type="number" id="depositAccountNo" name="accountNo" required placeholder="Enter account number">
+                            <input type="number" id="depositAccountNo" name="accountNo" required>
                         </div>
                         <div class="form-group">
                             <label for="depositAmount">Amount:</label>
-                            <input type="number" id="depositAmount" name="amount" step="0.01" min="1" required placeholder="Enter amount">
+                            <input type="number" id="depositAmount" name="amount" step="0.01" min="1" required>
                         </div>
                     </div>
                     
-                    <input type="submit" value="Deposit" class="button deposit-btn">
+                    <button type="submit" class="submit-btn">Deposit</button>
                 </form>
             </div>
 
-            <!-- Withdraw Money -->
-            <div class="section">
+            <!-- Withdraw Form -->
+            <div id="withdraw" class="tab-content">
                 <h4>Withdraw Money</h4>
-                <form id="withdrawForm" action="account" method="post">
+                <form id="withdrawForm" action="account" method="post" class="form-container">
                     <input type="hidden" name="action" value="withdraw">
                     <input type="hidden" name="storageType" value="database">
                     <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
@@ -205,94 +167,346 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="withdrawAccountNo">Account Number:</label>
-                            <input type="number" id="withdrawAccountNo" name="accountNo" required placeholder="Enter account number">
+                            <input type="number" id="withdrawAccountNo" name="accountNo" required>
                         </div>
                         <div class="form-group">
                             <label for="withdrawAmount">Amount:</label>
-                            <input type="number" id="withdrawAmount" name="amount" step="0.01" min="1" required placeholder="Enter amount">
+                            <input type="number" id="withdrawAmount" name="amount" step="0.01" min="1" required>
                         </div>
                     </div>
                     
-                    <input type="submit" value="Withdraw" class="button withdraw-btn">
+                    <button type="submit" class="submit-btn">Withdraw</button>
                 </form>
             </div>
         </div>
-        
 
-<form id="createJointAccountForm" action="account" method="post">
-    <input type="hidden" name="action" value="createJoint">
-    <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-    <input type="hidden" name="storageType" value="database">
-    <div class="form-group">
-    <label for="customerIds">Customer IDs (comma-separated):</label>
-    <input type="text" id="customerIds" name="customerIds" 
-           pattern="\d+(,\s*\d+)+" 
-           title="Enter at least two numeric IDs separated by commas"
-           required>
+        <!-- View Accounts Section -->
+        <div id="view-accounts" class="content-section">
+            <h3>View Accounts</h3>
+            
+            <div class="view-tabs">
+    <button class="tab-btn active">Single Account</button>
+    <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+        <button class="tab-btn">By Branch</button>
+        <button class="tab-btn">By Customer</button>
+    <% } %>
 </div>
 
-    <div class="form-group">
-        <label for="jointBalance">Initial Balance:</label>
-        <input type="number" id="jointBalance" name="balance" step="0.01" min="100" required>
-    </div>
-    <div class="form-group">
-        <label for="jointBranchId">Branch:</label>
-        <select id="jointBranchId" name="branchId" required>
-            <option value="">Select Branch</option>
-            <option value="1">Main Branch</option>
-            <option value="2">Anna Nagar Branch</option>
-            <option value="3">Adyar Branch</option>
-        </select>
-    </div>
-    <input type="submit" value="Create Joint Account" class="button submit-btn">
-</form>
+            <!-- Single Account View -->
+            <div id="single" class="tab-content active">
+                <h4>View Account Details</h4>
+                <form id="viewAccountForm" action="account" method="get" class="form-container">
+                    <input type="hidden" name="action" value="get">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-group">
+                        <label for="accountNo">Account Number:</label>
+                        <input type="number" id="accountNo" name="accountNo" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">View Account</button>
+                </form>
+            </div>
 
-<!-- Add Joint Holder -->
-<form id="addJointHolderForm" action="account" method="post">
-    <input type="hidden" name="action" value="addJointHolder">
-    <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-    <input type="hidden" name="storageType" value="database">
-    <div class="form-group">
-        <label for="accountNoToAdd">Account Number:</label>
-        <input type="number" id="accountNoToAdd" name="accountNo" required>
-    </div>
-    <div class="form-group">
-        <label for="customerIdToAdd">Customer ID:</label>
-        <input type="number" id="customerIdToAdd" name="customerId" required>
-    </div>
-    <input type="submit" value="Add Joint Holder" class="button submit-btn">
-</form>
+            <!-- Branch View -->
+            <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+            <div id="branch" class="tab-content">
+                <h4>View Accounts by Branch</h4>
+                <form id="viewAccountsByBranchForm" action="account" method="get" class="form-container">
+                    <input type="hidden" name="action" value="getByBranch">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-group">
+                        <label for="branchIdFilter">Branch:</label>
+                        <select id="branchIdFilter" name="branchId" required>
+                            <option value="">Select Branch</option>
+                            <option value="1">Main Branch</option>
+                            <option value="2">Anna Nagar Branch</option>
+                            <option value="3">Adyar Branch</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">View Branch Accounts</button>
+                </form>
+            </div>
 
-<!-- Remove Joint Holder -->
-<form id="removeJointHolderForm" action="account" method="post">
-    <input type="hidden" name="action" value="removeJointHolder">
-    <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-    <input type="hidden" name="storageType" value="database">
-    <div class="form-group">
-        <label for="accountNoToRemove">Account Number:</label>
-        <input type="number" id="accountNoToRemove" name="accountNo" required>
-    </div>
-    <div class="form-group">
-        <label for="customerIdToRemove">Customer ID:</label>
-        <input type="number" id="customerIdToRemove" name="customerId" required>
-    </div>
-    <input type="submit" value="Remove Joint Holder" class="button danger-btn">
-</form>
+            <!-- Customer View -->
+            <div id="customer" class="tab-content">
+                <h4>View Accounts by Customer</h4>
+                <form id="viewAccountsByCustomerForm" action="account" method="get" class="form-container">
+                    <input type="hidden" name="action" value="getByCustomer">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-group">
+                        <label for="customerIdFilter">Customer ID:</label>
+                        <input type="number" id="customerIdFilter" name="customerId" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">View Customer Accounts</button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Joint Accounts Section -->
+        <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+        <div id="joint-accounts" class="content-section">
+            <h3>Joint Account Operations</h3>
+            
+            <div class="joint-tabs">
+    <button class="tab-btn active">Create Joint Account</button>
+    <button class="tab-btn">Add Holder</button>
+    <button class="tab-btn">Remove Holder</button>
+    <button class="tab-btn">View Holders</button>
+</div>
+
+            <!-- Create Joint Account -->
+            <div id="create" class="tab-content active">
+                <h4>Create Joint Account</h4>
+                <form id="createJointAccountForm" action="account" method="post" class="form-container">
+                    <input type="hidden" name="action" value="createJoint">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-group">
+                        <label for="customerIds">Customer IDs (comma-separated):</label>
+                        <input type="text" id="customerIds" name="customerIds" 
+                               pattern="\d+(,\s*\d+)+" 
+                               title="Enter at least two numeric IDs separated by commas"
+                               placeholder="e.g., 1, 2, 3"
+                               required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jointBalance">Initial Balance:</label>
+                            <input type="number" id="jointBalance" name="balance" step="0.01" min="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jointBranchId">Branch:</label>
+                            <select id="jointBranchId" name="branchId" required>
+                                <option value="">Select Branch</option>
+                                <option value="1">Main Branch</option>
+                                <option value="2">Anna Nagar Branch</option>
+                                <option value="3">Adyar Branch</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Create Joint Account</button>
+                </form>
+            </div>
+
+            <!-- Add Joint Holder -->
+            <div id="add" class="tab-content">
+                <h4>Add Joint Holder</h4>
+                <form id="addJointHolderForm" action="account" method="post" class="form-container">
+                    <input type="hidden" name="action" value="addJointHolder">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accountNoToAdd">Account Number:</label>
+                            <input type="number" id="accountNoToAdd" name="accountNo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerIdToAdd">Customer ID:</label>
+                            <input type="number" id="customerIdToAdd" name="customerId" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Add Joint Holder</button>
+                </form>
+            </div>
+
+            <!-- Remove Joint Holder -->
+            <div id="remove" class="tab-content">
+                <h4>Remove Joint Holder</h4>
+                <form id="removeJointHolderForm" action="account" method="post" class="form-container">
+                    <input type="hidden" name="action" value="removeJointHolder">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accountNoToRemove">Account Number:</label>
+                            <input type="number" id="accountNoToRemove" name="accountNo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerIdToRemove">Customer ID:</label>
+                            <input type="number" id="customerIdToRemove" name="customerId" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn danger">Remove Joint Holder</button>
+                </form>
+            </div>
+
+            <!-- View Joint Holders -->
+            <div id="view" class="tab-content">
+                <h4>View Joint Holders</h4>
+                <form id="viewJointHoldersForm" action="account" method="get" class="form-container">
+                    <input type="hidden" name="action" value="viewJointHolders">
+                    <input type="hidden" name="storageType" value="database">
+                    
+                    <div class="form-group">
+                        <label for="accountNoToView">Account Number:</label>
+                        <input type="number" id="accountNoToView" name="accountNo" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">View Joint Holders</button>
+                </form>
+            </div>
+        </div>
+        <% } %>
 
 
-<form id="viewJointHoldersForm" action="account" method="get">
-    <input type="hidden" name="action" value="viewJointHolders">
-    <input type="hidden" name="storageType" value="database">
-    <div class="form-group">
-        <label for="accountNoToView">Account Number:</label>
-        <input type="number" id="accountNoToView" name="accountNo" required>
-    </div>
-    <input type="submit" value="View Joint Holders" class="button info-btn">
-</form>
+        <% if (request.getAttribute("showAccountDetails") != null && request.getAttribute("account") != null) { %>
+            <div class="account-details">
+                <h3>Account Details</h3>
+                <p><strong>Storage Type:</strong> <%= request.getAttribute("storageType") %></p>
+                <div class="account-info">
+                    <%= request.getAttribute("account").toString().replace("\n", "<br>") %>
+                </div>
+            </div>
+        <% } %>
         
+        <% if (request.getAttribute("showAccountsList") != null && request.getAttribute("accounts") != null) { %>
+            <div class="accounts-list">
+                <h3>Accounts List</h3>
+                <p><strong>Storage Type:</strong> <%= request.getAttribute("storageType") %></p>
+                <div class="accounts-info">
+                    <% 
+                    java.util.List<?> accounts = (java.util.List<?>) request.getAttribute("accounts");
+                    for (Object account : accounts) {
+                    %>
+                        <div class="account-item">
+                            <%= account.toString().replace("\n", "<br>") %>
+                        </div>
+                        <hr>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
     </div>
-    
-    <script>
+
+    <script nonce="<%= request.getAttribute("cspNonce") %>">
+
+
+    function updateStorageType() {
+        const selectedStorage = document.querySelector('input[name="storageType"]:checked').value;
+        const forms = document.querySelectorAll('form');
+        
+        forms.forEach(form => {
+            const storageInput = form.querySelector('input[name="storageType"]');
+            if (storageInput) {
+                storageInput.value = selectedStorage;
+            }
+        });
+    }
+
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => section.style.display = 'none');
+        
+        document.getElementById(sectionId).style.display = 'block';
+        
+        const buttons = document.querySelectorAll('.operation-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function showTab(tabId) {
+        const tabs = document.querySelectorAll('#transactions .tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('#transactions .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function showViewTab(tabId) {
+        const tabs = document.querySelectorAll('#view-accounts .tab-content, #view-customers .tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('#view-accounts .tab-btn, #view-customers .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function showJointTab(tabId) {
+        const tabs = document.querySelectorAll('#joint-accounts .tab-content');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('#joint-accounts .tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Storage type radio listeners
+        const storageRadios = document.querySelectorAll('input[name="storageType"]');
+        storageRadios.forEach(radio => {
+            radio.addEventListener('change', updateStorageType);
+        });
+        
+        // Operation button listeners
+        document.querySelectorAll('.operation-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+        
+        // Transaction tab button listeners - REMOVE INLINE ONCLICK
+        document.querySelectorAll('#transactions .tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.trim() === 'Deposit') {
+                    showTab('deposit');
+                } else if (this.textContent.trim() === 'Withdraw') {
+                    showTab('withdraw');
+                }
+            });
+        });
+        
+        // View tab button listeners - REMOVE INLINE ONCLICK
+        document.querySelectorAll('#view-accounts .tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const buttonText = this.textContent.trim();
+                if (buttonText === 'Single Account') {
+                    showViewTab('single');
+                } else if (buttonText === 'By Branch') {
+                    showViewTab('branch');
+                } else if (buttonText === 'By Customer') {
+                    showViewTab('customer');
+                }
+            });
+        });
+        
+        // Joint account tab button listeners - REMOVE INLINE ONCLICK
+        document.querySelectorAll('#joint-accounts .tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const buttonText = this.textContent.trim();
+                if (buttonText === 'Create Joint Account') {
+                    showJointTab('create');
+                } else if (buttonText === 'Add Holder') {
+                    showJointTab('add');
+                } else if (buttonText === 'Remove Holder') {
+                    showJointTab('remove');
+                } else if (buttonText === 'View Holders') {
+                    showJointTab('view');
+                }
+            });
+        });
+    });
+   
     $(document).ready(function() {
         var csrfToken = '<%= session.getAttribute("csrfToken") %>';
         
@@ -306,14 +520,25 @@
         function showLoading(message) {
             return '<div class="info-message"><h3>' + message + '</h3></div>';
         }
+        
+ 
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (settings.type === 'POST') {
+                    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                }
+            }
+        });
 
-        // Create Account
+        //Create Account
         $('#createAccountForm').on('submit', function(e) {
             e.preventDefault();
             clearMessages();
             $('#result-message').html(showLoading('Creating account...'));
             
-            var formData = $(this).serialize();
+            var selectedStorage = $('input[name="storageType"]:checked').val();
+            var formData = $(this).serialize().replace(/storageType=[^&]*/, 'storageType=' + selectedStorage);
             if (formData.indexOf('csrfToken') === -1) {
                 formData += '&csrfToken=' + encodeURIComponent(csrfToken);
             }

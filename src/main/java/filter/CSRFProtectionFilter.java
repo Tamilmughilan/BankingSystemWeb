@@ -18,27 +18,34 @@ public class CSRFProtectionFilter implements Filter {
         
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession session = req.getSession(false);
         String method = req.getMethod();
         String path = req.getServletPath();
+        String uri = req.getRequestURI();
         
-        // Skip CSRF check for login, signup, and GET requests
-        if (path.equals("/login") || path.equals("/signup") || 
-            path.endsWith(".css") || "GET".equals(method)) {
-            
-            // Generate CSRF token for the session if it doesn't exist
-            if (session != null && session.getAttribute(CSRF_TOKEN_ATTR) == null) {
-                String token = generateCSRFToken();
-                session.setAttribute(CSRF_TOKEN_ATTR, token);
-                System.out.println("Generated new CSRF token for session");
-            }
-            
+   
+        if (isStaticResource(path) || isStaticResource(uri)) {
+            System.out.println("CSRF Filter: Allowing static resource: " + uri);
             chain.doFilter(request, response);
             return;
         }
         
-        // validating CSRF token for post requests
-        if ("POST".equals(method) && session != null) {
+        HttpSession session = req.getSession(true); // Create session if it doesn't exist
+        
+        //
+        if (session.getAttribute(CSRF_TOKEN_ATTR) == null) {
+            String token = generateCSRFToken();
+            session.setAttribute(CSRF_TOKEN_ATTR, token);
+            System.out.println("Generated new CSRF token for session");
+        }
+        
+        // Skip CSRF check for login, signup, and GET requests
+        if (path.equals("/login") || path.equals("/signup") || "GET".equals(method)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        
+        // Validate CSRF token for POST requests
+        if ("POST".equals(method)) {
             String sessionToken = (String) session.getAttribute(CSRF_TOKEN_ATTR);
             String requestToken = req.getParameter(CSRF_TOKEN_PARAM);
             
@@ -59,6 +66,23 @@ public class CSRFProtectionFilter implements Filter {
         
         System.out.println("CSRF Protection passed, moving to next filter");
         chain.doFilter(request, response);
+    }
+    
+    private boolean isStaticResource(String path) {
+        if (path == null) return false;
+        String lowercasePath = path.toLowerCase();
+        return lowercasePath.endsWith(".css") || 
+               lowercasePath.endsWith(".js") || 
+               lowercasePath.endsWith(".png") || 
+               lowercasePath.endsWith(".jpg") || 
+               lowercasePath.endsWith(".jpeg") || 
+               lowercasePath.endsWith(".gif") ||
+               lowercasePath.endsWith(".ico") ||
+               lowercasePath.endsWith(".svg") ||
+               lowercasePath.endsWith(".woff") ||
+               lowercasePath.endsWith(".woff2") ||
+               lowercasePath.endsWith(".ttf") ||
+               lowercasePath.endsWith(".eot");
     }
     
     private String generateCSRFToken() {

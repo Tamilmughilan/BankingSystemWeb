@@ -1,17 +1,21 @@
 package filter;
 
 import javax.servlet.*;
+
+
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 public class RequestHeadersValidationFilter implements Filter {
     
     //origins allowed for now
     private static final List<String> ALLOWED_ORIGINS = Arrays.asList(
         "http://localhost:8080",
-        "http://127.0.0.1:8080"
+        "http://127.0.0.1:8080",
+        "http://127.0.0.1:8081",
+        "http://localhost:8081",
+        "http://banking.local:8080" 
     );
     
     //Required headers
@@ -25,7 +29,18 @@ public class RequestHeadersValidationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String path = req.getServletPath();
+        String uri = req.getRequestURI(); // Add this line
         String method = req.getMethod();
+        
+        // ✅ ALLOW STATIC FILES FIRST (This was missing!)
+        if (uri.endsWith(".css") || uri.endsWith(".js") ||
+            uri.endsWith(".png") || uri.endsWith(".jpg") ||
+            uri.endsWith(".jpeg") || uri.endsWith(".gif") ||
+            uri.endsWith(".ico")) {
+            System.out.println("RequestHeadersValidation: Allowing static resource: " + uri);
+            chain.doFilter(request, response);
+            return;
+        }
         
         //No validation needed for these paths
         if (isOpenPath(path) || isStaticResource(path)) {
@@ -71,7 +86,7 @@ public class RequestHeadersValidationFilter implements Filter {
         String origin = req.getHeader("Origin");
         String referer = req.getHeader("Referer");
         
-        //Check Origin heade
+        
         if (origin != null) {
             if (!ALLOWED_ORIGINS.contains(origin)) {
                 System.out.println("Invalid Origin header: " + origin);
