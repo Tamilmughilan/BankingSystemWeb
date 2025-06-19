@@ -53,15 +53,16 @@
 		</div>
 
         <!-- Operation Buttons -->
-        <div class="operation-buttons">
-<% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-<button data-section="create-account" class="operation-btn">Create Account</button>
-<% } %>
-<button data-section="transactions" class="operation-btn">Transactions</button>
-<button data-section="view-accounts" class="operation-btn">View Accounts</button>
-<% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
-<button data-section="joint-accounts" class="operation-btn">Joint Accounts</button>
-<% } %>
+       <div class="operation-buttons">
+    <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+    <button data-section="create-account" class="operation-btn">Create Account</button>
+    <% } %>
+    <button data-section="transactions" class="operation-btn">Transactions</button>
+    <button data-section="view-accounts" class="operation-btn">View Accounts</button>
+    <button data-section="transaction-history" class="operation-btn">Transaction History</button>
+    <% if ("MANAGER".equals(session.getAttribute("role")) || "EMPLOYEE".equals(session.getAttribute("role"))) { %>
+    <button data-section="joint-accounts" class="operation-btn">Joint Accounts</button>
+    <% } %>
 </div>
 
         <!-- Dynamic Result Areas -->
@@ -125,60 +126,93 @@
         <% } %>
 
         <!-- Transactions Section -->
-        <div id="transactions" class="content-section">
-            <h3>Account Transactions</h3>
+       <div id="transactions" class="content-section">
+    <h3>Account Transactions</h3>
+    
+    <div class="transaction-tabs">
+        <button class="tab-btn active">Deposit</button>
+        <button class="tab-btn">Withdraw</button>
+    </div>
+
+    <!-- Deposit Form -->
+    <div id="deposit" class="tab-content active">
+        <h4>Deposit Money</h4>
+        <form id="depositForm" action="account" method="post" class="form-container">
+            <input type="hidden" name="action" value="deposit">
+            <input type="hidden" name="storageType" value="database">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
             
-            <div class="transaction-tabs">
-    <button class="tab-btn active">Deposit</button>
-    <button class="tab-btn">Withdraw</button>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="depositAccountNo">Select Account:</label>
+                    <select id="depositAccountNo" name="accountNo" required>
+                        <option value="">-- Select Your Account --</option>
+                    </select>
+                    <div id="depositAccountInfo" class="account-info"></div>
+                </div>
+                <div class="form-group">
+                    <label for="depositAmount">Amount:</label>
+                    <input type="number" id="depositAmount" name="amount" step="0.01" min="1" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Deposit</button>
+        </form>
+    </div>
+
+    <!-- Withdraw Form -->
+    <div id="withdraw" class="tab-content">
+        <h4>Withdraw Money</h4>
+        <form id="withdrawForm" action="account" method="post" class="form-container">
+            <input type="hidden" name="action" value="withdraw">
+            <input type="hidden" name="storageType" value="database">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="withdrawAccountNo">Select Account:</label>
+                    <select id="withdrawAccountNo" name="accountNo" required>
+                        <option value="">-- Select Your Account --</option>
+                    </select>
+                    <div id="withdrawAccountInfo" class="account-info"></div>
+                </div>
+                <div class="form-group">
+                    <label for="withdrawAmount">Amount:</label>
+                    <input type="number" id="withdrawAmount" name="amount" step="0.01" min="1" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Withdraw</button>
+        </form>
+    </div>
 </div>
 
-            <!-- Deposit Form -->
-            <div id="deposit" class="tab-content active">
-                <h4>Deposit Money</h4>
-                <form id="depositForm" action="account" method="post" class="form-container">
-                    <input type="hidden" name="action" value="deposit">
-                    <input type="hidden" name="storageType" value="database">
-                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="depositAccountNo">Account Number:</label>
-                            <input type="number" id="depositAccountNo" name="accountNo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="depositAmount">Amount:</label>
-                            <input type="number" id="depositAmount" name="amount" step="0.01" min="1" required>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">Deposit</button>
-                </form>
-            </div>
-
-            <!-- Withdraw Form -->
-            <div id="withdraw" class="tab-content">
-                <h4>Withdraw Money</h4>
-                <form id="withdrawForm" action="account" method="post" class="form-container">
-                    <input type="hidden" name="action" value="withdraw">
-                    <input type="hidden" name="storageType" value="database">
-                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="withdrawAccountNo">Account Number:</label>
-                            <input type="number" id="withdrawAccountNo" name="accountNo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="withdrawAmount">Amount:</label>
-                            <input type="number" id="withdrawAmount" name="amount" step="0.01" min="1" required>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">Withdraw</button>
-                </form>
-            </div>
-        </div>
+        
+	        <div id="transaction-history" class="content-section">
+	    <h3>Transaction History</h3>
+	    
+	    <form id="transactionHistoryForm" class="form-container">
+	        <div class="form-row">
+	            <div class="form-group">
+	                <label for="historyAccountNo">Account Number:</label>
+	                <input type="number" id="historyAccountNo" name="accountNo" required>
+	            </div>
+	            <div class="form-group">
+	                <label for="historyLimit">Number of Records:</label>
+	                <select id="historyLimit" name="limit">
+	                    <option value="10">Last 10 transactions</option>
+	                    <option value="25">Last 25 transactions</option>
+	                    <option value="50" selected>Last 50 transactions</option>
+	                    <option value="100">Last 100 transactions</option>
+	                </select>
+	            </div>
+	        </div>
+	        
+	        <button type="submit" class="submit-btn">Get Transaction History</button>
+	    </form>
+	    
+	    <div id="transaction-history-results"></div>
+	</div>
 
         <!-- View Accounts Section -->
         <div id="view-accounts" class="content-section">
@@ -530,6 +564,253 @@
                 }
             }
         });
+        
+     // Replace your existing loadUserAccounts function and related code with this corrected version:
+
+        function loadUserAccounts() {
+            $.ajax({
+                url: 'account',
+                type: 'GET',
+                data: {
+                    action: 'getUserAccounts',
+                    storageType: 'database'
+                },
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function(response) {
+                    if (response.success && response.data && response.data.length > 0) {
+                        var accountOptions = '<option value="">-- Select Your Account --</option>';
+                        
+                        response.data.forEach(function(account) {
+                            var accountNo = account.accountNo;
+                            var balance = parseFloat(account.balance).toFixed(2);
+                            var accountType = account.accountType;
+                            
+                            accountOptions += '<option value="' + accountNo + '" data-balance="' + balance + '" data-type="' + accountType + '">';
+                            accountOptions += 'Account ' + accountNo + ' - Rs.' + balance + ' (' + accountType + ')';
+                            accountOptions += '</option>';
+                        });
+                        
+                        // Update both dropdowns
+                        $('#depositAccountNo').html(accountOptions);
+                        $('#withdrawAccountNo').html(accountOptions);
+                    } else {
+                        var noAccountsOption = '<option value="">No accounts available</option>';
+                        $('#depositAccountNo').html(noAccountsOption);
+                        $('#withdrawAccountNo').html(noAccountsOption);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading user accounts:', error);
+                    var errorOption = '<option value="">Error loading accounts</option>';
+                    $('#depositAccountNo').html(errorOption);
+                    $('#withdrawAccountNo').html(errorOption);
+                }
+            });
+        }
+
+        // Show account info when selection changes
+        $('#depositAccountNo').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var balance = selectedOption.data('balance');
+            var accountType = selectedOption.data('type');
+            var accountNo = selectedOption.val();
+            
+            if (accountNo) {
+                var infoHtml = '<div class="balance">Current Balance: Rs.' + balance + '</div>';
+                infoHtml += '<div class="account-type">Account Type: ' + accountType + '</div>';
+                $('#depositAccountInfo').html(infoHtml).addClass('show');
+            } else {
+                $('#depositAccountInfo').removeClass('show');
+            }
+        });
+
+        $('#withdrawAccountNo').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var balance = selectedOption.data('balance');
+            var accountType = selectedOption.data('type');
+            var accountNo = selectedOption.val();
+            
+            if (accountNo) {
+                var infoHtml = '<div class="balance">Current Balance: Rs.' + balance + '</div>';
+                infoHtml += '<div class="account-type">Account Type: ' + accountType + '</div>';
+                $('#withdrawAccountInfo').html(infoHtml).addClass('show');
+            } else {
+                $('#withdrawAccountInfo').removeClass('show');
+            }
+        });
+
+        // Load accounts when transactions section is opened
+        $('.operation-btn[data-section="transactions"]').on('click', function() {
+            loadUserAccounts();
+        });
+
+        // Also load accounts when page loads if transactions section is visible
+        if ($('#transactions').is(':visible')) {
+            loadUserAccounts();
+        }
+
+        // Deposit form submission
+        $('#depositForm').on('submit', function(e) {
+            e.preventDefault();
+            clearMessages();
+            $('#transaction-result').html(showLoading('Processing deposit...'));
+            
+            var selectedAccount = $('#depositAccountNo').val();
+            if (!selectedAccount) {
+                $('#transaction-result').html('<div class="error-message"><h2>Please select an account</h2></div>');
+                return;
+            }
+            
+            var formData = $(this).serialize();
+            if (formData.indexOf('csrfToken') === -1) {
+                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+            }
+            
+            $.ajax({
+                url: 'account',
+                type: 'POST',
+                data: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function(response) {
+                    $('#transaction-result').empty();
+                    if (response.success) {
+                        $('#transaction-result').html('<div class="success-message"><h2>' + response.message + '</h2></div>');
+                        $('#depositForm')[0].reset();
+                        $('#depositAccountInfo').removeClass('show');
+                        // Reload accounts to get updated balances
+                        loadUserAccounts();
+                    } else {
+                        $('#transaction-result').html('<div class="error-message"><h2>' + response.message + '</h2></div>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#transaction-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
+                }
+            });
+        });
+
+        // Withdraw form submission
+        $('#withdrawForm').on('submit', function(e) {
+            e.preventDefault();
+            clearMessages();
+            $('#transaction-result').html(showLoading('Processing withdrawal...'));
+            
+            var selectedAccount = $('#withdrawAccountNo').val();
+            if (!selectedAccount) {
+                $('#transaction-result').html('<div class="error-message"><h2>Please select an account</h2></div>');
+                return;
+            }
+            
+            var formData = $(this).serialize();
+            if (formData.indexOf('csrfToken') === -1) {
+                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
+            }
+            
+            $.ajax({
+                url: 'account',
+                type: 'POST',
+                data: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function(response) {
+                    $('#transaction-result').empty();
+                    if (response.success) {
+                        $('#transaction-result').html('<div class="success-message"><h2>' + response.message + '</h2></div>');
+                        $('#withdrawForm')[0].reset();
+                        $('#withdrawAccountInfo').removeClass('show');
+                        // Reload accounts to get updated balances
+                        loadUserAccounts();
+                    } else {
+                        $('#transaction-result').html('<div class="error-message"><h2>' + response.message + '</h2></div>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#transaction-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
+                }
+            });
+        });
+        //Transaction history form
+        $('#transactionHistoryForm').on('submit', function(e) {
+            e.preventDefault();
+            clearMessages();
+            $('#transaction-history-results').html(showLoading('Fetching transaction history...'));
+            
+            var accountNo = $('#historyAccountNo').val();
+            var limit = $('#historyLimit').val();
+            var storageType = 'database';
+            
+            $.ajax({
+                url: 'account',
+                type: 'GET',
+                data: {
+                    action: 'getTransactionHistory',
+                    accountNo: accountNo,
+                    limit: limit,
+                    storageType: storageType
+                },
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function(response) {
+                    $('#transaction-history-results').empty();
+                    if (response.success && response.data && response.data.length > 0) {
+                        var historyHtml = '<div class="transaction-history-container">';
+                        historyHtml += '<h4>Transaction History for Account ' + accountNo + '</h4>';
+                        historyHtml += '<div class="transaction-table-wrapper">';
+                        historyHtml += '<table class="transaction-table">';
+                        historyHtml += '<thead>';
+                        historyHtml += '<tr>';
+                        historyHtml += '<th>Date & Time</th>';
+                        historyHtml += '<th>Type</th>';
+                        historyHtml += '<th>Amount</th>';
+                        historyHtml += '<th>Balance Before</th>';
+                        historyHtml += '<th>Balance After</th>';
+                        historyHtml += '<th>Status</th>';
+                        historyHtml += '<th>Description</th>';
+                        historyHtml += '</tr>';
+                        historyHtml += '</thead>';
+                        historyHtml += '<tbody>';
+                        
+                        response.data.forEach(function(transaction) {
+                            // Parse the transaction string to extract data
+                            var transactionStr = transaction.toString();
+                            var matches = transactionStr.match(/TransactionLog\{id=(\d+), accountNo=(\d+), type=(\w+), amount=([\d.]+), balanceBefore=([\d.]+), balanceAfter=([\d.]+), date=([^,]+), status=(\w+)\}/);
+                            
+                            if (matches) {
+                                var type = matches[3];
+                                var amount = parseFloat(matches[4]).toFixed(2);
+                                var balanceBefore = parseFloat(matches[5]).toFixed(2);
+                                var balanceAfter = parseFloat(matches[6]).toFixed(2);
+                                var date = matches[7];
+                                var status = matches[8];
+                                
+                                var statusClass = status === 'SUCCESS' ? 'status-success' : 'status-failed';
+                                var typeClass = type === 'DEPOSIT' ? 'type-deposit' : 'type-withdrawal';
+                                
+                                historyHtml += '<tr>';
+                                historyHtml += '<td>' + date + '</td>';
+                                historyHtml += '<td><span class="transaction-type ' + typeClass + '">' + type + '</span></td>';
+                                historyHtml += '<td class="amount">Rs.' + amount + '</td>';
+                                historyHtml += '<td class="balance">Rs.' + balanceBefore + '</td>';
+                                historyHtml += '<td class="balance">Rs.' + balanceAfter + '</td>';
+                                historyHtml += '<td><span class="transaction-status ' + statusClass + '">' + status + '</span></td>';
+                                historyHtml += '<td>' + (matches.description || 'N/A') + '</td>';
+                                historyHtml += '</tr>';
+                            }
+                        });
+                        
+                        historyHtml += '</tbody>';
+                        historyHtml += '</table>';
+                        historyHtml += '</div>';
+                        historyHtml += '</div>';
+                        
+                        $('#transaction-history-results').html(historyHtml);
+                    } else {
+                        $('#transaction-history-results').html('<div class="info-message"><h3>' + response.message + '</h3></div>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#transaction-history-results').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
+                }
+            });
+        });
 
         //Create Account
         $('#createAccountForm').on('submit', function(e) {
@@ -668,67 +949,6 @@
             });
         });
 
-        // Deposit
-        $('#depositForm').on('submit', function(e) {
-            e.preventDefault();
-            clearMessages();
-            $('#transaction-result').html(showLoading('Processing deposit...'));
-            
-            var formData = $(this).serialize();
-            if (formData.indexOf('csrfToken') === -1) {
-                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
-            }
-            
-            $.ajax({
-                url: 'account',
-                type: 'POST',
-                data: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                success: function(response) {
-                    $('#transaction-result').empty();
-                    if (response.success) {
-                        $('#transaction-result').html('<div class="success-message"><h2>' + response.message + '</h2></div>');
-                        $('#depositForm')[0].reset();
-                    } else {
-                        $('#transaction-result').html('<div class="error-message"><h2>' + response.message + '</h2></div>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#transaction-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
-                }
-            });
-        });
-
-        // Withdraw
-        $('#withdrawForm').on('submit', function(e) {
-            e.preventDefault();
-            clearMessages();
-            $('#transaction-result').html(showLoading('Processing withdrawal...'));
-            
-            var formData = $(this).serialize();
-            if (formData.indexOf('csrfToken') === -1) {
-                formData += '&csrfToken=' + encodeURIComponent(csrfToken);
-            }
-            
-            $.ajax({
-                url: 'account',
-                type: 'POST',
-                data: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                success: function(response) {
-                    $('#transaction-result').empty();
-                    if (response.success) {
-                        $('#transaction-result').html('<div class="success-message"><h2>' + response.message + '</h2></div>');
-                        $('#withdrawForm')[0].reset();
-                    } else {
-                        $('#transaction-result').html('<div class="error-message"><h2>' + response.message + '</h2></div>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#transaction-result').html('<div class="error-message"><h2>Request failed: ' + error + '</h2></div>');
-                }
-            });
-        });
      
         $('#createJointAccountForm').on('submit', function(e) {
             e.preventDefault();

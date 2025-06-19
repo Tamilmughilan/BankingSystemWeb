@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import entity.Customer;
 import entity.SavingsAccount;
+import entity.TransactionLog;
 import storage.DataStorage;
 import storage.DatabaseStorage;
 
@@ -58,40 +59,54 @@ public class AccountService {
     public List<SavingsAccount> getAccountsByCustomer(int customerId) {
         return dataStorage.getAccountsByCustomer(customerId);
     }
-
+    
     public boolean performWithdrawal(int accountNo, BigDecimal amount) {
-        //For database - transaction
-        if (dataStorage instanceof DatabaseStorage) {
-            return ((DatabaseStorage) dataStorage).withdrawFromAccount(accountNo, amount);
-        }
-
-        //for collection storage
-        SavingsAccount account = dataStorage.getAccount(accountNo);
-        if (account == null) {
-            return false;
-        }
-
-        if (account.withdraw(amount)) {
-            dataStorage.updateAccount(account);
-            return true;
-        }
-
-        return false;
+        return performWithdrawal(accountNo, amount, null, null, null);
     }
 
     public boolean performDeposit(int accountNo, BigDecimal amount) {
-        if (dataStorage instanceof DatabaseStorage) {
-            return ((DatabaseStorage) dataStorage).depositToAccount(accountNo, amount);
-        }
-
-        SavingsAccount account = dataStorage.getAccount(accountNo);
-        if (account != null) {
-            account.deposit(amount);
-            dataStorage.updateAccount(account);
-            return true;
-        }
-        return false;
+        return performDeposit(accountNo, amount, null, null, null);
     }
+
+
+    public boolean performWithdrawal(int accountNo, BigDecimal amount, Integer userId, 
+            TransactionLog.UserType userType, String description) {
+			if (dataStorage instanceof DatabaseStorage) {
+				DatabaseStorage dbStorage = (DatabaseStorage) dataStorage;
+				return dbStorage.withdrawFromAccount(accountNo, amount, userId, userType, description);
+			}
+			
+			// For collection storage - original logic
+			SavingsAccount account = dataStorage.getAccount(accountNo);
+			if (account == null) {
+			return false;
+			}
+			
+			if (account.withdraw(amount)) {
+				dataStorage.updateAccount(account);
+				return true;
+			}
+			
+			return false;
+	}
+
+
+    public boolean performDeposit(int accountNo, BigDecimal amount, Integer userId, 
+        TransactionLog.UserType userType, String description) {
+		if (dataStorage instanceof DatabaseStorage) {
+		DatabaseStorage dbStorage = (DatabaseStorage) dataStorage;
+		return dbStorage.depositToAccount(accountNo, amount, userId, userType, description);
+		}
+		
+		// For collection storage - original logic
+		SavingsAccount account = dataStorage.getAccount(accountNo);
+		if (account != null) {
+			account.deposit(amount);
+			dataStorage.updateAccount(account);
+			return true;
+		}
+		return false;
+		}
  
     public int createJointSavingsAccount(List<Integer> customerIds, BigDecimal initialBalance, int branchId) {
         if (customerIds == null || customerIds.isEmpty()) {
@@ -213,5 +228,13 @@ public class AccountService {
         
         DatabaseStorage dbStorage = (DatabaseStorage) dataStorage;
         return dbStorage.getCustomersByAccount(accountNo);
+    }
+    
+    public List<TransactionLog> getTransactionHistory(int accountNo) {
+        return dataStorage.getTransactionHistory(accountNo);
+    }
+
+    public List<TransactionLog> getTransactionHistory(int accountNo, int limit) {
+        return dataStorage.getTransactionHistory(accountNo, limit);
     }
 }

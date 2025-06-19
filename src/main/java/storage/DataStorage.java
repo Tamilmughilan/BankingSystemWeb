@@ -42,7 +42,7 @@ public interface DataStorage {
     void saveBranch(Branch branch);
     Branch getBranch(int branchId);
     
-    // Joint account operations (default implementations for non-database storage)
+    // Joint account operations
     default int addCustomerToAccount(int customerId, int accountNo, String role) {
         throw new UnsupportedOperationException("Joint accounts are not supported by this storage implementation");
     }
@@ -53,5 +53,24 @@ public interface DataStorage {
     
     default List<Customer> getCustomersByAccount(int accountNo) {
         throw new UnsupportedOperationException("Joint accounts are not supported by this storage implementation");
+    }
+    
+    // Transaction logging operations
+    default boolean logTransaction(TransactionLog transactionLog) {
+        return true;
+    }
+    
+    default List<TransactionLog> getTransactionHistory(int accountNo) {
+        throw new UnsupportedOperationException("Transaction history is not supported by this storage implementation");
+    }
+    
+    default List<TransactionLog> getTransactionHistory(int accountNo, int limit) {
+        throw new UnsupportedOperationException("Transaction history is not supported by this storage implementation");
+    }
+    
+    default List<TransactionLog> getTransactionHistoryByDateRange(int accountNo, 
+                                                                  java.time.LocalDateTime startDate, 
+                                                                  java.time.LocalDateTime endDate) {
+        throw new UnsupportedOperationException("Transaction history by date range is not supported by this storage implementation");
     }
 }

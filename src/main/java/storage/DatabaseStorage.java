@@ -578,69 +578,6 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
         return null;
     }
-
-    // Transaction operations
-    @Override
-    public boolean withdrawFromAccount(int accountNo, BigDecimal amount) {
-        Connection conn = null;
-        try {
-            conn = dbConnection.getConnection();
-            conn.setAutoCommit(false);
-            
-            String selectSql = "SELECT balance FROM accounts WHERE account_no = ? FOR UPDATE";
-            String updateSql = "UPDATE accounts SET balance = balance - ? WHERE account_no = ? AND balance >= ?";
-            
-            BigDecimal currentBalance;
-            try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
-                selectStmt.setInt(1, accountNo);
-                try (ResultSet rs = selectStmt.executeQuery()) {
-                    if (rs.next()) {
-                        currentBalance = rs.getBigDecimal("balance");
-                    } else {
-                        conn.rollback();
-                        return false;
-                    }
-                }
-            }
-            
-            if (currentBalance.compareTo(amount) < 0) {
-                conn.rollback();
-                return false;
-            }
-            
-            try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
-                updateStmt.setBigDecimal(1, amount);
-                updateStmt.setInt(2, accountNo);
-                updateStmt.setBigDecimal(3, amount);
-                
-                int rowsAffected = updateStmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    conn.commit();
-                    return true;
-                } else {
-                    conn.rollback();
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            throw new RuntimeException("Error withdrawing from account", e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
     
     public int addCustomerToAccount(int customerId, int accountNo, String role) {
         String sql = "INSERT INTO customer_accounts (customer_id, account_no, account_role) VALUES (?, ?, ?)";
@@ -711,23 +648,40 @@ public class DatabaseStorage extends AbstractDataStorage {
 
     @Override
     public boolean depositToAccount(int accountNo, BigDecimal amount) {
+        return depositToAccount(accountNo, amount, null, null, null);
+    }
+
+    // Overloaded method with user context for logging
+    public boolean depositToAccount(int accountNo, BigDecimal amount, Integer userId, 
+                                   TransactionLog.UserType userType, String description) {
         Connection conn = null;
         try {
             conn = dbConnection.getConnection();
             conn.setAutoCommit(false);
             
-            // First check if account exists
-            String checkSql = "SELECT account_no FROM accounts WHERE account_no = ?";
+            BigDecimal balanceBefore = null;
+            
+            //get current balance and check if account exists
+            String checkSql = "SELECT balance FROM accounts WHERE account_no = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
                 checkStmt.setInt(1, accountNo);
                 try (ResultSet rs = checkStmt.executeQuery()) {
                     if (!rs.next()) {
-                        conn.rollback();
-                        return false; // Account doesn't exist
+                        // Log failed transaction
+                        TransactionLog failedLog = new TransactionLog(accountNo, 
+                            TransactionLog.TransactionType.DEPOSIT, amount, 
+                            BigDecimal.ZERO, BigDecimal.ZERO, 
+                            TransactionLog.TransactionStatus.FAILED,
+                            "Account not found", userId, userType);
+                        logTransactionInTransaction(conn, failedLog);
+                        conn.commit();
+                        return false;
                     }
+                    balanceBefore = rs.getBigDecimal("balance");
                 }
             }
             
+            // Perform the deposit
             String sql = "UPDATE accounts SET balance = balance + ? WHERE account_no = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setBigDecimal(1, amount);
@@ -735,9 +689,30 @@ public class DatabaseStorage extends AbstractDataStorage {
                 
                 int rowsAffected = stmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    conn.commit();
-                    return true;
+                    BigDecimal balanceAfter = balanceBefore.add(amount);
+                    
+                    // Log successful transaction
+                    TransactionLog successLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.DEPOSIT, amount, 
+                        balanceBefore, balanceAfter, 
+                        TransactionLog.TransactionStatus.SUCCESS,
+                        description, userId, userType);
+                    
+                    if (logTransactionInTransaction(conn, successLog)) {
+                        conn.commit();
+                        return true;
+                    } else {
+                        conn.rollback();
+                        return false;
+                    }
                 } else {
+                    // Log failed transaction
+                    TransactionLog failedLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.DEPOSIT, amount, 
+                        balanceBefore, balanceBefore, 
+                        TransactionLog.TransactionStatus.FAILED,
+                        "Update failed", userId, userType);
+                    logTransactionInTransaction(conn, failedLog);
                     conn.rollback();
                     return false;
                 }
@@ -745,6 +720,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         } catch (SQLException e) {
             if (conn != null) {
                 try {
+                    // Log failed transaction
+                    TransactionLog failedLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.DEPOSIT, amount, 
+                        BigDecimal.ZERO, BigDecimal.ZERO, 
+                        TransactionLog.TransactionStatus.FAILED,
+                        "Database error: " + e.getMessage(), userId, userType);
+                    logTransactionInTransaction(conn, failedLog);
                     conn.rollback();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -761,4 +743,271 @@ public class DatabaseStorage extends AbstractDataStorage {
             }
         }
     }
+
+    // Updated withdrawal method with transaction logging
+    @Override
+    public boolean withdrawFromAccount(int accountNo, BigDecimal amount) {
+        return withdrawFromAccount(accountNo, amount, null, null, null);
+    }
+
+    // Overloaded method with user context for logging
+    public boolean withdrawFromAccount(int accountNo, BigDecimal amount, Integer userId, 
+                                     TransactionLog.UserType userType, String description) {
+        Connection conn = null;
+        try {
+            conn = dbConnection.getConnection();
+            conn.setAutoCommit(false);
+            
+            String selectSql = "SELECT balance FROM accounts WHERE account_no = ? FOR UPDATE";
+            
+            BigDecimal currentBalance;
+            try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+                selectStmt.setInt(1, accountNo);
+                try (ResultSet rs = selectStmt.executeQuery()) {
+                    if (rs.next()) {
+                        currentBalance = rs.getBigDecimal("balance");
+                    } else {
+                        // Log failed transaction - account not found
+                        TransactionLog failedLog = new TransactionLog(accountNo, 
+                            TransactionLog.TransactionType.WITHDRAWAL, amount, 
+                            BigDecimal.ZERO, BigDecimal.ZERO, 
+                            TransactionLog.TransactionStatus.FAILED,
+                            "Account not found", userId, userType);
+                        logTransactionInTransaction(conn, failedLog);
+                        conn.commit();
+                        return false;
+                    }
+                }
+            }
+            
+            if (currentBalance.compareTo(amount) < 0) {
+                // Log failed transaction - insufficient funds
+                TransactionLog failedLog = new TransactionLog(accountNo, 
+                    TransactionLog.TransactionType.WITHDRAWAL, amount, 
+                    currentBalance, currentBalance, 
+                    TransactionLog.TransactionStatus.FAILED,
+                    "Insufficient funds", userId, userType);
+                logTransactionInTransaction(conn, failedLog);
+                conn.commit();
+                return false;
+            }
+            
+            // Perform the withdrawal
+            String updateSql = "UPDATE accounts SET balance = balance - ? WHERE account_no = ? AND balance >= ?";
+            try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                updateStmt.setBigDecimal(1, amount);
+                updateStmt.setInt(2, accountNo);
+                updateStmt.setBigDecimal(3, amount);
+                
+                int rowsAffected = updateStmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    BigDecimal balanceAfter = currentBalance.subtract(amount);
+                    
+                    // Log successful transaction
+                    TransactionLog successLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.WITHDRAWAL, amount, 
+                        currentBalance, balanceAfter, 
+                        TransactionLog.TransactionStatus.SUCCESS,
+                        description, userId, userType);
+                    
+                    if (logTransactionInTransaction(conn, successLog)) {
+                        conn.commit();
+                        return true;
+                    } else {
+                        conn.rollback();
+                        return false;
+                    }
+                } else {
+                    // Log failed transaction
+                    TransactionLog failedLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.WITHDRAWAL, amount, 
+                        currentBalance, currentBalance, 
+                        TransactionLog.TransactionStatus.FAILED,
+                        "Update failed", userId, userType);
+                    logTransactionInTransaction(conn, failedLog);
+                    conn.rollback();
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    // Log failed transaction
+                    TransactionLog failedLog = new TransactionLog(accountNo, 
+                        TransactionLog.TransactionType.WITHDRAWAL, amount, 
+                        BigDecimal.ZERO, BigDecimal.ZERO, 
+                        TransactionLog.TransactionStatus.FAILED,
+                        "Database error: " + e.getMessage(), userId, userType);
+                    logTransactionInTransaction(conn, failedLog);
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw new RuntimeException("Error withdrawing from account", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    private boolean logTransactionInTransaction(Connection conn, TransactionLog transactionLog) {
+        String sql = "INSERT INTO transaction_logs (account_no, transaction_type, amount, " +
+                    "balance_before, balance_after, status, description, created_by_user_id, created_by_user_type) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, transactionLog.getAccountNo());
+            stmt.setString(2, transactionLog.getTransactionType().name());
+            stmt.setBigDecimal(3, transactionLog.getAmount());
+            stmt.setBigDecimal(4, transactionLog.getBalanceBefore());
+            stmt.setBigDecimal(5, transactionLog.getBalanceAfter());
+            stmt.setString(6, transactionLog.getStatus().name());
+            stmt.setString(7, transactionLog.getDescription());
+            
+            if (transactionLog.getCreatedByUserId() != null) {
+                stmt.setInt(8, transactionLog.getCreatedByUserId());
+            } else {
+                stmt.setNull(8, java.sql.Types.INTEGER);
+            }
+            
+            if (transactionLog.getCreatedByUserType() != null) {
+                stmt.setString(9, transactionLog.getCreatedByUserType().name());
+            } else {
+                stmt.setNull(9, java.sql.Types.VARCHAR);
+            }
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
+    public boolean logTransaction(TransactionLog transactionLog) {
+        String sql = "INSERT INTO transaction_logs (account_no, transaction_type, amount, " +
+                    "balance_before, balance_after, status, description, created_by_user_id, created_by_user_type) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, transactionLog.getAccountNo());
+            stmt.setString(2, transactionLog.getTransactionType().name());
+            stmt.setBigDecimal(3, transactionLog.getAmount());
+            stmt.setBigDecimal(4, transactionLog.getBalanceBefore());
+            stmt.setBigDecimal(5, transactionLog.getBalanceAfter());
+            stmt.setString(6, transactionLog.getStatus().name());
+            stmt.setString(7, transactionLog.getDescription());
+            
+            if (transactionLog.getCreatedByUserId() != null) {
+                stmt.setInt(8, transactionLog.getCreatedByUserId());
+            } else {
+                stmt.setNull(8, java.sql.Types.INTEGER);
+            }
+            
+            if (transactionLog.getCreatedByUserType() != null) {
+                stmt.setString(9, transactionLog.getCreatedByUserType().name());
+            } else {
+                stmt.setNull(9, java.sql.Types.VARCHAR);
+            }
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<TransactionLog> getTransactionHistory(int accountNo) {
+        return getTransactionHistory(accountNo, 50); // Default limit
+    }
+
+    @Override
+    public List<TransactionLog> getTransactionHistory(int accountNo, int limit) {
+        List<TransactionLog> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM transaction_logs WHERE account_no = ? " +
+                    "ORDER BY transaction_date DESC LIMIT ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, accountNo);
+            stmt.setInt(2, limit);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    TransactionLog log = mapResultSetToTransactionLog(rs);
+                    transactions.add(log);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return transactions;
+    }
+
+    @Override
+    public List<TransactionLog> getTransactionHistoryByDateRange(int accountNo, 
+                                                               java.time.LocalDateTime startDate, 
+                                                               java.time.LocalDateTime endDate) {
+        List<TransactionLog> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM transaction_logs WHERE account_no = ? " +
+                    "AND transaction_date BETWEEN ? AND ? " +
+                    "ORDER BY transaction_date DESC";
+        
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, accountNo);
+            stmt.setTimestamp(2, java.sql.Timestamp.valueOf(startDate));
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(endDate));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    TransactionLog log = mapResultSetToTransactionLog(rs);
+                    transactions.add(log);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return transactions;
+    }
+
+    // Helper method to map ResultSet to TransactionLog
+    private TransactionLog mapResultSetToTransactionLog(ResultSet rs) throws SQLException {
+        TransactionLog log = new TransactionLog();
+        log.setTransactionId(rs.getLong("transaction_id"));
+        log.setAccountNo(rs.getInt("account_no"));
+        log.setTransactionType(TransactionLog.TransactionType.valueOf(rs.getString("transaction_type")));
+        log.setAmount(rs.getBigDecimal("amount"));
+        log.setBalanceBefore(rs.getBigDecimal("balance_before"));
+        log.setBalanceAfter(rs.getBigDecimal("balance_after"));
+        log.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime());
+        log.setStatus(TransactionLog.TransactionStatus.valueOf(rs.getString("status")));
+        log.setDescription(rs.getString("description"));
+        
+        int userId = rs.getInt("created_by_user_id");
+        if (!rs.wasNull()) {
+            log.setCreatedByUserId(userId);
+        }
+        
+        String userType = rs.getString("created_by_user_type");
+        if (userType != null) {
+            log.setCreatedByUserType(TransactionLog.UserType.valueOf(userType));
+        }
+        
+        return log;
+    }
+
+
 }

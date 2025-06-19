@@ -711,3 +711,137 @@ hr {
             opacity: 0.5;
             pointer-events: none;
         }
+        
+        .transaction-history-container {
+    margin-top: 20px;
+}
+
+.transaction-table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.transaction-table th,
+.transaction-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.transaction-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.transaction-table tr:last-child td {
+    border-bottom: none;
+}
+
+.transaction-type {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.type-deposit {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.type-withdrawal {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.transaction-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-success {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-failed {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.amount, .balance {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .transaction-table {
+        font-size: 12px;
+    }
+    
+    .transaction-table th,
+    .transaction-table td {
+        padding: 8px 4px;
+    }
+}
+
+.account-info {
+    margin-top: 5px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1px solid #e9ecef;
+    display: none;
+}
+
+.account-info.show {
+    display: block;
+}
+
+.account-info .balance {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.account-info .account-type {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}

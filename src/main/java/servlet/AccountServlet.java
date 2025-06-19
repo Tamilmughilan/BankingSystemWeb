@@ -16,7 +16,10 @@ import storage.DatabaseStorage;
 import storage.MongoDBStorage;
 import storage.CollectionStorage;
 import entity.Customer;
+import entity.Employee;
 import entity.SavingsAccount;
+import entity.TransactionLog;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -35,6 +38,29 @@ public class AccountServlet extends HttpServlet {
 	        return new DatabaseStorage(); 
 	    }
 	}
+	
+	private Integer getCurrentUserId(HttpServletRequest request) {
+	    Object userIdObj = request.getSession().getAttribute("userId");
+	    return userIdObj != null ? (Integer) userIdObj : null;
+	}
+
+	private TransactionLog.UserType getCurrentUserType(HttpServletRequest request) {
+	    String role = (String) request.getSession().getAttribute("role");
+	    if (role != null) {
+	        switch (role.toUpperCase()) {
+	            case "MANAGER":
+	                return TransactionLog.UserType.MANAGER;
+	            case "EMPLOYEE":
+	                return TransactionLog.UserType.EMPLOYEE;
+	            case "CUSTOMER":
+	                return TransactionLog.UserType.CUSTOMER;
+	            default:
+	                return null;
+	        }
+	    }
+	    return null;
+	}
+	
     private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -57,6 +83,37 @@ public class AccountServlet extends HttpServlet {
             } else {
                 json.append(",\"data\":\"").append(data.toString().replace("\"", "\\\"").replace("\n", "\\n")).append("\"");
             }
+        }
+        
+        json.append("}");
+        out.print(json.toString());
+        out.flush();
+    }
+
+    private void sendAccountsJsonResponse(HttpServletResponse response, boolean success, String message, List<SavingsAccount> accounts) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"success\":").append(success).append(",");
+        json.append("\"message\":\"").append(message.replace("\"", "\\\"")).append("\"");
+        
+        if (accounts != null && !accounts.isEmpty()) {
+            json.append(",\"data\":[");
+            for (int i = 0; i < accounts.size(); i++) {
+                if (i > 0) json.append(",");
+                SavingsAccount account = accounts.get(i);
+                json.append("{");
+                json.append("\"accountNo\":").append(account.getAccountNo()).append(",");
+                json.append("\"balance\":").append(account.getBalance()).append(",");
+                json.append("\"accountType\":\"").append(account.getAccountType()).append("\",");
+                json.append("\"customerId\":").append(account.getCustomerId()).append(",");
+                json.append("\"branchId\":").append(account.getBranchId());
+                json.append("}");
+            }
+            json.append("]");
         }
         
         json.append("}");
@@ -102,6 +159,8 @@ public class AccountServlet extends HttpServlet {
                     }
                 }
             }
+            
+            
             else if ("getByBranch".equals(action) && branchId != null) {
                 int brId = Integer.parseInt(branchId);
                 List<SavingsAccount> accounts = accountService.getAccountsByBranch(brId);
@@ -174,6 +233,104 @@ public class AccountServlet extends HttpServlet {
                     }
                 }
             }
+            
+            else if ("getTransactionHistory".equals(action) && accountNo != null) {
+                int accNo = Integer.parseInt(accountNo);
+                String limitStr = request.getParameter("limit");
+                int limit = limitStr != null ? Integer.parseInt(limitStr) : 50;
+                
+                List<TransactionLog> transactions = accountService.getTransactionHistory(accNo, limit);
+                
+                String ajaxHeader = request.getHeader("X-Requested-With");
+                
+                if (transactions == null || transactions.isEmpty()) {
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, false, "No transaction history found for account: " + accNo, null);
+                    } else {
+                        request.setAttribute("errorMessage", "No transaction history found for account: " + accNo);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
+                } else {
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, true, "Transaction history retrieved successfully", transactions);
+                    } else {
+                        request.setAttribute("transactions", transactions);
+                        request.setAttribute("storageType", storageType != null ? storageType : "database");
+                        request.setAttribute("showTransactionHistory", true);
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
+                }
+            }
+
+            else if ("getUserAccounts".equals(action)) {
+                // Get current user's accounts for dropdown
+                Integer userId = getCurrentUserId(request);
+                String userRole = (String) request.getSession().getAttribute("role");
+                
+                if (userId == null) {
+                    String ajaxHeader = request.getHeader("X-Requested-With");
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendJsonResponse(response, false, "User not logged in", null);
+                    } else {
+                        request.setAttribute("errorMessage", "User not logged in");
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
+                    return;
+                }
+                
+                try {
+                    // Initialize to empty list instead of null
+                    List<SavingsAccount> userAccounts = new ArrayList<>();
+                    
+                    // Get accounts based on user role
+                    if ("CUSTOMER".equals(userRole)) {
+                        List<SavingsAccount> customerAccounts = accountService.getAccountsByCustomer(userId);
+                        if (customerAccounts != null) {
+                            userAccounts = customerAccounts;
+                        }
+                    } else if ("EMPLOYEE".equals(userRole) || "MANAGER".equals(userRole)) {
+                        // For employees/managers, show all accounts in their branch
+                        Employee employee = dataStorage.getEmployee(userId);
+                        if (employee != null) {
+                            List<SavingsAccount> branchAccounts = accountService.getAccountsByBranch(employee.getBranchId());
+                            if (branchAccounts != null) {
+                                userAccounts = branchAccounts;
+                            }
+                        }
+                    }
+                    
+                    String ajaxHeader = request.getHeader("X-Requested-With");
+                    
+                    if (userAccounts.isEmpty()) {
+                        if ("XMLHttpRequest".equals(ajaxHeader)) {
+                            sendAccountsJsonResponse(response, false, "No accounts found for user", null);
+                        } else {
+                            request.setAttribute("errorMessage", "No accounts found for user");
+                            request.setAttribute("storageType", storageType != null ? storageType : "database");
+                            request.getRequestDispatcher("account.jsp").forward(request, response);
+                        }
+                    } else {
+                        if ("XMLHttpRequest".equals(ajaxHeader)) {
+                            sendAccountsJsonResponse(response, true, "User accounts retrieved successfully", userAccounts);
+                        } else {
+                            request.setAttribute("userAccounts", userAccounts);
+                            request.setAttribute("storageType", storageType != null ? storageType : "database");
+                            request.getRequestDispatcher("account.jsp").forward(request, response);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    String ajaxHeader = request.getHeader("X-Requested-With");
+                    if ("XMLHttpRequest".equals(ajaxHeader)) {
+                        sendAccountsJsonResponse(response, false, "Error retrieving user accounts: " + e.getMessage(), null);
+                    } else {
+                        request.setAttribute("errorMessage", "Error retrieving user accounts: " + e.getMessage());
+                        request.getRequestDispatcher("account.jsp").forward(request, response);
+                    }
+                }
+            }
+            
 
             else if ("getByCustomer".equals(action) && customerId != null) {
                 int custId = Integer.parseInt(customerId);
@@ -271,7 +428,7 @@ public class AccountServlet extends HttpServlet {
                 try {
                     int accountNo = Integer.parseInt(request.getParameter("accountNo"));
                     String amountStr = request.getParameter("amount");
-                    BigDecimal amount = new BigDecimal(amountStr);  // Direct string to BigDecimal
+                    BigDecimal amount = new BigDecimal(amountStr);
                     
                     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("errorMessage", "Withdrawal amount must be positive");
@@ -280,7 +437,12 @@ public class AccountServlet extends HttpServlet {
                         if (account == null) {
                             request.setAttribute("errorMessage", "Account not found with account number: " + accountNo);
                         } else {
-                            boolean success = accountService.performWithdrawal(accountNo, amount);
+                            // Get user context for logging
+                            Integer userId = getCurrentUserId(request);
+                            TransactionLog.UserType userType = getCurrentUserType(request);
+                            String description = "Withdrawal via web interface";
+                            
+                            boolean success = accountService.performWithdrawal(accountNo, amount, userId, userType, description);
                             if (success) {
                                 request.setAttribute("successMessage", "Withdrawal was successful");
                             } else {
@@ -298,12 +460,13 @@ public class AccountServlet extends HttpServlet {
                     request.setAttribute("errorMessage", "Error during withdrawal: " + e.getMessage());
                 }
             }
-            
+
+            // Updated deposit action in doPost method
             else if ("deposit".equals(action)) {
                 try {
                     int accountNo = Integer.parseInt(request.getParameter("accountNo"));
                     String amountStr = request.getParameter("amount");
-                    BigDecimal amount = new BigDecimal(amountStr);  // Direct string to BigDecimal
+                    BigDecimal amount = new BigDecimal(amountStr);
                     
                     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("errorMessage", "Deposit amount must be positive");
@@ -312,7 +475,12 @@ public class AccountServlet extends HttpServlet {
                         if (account == null) {
                             request.setAttribute("errorMessage", "Account not found with account number: " + accountNo);
                         } else {
-                            boolean success = accountService.performDeposit(accountNo, amount);
+                            // Get user context for logging
+                            Integer userId = getCurrentUserId(request);
+                            TransactionLog.UserType userType = getCurrentUserType(request);
+                            String description = "Deposit via web interface";
+                            
+                            boolean success = accountService.performDeposit(accountNo, amount, userId, userType, description);
                             if (success) {
                                 request.setAttribute("successMessage", "Deposit Successful");
                             } else {
