@@ -11,11 +11,23 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Servlet that handles new customer registration and signup process.
+ * Creates customer accounts with password hashing.
+ * Validates input data and checks for existing email addresses.
+ *
+ * @author TAMIL MUGHILAN
+ */
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
     private DataStorage dataStorage;
     private CustomerService customerService;
 
+    /**
+     * Initializes the servlet with database storage and customer service.
+     *
+     * @throws ServletException if initialization fails
+     */
     @Override
     public void init() throws ServletException {
         try {
@@ -27,6 +39,15 @@ public class SignupServlet extends HttpServlet {
         this.customerService = new CustomerService(dataStorage);
     }
 
+    /**
+     * Handles GET requests by redirecting to signup page.
+     * Redirects already logged in users to their appropriate dashboard.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,6 +75,15 @@ public class SignupServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/signup.jsp");
     }
 
+    /**
+     * Handles POST requests for customer registration.
+     * Validates input, creates customer account, and logs them in automatically.
+     *
+     * @param request the HTTP servlet request containing signup form data
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

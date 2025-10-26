@@ -6,12 +6,28 @@ import java.util.Base64;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+/**
+ * Filter that protects against Cross-Site Request Forgery (CSRF) attacks.
+ * Generates and validates CSRF tokens for POST requests.
+ *
+ * @author TAMIL MUGHILAN
+ */
 public class CSRFProtectionFilter implements Filter {
     
     private static final String CSRF_TOKEN_ATTR = "csrfToken";
     private static final String CSRF_TOKEN_PARAM = "csrfToken";
     private SecureRandom secureRandom = new SecureRandom();
     
+    /**
+     * Processes requests to validate CSRF tokens and generate new ones.
+     * Blocks requests with invalid or missing CSRF tokens.
+     *
+     * @param request the servlet request
+     * @param response the servlet response  
+     * @param chain the filter chain
+     * @throws IOException if an I/O error occurs
+     * @throws ServletException if a servlet error occurs
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -68,6 +84,12 @@ public class CSRFProtectionFilter implements Filter {
         chain.doFilter(request, response);
     }
     
+    /**
+     * Checks if the requested path is a static resource.
+     *
+     * @param path the request path to check
+     * @return true if it's a static resource, false otherwise
+     */
     private boolean isStaticResource(String path) {
         if (path == null) return false;
         String lowercasePath = path.toLowerCase();
@@ -85,17 +107,29 @@ public class CSRFProtectionFilter implements Filter {
                lowercasePath.endsWith(".eot");
     }
     
+    /**
+     * Generates a secure random CSRF token.
+     *
+     * @return a Base64 encoded CSRF token
+     */
     private String generateCSRFToken() {
         byte[] randomBytes = new byte[32];
         secureRandom.nextBytes(randomBytes);
         return Base64.getEncoder().encodeToString(randomBytes);
     }
-    
+    /**
+     * Initializes the filter when application starts.
+     *
+     * @param filterConfig the filter configuration
+     */
     @Override
     public void init(FilterConfig filterConfig) {
         System.out.println("CSRF Protection Filter Initialized.");
     }
     
+    /**
+     * Cleans up resources when filter is destroyed.
+     */
     @Override
     public void destroy() {}
 }

@@ -11,13 +11,33 @@ import entity.TransactionLog;
 import storage.DataStorage;
 import storage.DatabaseStorage;
 
+/**
+ * Service class for managing bank account operations.
+ * Handles account creation, transactions, and joint account operations.
+ *
+ * @author TAMIL MUGHILAN
+ */
 public class AccountService {
     private final DataStorage dataStorage;
-
+    
+    /**
+     * Creates a new AccountService with the specified data storage based on user's choice.
+     *
+     * @param dataStorage the data storage implementation to use
+     */
     public AccountService(DataStorage dataStorage) {
         this.dataStorage = dataStorage;
     }
 
+    /**
+     * Creates a new savings account for a customer.
+     *
+     * @param customerId the customer ID
+     * @param initialBalance the initial balance (minimum Rs.100)
+     * @param branchID the branch ID
+     * @return the new account number
+     * @throws IllegalArgumentException if parameters are invalid
+     */
     public int createSavingsAccount(int customerId, BigDecimal initialBalance, int branchID) {
         if (customerId <= 0) {
             throw new IllegalArgumentException("Invalid customer ID");
@@ -39,23 +59,51 @@ public class AccountService {
     }
 
 
+    /**
+     * Retrieves an account by account number.
+     *
+     * @param accountNo the account number
+     * @return the savings account or null if not found
+     */
     public SavingsAccount getAccount(int accountNo) {
         return dataStorage.getAccount(accountNo);
     }
-
+    
+    /**
+     * Updates an existing account.
+     *
+     * @param account the account to update
+     */
     public void updateAccount(SavingsAccount account) {
         dataStorage.updateAccount(account);
     }
 
+    /**
+    * Deletes an account by account number.
+    *
+    * @param accountNo the account number to delete
+    * @return true if deletion was successful, false otherwise
+    */
     public boolean deleteAccount(int accountNo) {
         return dataStorage.deleteAccount(accountNo);
     }
     
+    /**
+     * Gets all accounts for a specific branch.
+     *
+     * @param branchId the branch ID
+     * @return list of accounts in the branch
+     */
     public List<SavingsAccount> getAccountsByBranch(int branchId) {
         return dataStorage.getAccountsByBranch(branchId);
     }
     
-    // New method to get accounts by customer
+    /**
+     * Gets all accounts for a specific customer.
+     *
+     * @param customerId the customer ID
+     * @return list of customer's accounts
+     */
     public List<SavingsAccount> getAccountsByCustomer(int customerId) {
         return dataStorage.getAccountsByCustomer(customerId);
     }
@@ -68,9 +116,18 @@ public class AccountService {
         return performDeposit(accountNo, amount, null, null, null);
     }
 
-
-    public boolean performWithdrawal(int accountNo, BigDecimal amount, Integer userId, 
-            TransactionLog.UserType userType, String description) {
+    
+    /**
+     * Performs a withdrawal with transaction logging.
+     *
+     * @param accountNo the account number
+     * @param amount the amount to withdraw
+     * @param userId the user performing the transaction
+     * @param userType the type of user (CUSTOMER, EMPLOYEE, MANAGER)
+     * @param description description of the transaction
+     * @return true if withdrawal was successful, false otherwise
+     */
+    public boolean performWithdrawal(int accountNo, BigDecimal amount, Integer userId,TransactionLog.UserType userType, String description) {
 			if (dataStorage instanceof DatabaseStorage) {
 				DatabaseStorage dbStorage = (DatabaseStorage) dataStorage;
 				return dbStorage.withdrawFromAccount(accountNo, amount, userId, userType, description);
@@ -90,9 +147,18 @@ public class AccountService {
 			return false;
 	}
 
-
-    public boolean performDeposit(int accountNo, BigDecimal amount, Integer userId, 
-        TransactionLog.UserType userType, String description) {
+    
+    /**
+     * Performs a deposit with transaction logging.
+     *
+     * @param accountNo the account number
+     * @param amount the amount to deposit
+     * @param userId the user performing the transaction
+     * @param userType the type of user (CUSTOMER, EMPLOYEE, MANAGER)
+     * @param description description of the transaction
+     * @return true if deposit was successful, false otherwise
+     */
+    public boolean performDeposit(int accountNo, BigDecimal amount, Integer userId, TransactionLog.UserType userType, String description) {
 		if (dataStorage instanceof DatabaseStorage) {
 		DatabaseStorage dbStorage = (DatabaseStorage) dataStorage;
 		return dbStorage.depositToAccount(accountNo, amount, userId, userType, description);
@@ -108,6 +174,16 @@ public class AccountService {
 		return false;
 		}
  
+    
+    /**
+     * Creates a joint savings account for multiple customers.
+     *
+     * @param customerIds list of customer IDs for the joint account
+     * @param initialBalance the initial balance (minimum Rs.100)
+     * @param branchId the branch ID
+     * @return the new account number
+     * @throws IllegalArgumentException if parameters are invalid
+     */
     public int createJointSavingsAccount(List<Integer> customerIds, BigDecimal initialBalance, int branchId) {
         if (customerIds == null || customerIds.isEmpty()) {
             throw new IllegalArgumentException("At least one customer ID is required");
@@ -159,6 +235,15 @@ public class AccountService {
     }
     
     
+    /**
+     * Creates a joint savings account from comma separated customer IDs.
+     *
+     * @param customerIdsStr comma-separated customer IDs (e.g., "1,2,3")
+     * @param initialBalance the initial balance (minimum Rs.100)
+     * @param branchId the branch ID
+     * @return the new account number
+     * @throws IllegalArgumentException if parameters are invalid
+     */
     public int createJointSavingsAccount(String customerIdsStr, BigDecimal initialBalance, int branchId) {
         if (customerIdsStr == null || customerIdsStr.trim().isEmpty()) {
             throw new IllegalArgumentException("Customer IDs cannot be empty");
@@ -181,6 +266,14 @@ public class AccountService {
         return createJointSavingsAccount(customerIds, initialBalance, branchId);
     }
 
+    /**
+     * Adds a customer to an existing account as joint holder.
+     *
+     * @param customerId the customer ID to add
+     * @param accountNo the account number
+     * @return true if customer was added successfully, false otherwise
+     * @throws IllegalArgumentException if customer or account doesn't exist
+     */
     public boolean addCustomerToExistingAccount(int customerId, int accountNo) {
         // Only works with DatabaseStorage
         if (!(dataStorage instanceof DatabaseStorage)) {
@@ -203,6 +296,15 @@ public class AccountService {
         return dbStorage.addCustomerToAccount(customerId, accountNo, "JOINT") > 0;
     }
 
+    
+    /**
+     * Removes a customer from a joint account.
+     *
+     * @param customerId the customer ID to remove
+     * @param accountNo the account number
+     * @return true if customer was removed successfully, false otherwise
+     * @throws IllegalStateException if trying to remove the last customer
+     */
     public boolean removeCustomerFromAccount(int customerId, int accountNo) {
         // Only works with DatabaseStorage
         if (!(dataStorage instanceof DatabaseStorage)) {
@@ -220,6 +322,12 @@ public class AccountService {
         return dbStorage.removeCustomerFromAccount(customerId, accountNo);
     }
 
+    /**
+     * Gets all customers who are holders of an account.
+     *
+     * @param accountNo the account number
+     * @return list of customers who hold the account
+     */
     public List<Customer> getAccountHolders(int accountNo) {
         // Only works with DatabaseStorage
         if (!(dataStorage instanceof DatabaseStorage)) {
@@ -230,10 +338,23 @@ public class AccountService {
         return dbStorage.getCustomersByAccount(accountNo);
     }
     
+    /**
+     * Gets transaction history for an account (default 50 records).
+     *
+     * @param accountNo the account number
+     * @return list of transaction logs
+     */
     public List<TransactionLog> getTransactionHistory(int accountNo) {
         return dataStorage.getTransactionHistory(accountNo);
     }
 
+    /**
+     * Gets transaction history for an account with specified limit.
+     *
+     * @param accountNo the account number
+     * @param limit maximum number of records to retrieve
+     * @return list of transaction logs
+     */
     public List<TransactionLog> getTransactionHistory(int accountNo, int limit) {
         return dataStorage.getTransactionHistory(accountNo, limit);
     }

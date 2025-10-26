@@ -7,6 +7,12 @@ import java.util.*;
 import java.util.regex.*;
 import java.net.URLDecoder;
 
+/**
+ * Filter that validates and sanitizes user input to prevent XSS and injection attacks.
+ * Blocks requests containing dangerous patterns or invalid data.
+ *
+ * @author TAMIL MUGHILAN
+ */
 public class InputSanitizationFilter implements Filter {
     
     
@@ -29,15 +35,33 @@ public class InputSanitizationFilter implements Filter {
         Pattern.compile("(?i)document\\.write"),
         Pattern.compile("(?i)<.*?\\s+on\\w+\\s*=.*?>")
     };
-    
+    /**
+     * Initializes the filter when application starts.
+     *
+     * @param filterConfig the filter configuration
+     */
     @Override
     public void init(FilterConfig filterConfig) {
         System.out.println("Enhanced Input Sanitization Filter Initialized");
     }
     
+    /**
+     * Cleans up resources when filter is destroyed.
+     */
     @Override
     public void destroy() {}
     
+    
+    /**
+     * Processes requests to validate all input parameters.
+     * Blocks requests containing dangerous or invalid input.
+     *
+     * @param request the servlet request
+     * @param response the servlet response  
+     * @param chain the filter chain
+     * @throws IOException if an I/O error occurs
+     * @throws ServletException if a servlet error occurs
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -79,6 +103,12 @@ public class InputSanitizationFilter implements Filter {
         chain.doFilter(request, response);
     }
     
+    /**
+     * Checks if the requested path is a static resource.
+     *
+     * @param path the request path to check
+     * @return true if it's a static resource, false otherwise
+     */
     private boolean isStaticResource(String path) {
         return path.endsWith(".css") || path.endsWith(".js") || 
                path.endsWith(".png") || path.endsWith(".jpg") || 
@@ -86,6 +116,13 @@ public class InputSanitizationFilter implements Filter {
                path.endsWith(".ico");
     }
     
+    /**
+     * Validates if a parameter value is safe to process.
+     *
+     * @param paramName the parameter name
+     * @param value the parameter value
+     * @return true if safe, false if dangerous
+     */
     private boolean isSafe(String paramName, String value) {
         if (value == null) return true;
         
@@ -145,6 +182,7 @@ public class InputSanitizationFilter implements Filter {
         
         return true;
     }
+    
     
     private boolean validateEmail(String email) {
         return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") && 

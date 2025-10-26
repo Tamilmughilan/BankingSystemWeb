@@ -5,16 +5,37 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Filter that restricts user from making DoS attacks and abuse
+ * Limits number of requests using a sliding window
+ * 
+ * @author TAMIL MUGHILAN
+ */
 public class RateLimitingFilter implements Filter {
-    private static final int MAX_REQUESTS_PER_MINUTE = 10;
+    private static final int MAX_REQUESTS_PER_MINUTE = 15;
     private static final long TIME_WINDOW_MS = 60 * 1000;
     private final Map<Integer, List<Long>> requestMap = new HashMap<>();
     
+    /**
+     * Initializes the filter when application starts.
+     *
+     * @param filterConfig the filter configuration
+     */
     @Override
     public void init(FilterConfig filterConfig) {
         System.out.println("\nRate Limiting Filter Initialized.\n");
     }
     
+    /**
+     * Processes requests to enforce rate limiting on customers.
+     * Blocks requests that exceed the allowed rate limit.
+     *
+     * @param request the servlet request
+     * @param response the servlet response  
+     * @param chain the filter chain
+     * @throws IOException if an I/O error occurs
+     * @throws ServletException if a servlet error occurs
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -65,6 +86,12 @@ public class RateLimitingFilter implements Filter {
         chain.doFilter(request, response);
     }
     
+    /**
+     * Checks if the requested path is a static resource.
+     *
+     * @param path the request path to check
+     * @return true if it's a static resource, false otherwise
+     */
     private boolean isStaticResource(String path) {
         if (path == null) return false;
         String lowercasePath = path.toLowerCase();
@@ -82,6 +109,9 @@ public class RateLimitingFilter implements Filter {
                lowercasePath.endsWith(".eot");
     }
     
+    /**
+     * Cleans up resources when filter is destroyed.
+     */
     @Override
     public void destroy() {}
 }

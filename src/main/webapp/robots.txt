@@ -1,0 +1,34 @@
+# Banking System - Robots.txt
+# Prevents search engines from indexing sensitive areas
+
+User-agent: *
+# Block access to sensitive directories
+Disallow: /WEB-INF/
+Disallow: /META-INF/
+Disallow: /classes/
+Disallow: /lib/
+
+# Block access to user account pages
+Disallow: /account.jsp
+Disallow: /customer.jsp
+Disallow: /profile.jsp
+
+# Block access to sensitive servlets
+Disallow: /AccountServlet
+Disallow: /CustomerServlet
+Disallow: /LoginServlet
+Disallow: /LogoutServlet
+
+# Allow public pages
+Allow: /
+Allow: /index.jsp
+Allow: /login.jsp
+Allow: /signup.jsp
+Allow: /style.css
+Allow: /js/
+
+# Crawl delay for politeness
+Crawl-delay: 10
+
+# Sitemap location
+Sitemap: http://banking.local:8080/BankingSystemWeb/sitemap.xml

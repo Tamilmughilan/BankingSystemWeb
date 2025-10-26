@@ -7,6 +7,12 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Background job that calculates and credits monthly interest to savings accounts.
+ * Runs automatically when Web application starts.
+ * 
+ * @author TAMIL MUGHILAN
+ */
 public class InterestCalculationJob implements BankingJob {
     private static final Logger logger = Logger.getLogger(InterestCalculationJob.class.getName());
     private static final BigDecimal ANNUAL_INTEREST_RATE = new BigDecimal("0.035"); 
@@ -14,10 +20,20 @@ public class InterestCalculationJob implements BankingJob {
     
     private final DataStorage dataStorage;
     
+    /**
+     * Creates Interest Calculation Job
+     * 
+     * @param dataStorage the data storage to access DB
+     */
     public InterestCalculationJob(DataStorage dataStorage) {
         this.dataStorage = dataStorage;
     }
     
+    
+    /**
+     * Executes the interest calculation for all savings accounts.
+     * Processes accounts from all branches and credits monthly interest.
+     */
     @Override
     public void execute() {
       
@@ -55,6 +71,12 @@ public class InterestCalculationJob implements BankingJob {
         }
     }
     
+    /**
+     * Calculates and credits interest to a single account.
+     *
+     * @param account the savings account to process
+     * @return the amount of interest credited
+     */
     private BigDecimal calculateAndCreditInterest(SavingsAccount account) {
         try {
         	//Get the existing balance
@@ -85,11 +107,21 @@ public class InterestCalculationJob implements BankingJob {
         return BigDecimal.ZERO;
     }
     
+    /**
+     * Gets the name of this job.
+     *
+     * @return the job name
+     */
     @Override
     public String getJobName() {
         return "Interest Calculation Job";
     }
     
+    /**
+     * Gets the description of what this job does.
+     *
+     * @return the job description
+     */
     @Override
     public String getJobDescription() {
         return "Calculates and credits monthly interest (3.5% p.a.) to all savings accounts";

@@ -15,9 +15,22 @@ import entity.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Servlet that handles all customer related operations.
+ * Manages customer retrieval, updates, and deletion with role based access control.
+ *
+ * @author TAMIL MUGHILAN
+ */
 @WebServlet("/customer")
 public class CustomerServlet extends HttpServlet {
     
+	/**
+     * Gets the appropriate data storage implementation based on storage type.
+     *
+     * @param storageType the type of storage (database, collection, mongodb)
+     * @return the data storage implementation
+     * @throws SQLException if database connection fails
+     */
 	private DataStorage getDataStorage(String storageType) throws SQLException {
 	    if ("database".equalsIgnoreCase(storageType)) {
 	        return new DatabaseStorage();
@@ -30,6 +43,15 @@ public class CustomerServlet extends HttpServlet {
 	    }
 	}
     
+	 /**
+     * Sends JSON response for AJAX requests.
+     *
+     * @param response the HTTP response
+     * @param success whether the operation was successful
+     * @param message the response message
+     * @param data the response data
+     * @throws IOException if writing response fails
+     */
     private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -49,6 +71,16 @@ public class CustomerServlet extends HttpServlet {
         out.flush();
     }
     
+    /**
+     * Handles GET requests for customer retrieval operations.
+     * Performs Dependency Injection by passing the user's choice of data storage into the Services.
+     * Viewing customers by ID, email, and branch.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -87,30 +119,7 @@ public class CustomerServlet extends HttpServlet {
                     }
                 }
             } 
-            else if ("getByEmail".equals(action) && email != null) {
-                Customer customer = customerService.getCustomerByEmail(email);
-                
-                String ajaxHeader = request.getHeader("X-Requested-With");
-                
-                if (customer == null) {
-                    if ("XMLHttpRequest".equals(ajaxHeader)) {
-                        sendJsonResponse(response, false, "Customer not found with email: " + email, null);
-                    } else {
-                        request.setAttribute("errorMessage", "Customer not found with email: " + email);
-                        request.setAttribute("storageType", storageType != null ? storageType : "database");
-                        request.getRequestDispatcher("customer.jsp").forward(request, response);
-                    }
-                } else {
-                    if ("XMLHttpRequest".equals(ajaxHeader)) {
-                        sendJsonResponse(response, true, "Customer retrieved successfully", customer);
-                    } else {
-                        request.setAttribute("customer", customer);
-                        request.setAttribute("storageType", storageType != null ? storageType : "database");
-                        request.setAttribute("showCustomerDetails", true);
-                        request.getRequestDispatcher("customer.jsp").forward(request, response);
-                    }
-                }
-            }
+            
             else if ("getByBranch".equals(action) && branchId != null) {
                 int brId = Integer.parseInt(branchId);
                 List<Customer> customers = customerService.getCustomersByBranch(brId);
@@ -160,6 +169,15 @@ public class CustomerServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Handles POST requests for customer modification operations.
+     * Performs customer updates and deletion with proper authorization.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

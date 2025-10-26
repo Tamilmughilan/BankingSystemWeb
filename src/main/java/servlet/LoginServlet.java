@@ -1,6 +1,7 @@
 package servlet;
 
 import javax.servlet.*;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -12,11 +13,23 @@ import storage.DataStorage;
 import storage.DatabaseStorage;
 import util.OTPUtil;
 
+/**
+ * Servlet that handles user authentication and login process.
+ * Implements two factor authentication with password verification and OTP.
+ * Redirects users to appropriate pages based on their roles.
+ *
+ * @author TAMIL MUGHILAN
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private DataStorage dataStorage;
     private AuthenticationService authService;
     
+    /**
+     * Initializes the servlet with database storage and authentication service.
+     *
+     * @throws ServletException if initialization fails
+     */
     @Override
     public void init() throws ServletException {
         try {
@@ -28,6 +41,14 @@ public class LoginServlet extends HttpServlet {
         this.authService = new AuthenticationService(dataStorage);
     }
       
+    /**
+     * Handles GET requests by redirecting to login page.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,6 +56,15 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
     
+    /**
+     * Handles POST requests for login and OTP verification.
+     * Routes to appropriate handler based on action parameter.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,6 +78,15 @@ public class LoginServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Handles the initial login attempt with email and password.
+     * Generates OTP if credentials are valid.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     private void handleLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -89,6 +128,15 @@ public class LoginServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Handles OTP verification and completes the login process.
+     * Creates user session and redirects based on role.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     private void handleOTPVerification(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -115,11 +163,11 @@ public class LoginServlet extends HttpServlet {
             session.removeAttribute("pendingAuth");
             session.removeAttribute("pendingEmail");
             
-            // Redirect based on role
+            // Redirect based on role - Updated to redirect customers to index.jsp
             String contextPath = request.getContextPath();
             switch (pendingAuth.getRole()) {
                 case "CUSTOMER":
-                    response.sendRedirect(contextPath + "/account.jsp");
+                    response.sendRedirect(contextPath + "/index.jsp");
                     break;
                 case "EMPLOYEE":
                 case "MANAGER":

@@ -14,7 +14,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         this.dbConnection = DatabaseConnection.getInstance();
     }
 
-    // Customer operations
+    /**
+     * Saves a new customer to storage.
+     *
+     * @param customer the customer to save
+     * @return the generated customer ID
+     */
     @Override
     public int saveCustomer(Customer customer) {
         String sql = "INSERT INTO customers (name, phone, email, branch_id) VALUES (?, ?, ?, ?)";
@@ -42,6 +47,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         return 0;
     }
 
+    /**
+     * Saves a new customer with password for login capability.
+     *
+     * @param customer the customer to save
+     * @param salt the password salt for security
+     * @return the generated customer ID
+     */
     @Override
     public int saveCustomerWithPassword(Customer customer, String salt) {
         String sql = "INSERT INTO customers (name, phone, email, branch_id, password) VALUES (?, ?, ?, ?, ?)";
@@ -103,6 +115,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
     
+    /**
+     * Updates an existing customer's information.
+     *
+     * @param customer the customer to update
+     * @throws SQLException if database operation fails
+     */
     @Override
     public void updateCustomer(Customer customer) throws SQLException {
         String sql = "UPDATE customers SET name=?, phone=?, email=?, branch_id=? WHERE customer_id=?";
@@ -122,6 +140,12 @@ public class DatabaseStorage extends AbstractDataStorage {
     }
 
 
+    /**
+     * Retrieves a customer by ID.
+     *
+     * @param customerId the customer ID
+     * @return the customer or null if not found
+     */
     @Override
     public Customer getCustomer(int customerId) {
         String sql = "SELECT * FROM customers WHERE customer_id = ?";
@@ -147,7 +171,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
         return null;
     }
-
+    
+    /**
+     * Retrieves a customer by email address.
+     *
+     * @param email the customer's email
+     * @return the customer or null if not found
+     */
     @Override
     public Customer getCustomerByEmail(String email) {
         String sql = "SELECT * FROM customers WHERE email = ?";
@@ -174,6 +204,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         return null;
     }
 
+    /**
+     * Deletes a customer by ID.
+     *
+     * @param customerId the customer ID to delete
+     * @return true if deletion was successful, false otherwise
+     */
     @Override
     public boolean deleteCustomer(int customerId) {
         String sql = "DELETE FROM customers WHERE customer_id = ?";
@@ -186,7 +222,14 @@ public class DatabaseStorage extends AbstractDataStorage {
             throw new RuntimeException("Error deleting customer", e);
         }
     }
+    
 
+    /**
+     * Gets all customers for a specific branch.
+     *
+     * @param branchId the branch ID
+     * @return list of customers in the branch
+     */
     @Override
     public List<Customer> getCustomersByBranch(int branchId) {
         List<Customer> customers = new ArrayList<>();
@@ -215,6 +258,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         return customers;
     }
 
+    /**
+     * Gets the password salt for a customer.
+     *
+     * @param customerId the customer ID
+     * @return the password salt or null if not found
+     */
     @Override
     public String getSaltForCustomer(int customerId) {
         String sql = "SELECT salt FROM user_salts WHERE user_id = ? AND user_type = 'CUSTOMER'";
@@ -234,6 +283,12 @@ public class DatabaseStorage extends AbstractDataStorage {
     }
 
     // Employee operations
+    /**
+     * Saves a new employee to storage.
+     *
+     * @param employee the employee to save
+     * @return the generated employee ID
+     */
     @Override
     public int saveEmployee(Employee employee) {
         String sql = "INSERT INTO employees (name, email, role, branch_id) VALUES (?, ?, ?, ?)";
@@ -261,6 +316,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         return 0;
     }
 
+    /**
+     * Saves a new employee with password for login capability.
+     *
+     * @param employee the employee to save
+     * @param salt the password salt for security
+     * @return the generated employee ID
+     */
     @Override
     public int saveEmployeeWithPassword(Employee employee, String salt) {
         String sql = "INSERT INTO employees (name, email, role, branch_id, password) VALUES (?, ?, ?, ?, ?)";
@@ -321,7 +383,13 @@ public class DatabaseStorage extends AbstractDataStorage {
             }
         }
     }
-
+    
+    /**
+     * Retrieves an employee by ID.
+     *
+     * @param employeeId the employee ID
+     * @return the employee or null if not found
+     */
     @Override
     public Employee getEmployee(int employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
@@ -354,6 +422,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         return null;
     }
 
+    /**
+     * Retrieves an employee by email address.
+     *
+     * @param email the employee's email
+     * @return the employee or null if not found
+     */
     @Override
     public Employee getEmployeeByEmail(String email) {
         String sql = "SELECT * FROM employees WHERE email = ?";
@@ -409,6 +483,12 @@ public class DatabaseStorage extends AbstractDataStorage {
 
 
     // Account operations
+    /**
+     * Saves a new account to storage.
+     *
+     * @param account the account to save
+     * @return the generated account number
+     */
     @Override 
     public int saveAccount(SavingsAccount account) {
         String sql = "INSERT INTO accounts (customer_id, balance, account_type, branch_id) VALUES (?, ?, ?, ?)";
@@ -439,6 +519,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
 
+    /**
+     * Retrieves an account by account number.
+     *
+     * @param accountNo the account number
+     * @return the account or null if not found
+     */
     @Override
     public SavingsAccount getAccount(int accountNo) {
         String sql = "SELECT * FROM accounts WHERE account_no = ?";
@@ -463,6 +549,11 @@ public class DatabaseStorage extends AbstractDataStorage {
         return null;
     }
 
+    /**
+     * Updates an existing account.
+     *
+     * @param account the account to update
+     */
     @Override
     public void updateAccount(SavingsAccount account) {
         String sql = "UPDATE accounts SET balance = ? WHERE account_no = ?";
@@ -477,6 +568,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
 
+    /**
+     * Deletes an account by account number.
+     *
+     * @param accountNo the account number to delete
+     * @return true if deletion was successful, false otherwise
+     */
     @Override
     public boolean deleteAccount(int accountNo) {
         String sql = "DELETE FROM accounts WHERE account_no = ?";
@@ -490,6 +587,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
 
+    /**
+     * Gets all accounts for a specific branch.
+     *
+     * @param branchId the branch ID
+     * @return list of accounts in the branch
+     */
     @Override
     public List<SavingsAccount> getAccountsByBranch(int branchId) {
         List<SavingsAccount> accounts = new ArrayList<>();
@@ -543,6 +646,11 @@ public class DatabaseStorage extends AbstractDataStorage {
     }
 
     // Branch operations
+    /**
+     * Saves a branch to storage.
+     *
+     * @param branch the branch to save
+     */
     @Override
     public void saveBranch(Branch branch) {
         String sql = "INSERT INTO branches (branch_name, address) VALUES (?, ?) ON DUPLICATE KEY UPDATE address = VALUES(address)";
@@ -557,6 +665,12 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
 
+    /**
+     * Retrieves a branch by ID.
+     *
+     * @param branchId the branch ID
+     * @return the branch or null if not found
+     */
     @Override
     public Branch getBranch(int branchId) {
         String sql = "SELECT * FROM branches WHERE branch_id = ?";
@@ -579,6 +693,16 @@ public class DatabaseStorage extends AbstractDataStorage {
         return null;
     }
     
+    /**
+     * Adds a customer to an existing account as joint holder.
+     * Default implementation throws UnsupportedOperationException.
+     *
+     * @param customerId the customer ID to add
+     * @param accountNo the account number
+     * @param role the customer's role (PRIMARY, JOINT)
+     * @return the result status
+     * @throws UnsupportedOperationException if not supported by implementation
+     */
     public int addCustomerToAccount(int customerId, int accountNo, String role) {
         String sql = "INSERT INTO customer_accounts (customer_id, account_no, account_role) VALUES (?, ?, ?)";
         try (Connection conn = dbConnection.getConnection();
@@ -602,6 +726,16 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
     
+    /**
+     * Removes a customer from a joint account.
+     * Default implementation throws UnsupportedOperationException.
+     *
+     * @param customerId the customer ID to remove
+     * @param accountNo the account number
+     * @return true if removal was successful, false otherwise
+     * @throws UnsupportedOperationException if not supported by implementation
+     */
+
     public boolean removeCustomerFromAccount(int customerId, int accountNo) {
         String sql = "DELETE FROM customer_accounts WHERE customer_id = ? AND account_no = ?";
         try (Connection conn = dbConnection.getConnection();
@@ -615,6 +749,14 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
     
+    /**
+     * Gets all customers who are holders of an account.
+     * Default implementation throws UnsupportedOperationException.
+     *
+     * @param accountNo the account number
+     * @return list of account holders
+     * @throws UnsupportedOperationException if not supported by implementation
+     */
     public List<Customer> getCustomersByAccount(int accountNo) {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT c.* FROM customers c " +
@@ -644,8 +786,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         return customers;
     }
 
-
-
+    /**
+     * Deposits money to an account.
+     *
+     * @param accountNo the account number
+     * @param amount the amount to deposit
+     * @return true if deposit was successful, false otherwise
+     */
     @Override
     public boolean depositToAccount(int accountNo, BigDecimal amount) {
         return depositToAccount(accountNo, amount, null, null, null);
@@ -746,6 +893,13 @@ public class DatabaseStorage extends AbstractDataStorage {
 
     // Updated withdrawal method with transaction logging
     @Override
+    /**
+     * Withdraws money from an account.
+     *
+     * @param accountNo the account number
+     * @param amount the amount to withdraw
+     * @return true if withdrawal was successful, false otherwise
+     */
     public boolean withdrawFromAccount(int accountNo, BigDecimal amount) {
         return withdrawFromAccount(accountNo, amount, null, null, null);
     }
@@ -856,6 +1010,13 @@ public class DatabaseStorage extends AbstractDataStorage {
         }
     }
     
+    /**
+     * Gets transaction history for an account with specified limit.
+     * 
+     * @param conn
+     * @param transactionLog
+     * @return
+     */
     private boolean logTransactionInTransaction(Connection conn, TransactionLog transactionLog) {
         String sql = "INSERT INTO transaction_logs (account_no, transaction_type, amount, " +
                     "balance_before, balance_after, status, description, created_by_user_id, created_by_user_type) " +
@@ -888,47 +1049,23 @@ public class DatabaseStorage extends AbstractDataStorage {
             return false;
         }
     }
-    @Override
-    public boolean logTransaction(TransactionLog transactionLog) {
-        String sql = "INSERT INTO transaction_logs (account_no, transaction_type, amount, " +
-                    "balance_before, balance_after, status, description, created_by_user_id, created_by_user_type) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setInt(1, transactionLog.getAccountNo());
-            stmt.setString(2, transactionLog.getTransactionType().name());
-            stmt.setBigDecimal(3, transactionLog.getAmount());
-            stmt.setBigDecimal(4, transactionLog.getBalanceBefore());
-            stmt.setBigDecimal(5, transactionLog.getBalanceAfter());
-            stmt.setString(6, transactionLog.getStatus().name());
-            stmt.setString(7, transactionLog.getDescription());
-            
-            if (transactionLog.getCreatedByUserId() != null) {
-                stmt.setInt(8, transactionLog.getCreatedByUserId());
-            } else {
-                stmt.setNull(8, java.sql.Types.INTEGER);
-            }
-            
-            if (transactionLog.getCreatedByUserType() != null) {
-                stmt.setString(9, transactionLog.getCreatedByUserType().name());
-            } else {
-                stmt.setNull(9, java.sql.Types.VARCHAR);
-            }
-            
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    
 
+    
     @Override
     public List<TransactionLog> getTransactionHistory(int accountNo) {
-        return getTransactionHistory(accountNo, 50); // Default limit
+        return getTransactionHistory(accountNo, 50); // Default
     }
 
+    /**
+     * Gets transaction history for an account with specified limit.
+     * Default implementation throws UnsupportedOperationException.
+     *
+     * @param accountNo the account number
+     * @param limit maximum number of records to retrieve
+     * @return list of transaction logs
+     * @throws UnsupportedOperationException if not supported by implementation
+     */
     @Override
     public List<TransactionLog> getTransactionHistory(int accountNo, int limit) {
         List<TransactionLog> transactions = new ArrayList<>();
@@ -954,34 +1091,7 @@ public class DatabaseStorage extends AbstractDataStorage {
         return transactions;
     }
 
-    @Override
-    public List<TransactionLog> getTransactionHistoryByDateRange(int accountNo, 
-                                                               java.time.LocalDateTime startDate, 
-                                                               java.time.LocalDateTime endDate) {
-        List<TransactionLog> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transaction_logs WHERE account_no = ? " +
-                    "AND transaction_date BETWEEN ? AND ? " +
-                    "ORDER BY transaction_date DESC";
-        
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setInt(1, accountNo);
-            stmt.setTimestamp(2, java.sql.Timestamp.valueOf(startDate));
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(endDate));
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    TransactionLog log = mapResultSetToTransactionLog(rs);
-                    transactions.add(log);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return transactions;
-    }
+    
 
     // Helper method to map ResultSet to TransactionLog
     private TransactionLog mapResultSetToTransactionLog(ResultSet rs) throws SQLException {

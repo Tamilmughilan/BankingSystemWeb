@@ -6,10 +6,22 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.util.logging.Logger;
 
+/**
+ * Listener that manages application startup and shutdown processes.
+ * Initializes background jobs and handles application shutdown.
+ *
+ * @author TAMIL MUGHILAN
+ */
 @WebListener
 public class ApplicationLifecycleListener implements ServletContextListener {
     private static final Logger logger = Logger.getLogger(ApplicationLifecycleListener.class.getName());
     
+    /**
+     * Handles application startup initialization.
+     * Starts the job manager and schedules background jobs.
+     *
+     * @param sce the servlet context event
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.info("Banking System Application Starting...");
@@ -26,6 +38,12 @@ public class ApplicationLifecycleListener implements ServletContextListener {
         }
     }
     
+    /**
+     * Handles application shutdown cleanup.
+     * Stops background jobs and releases resources.
+     *
+     * @param sce the servlet context event
+     */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.info("Banking System Application Shutting Down...");

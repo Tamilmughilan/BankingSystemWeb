@@ -1,5 +1,11 @@
 package entity;
 
+/**
+ * Represents an employee in the banking system.
+ * Built using the Builder pattern.
+ * 
+ * @author TAMIL MUGHILAN
+ */
 public class Employee extends AbstractEmployee {
     private final int branch_id;
 
@@ -8,14 +14,15 @@ public class Employee extends AbstractEmployee {
         this.branch_id = builder.branchId;
     }
 
+    /**
+     * Builder for creating Employee instances.
+     */
     public static class Builder {
-        // Required fields
         private final String name;
         private final String email;
         private final String role;
         private final int branchId;
-        
-        // Optional fields
+
         private int id = 0;
         private String password;
 
@@ -26,7 +33,6 @@ public class Employee extends AbstractEmployee {
             this.branchId = branchId;
         }
 
-        // Builder methods
         public Builder id(int id) { this.id = id; return this; }
         public Builder password(String password) { this.password = password; return this; }
 
@@ -34,7 +40,12 @@ public class Employee extends AbstractEmployee {
             return new Employee(this);
         }
     }
-
+    
+    /**
+     * Gets the branch ID.
+     * 
+     * @return the branch ID
+     */
     public int getBranchId() { return branch_id; }
 
     @Override

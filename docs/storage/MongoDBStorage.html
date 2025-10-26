@@ -6,889 +6,2396 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2025-06-20">
-<meta name="description" content="declaration: package: storage, class: MongoDBStorage">
+<meta name="description"
+	content="declaration: package: storage, class: MongoDBStorage">
 <meta name="generator" content="javadoc/ClassWriterImpl">
-<link rel="stylesheet" type="text/css" href="../stylesheet.css" title="Style">
-<link rel="stylesheet" type="text/css" href="../script-dir/jquery-ui.min.css" title="Style">
+<link rel="stylesheet" type="text/css" href="../stylesheet.css"
+	title="Style">
+<link rel="stylesheet" type="text/css"
+	href="../script-dir/jquery-ui.min.css" title="Style">
 <script type="text/javascript" src="../script.js"></script>
 <script type="text/javascript" src="../script-dir/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../";
+	<script type="text/javascript">var pathtoroot = "../";
 loadScripts(document, 'script');</script>
-<noscript>
-<div>JavaScript is disabled on your browser.</div>
-</noscript>
-<div class="flex-box">
-<header role="banner" class="flex-header">
-<nav role="navigation">
-<!-- ========= START OF TOP NAVBAR ======= -->
-<div class="top-nav" id="navbar-top"><button id="navbar-toggle-button" aria-controls="navbar-top" aria-expanded="false" aria-label="Toggle navigation links"><span class="nav-bar-toggle-icon">&nbsp;</span><span class="nav-bar-toggle-icon">&nbsp;</span><span class="nav-bar-toggle-icon">&nbsp;</span></button>
-<div class="skip-nav"><a href="#skip-navbar-top" title="Skip navigation links">Skip navigation links</a></div>
-<ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
-<li><a href="../index.html">Overview</a></li>
-<li><a href="package-summary.html">Package</a></li>
-<li class="nav-bar-cell1-rev">Class</li>
-<li><a href="class-use/MongoDBStorage.html">Use</a></li>
-<li><a href="package-tree.html">Tree</a></li>
-<li><a href="../index-files/index-1.html">Index</a></li>
-<li><a href="../help-doc.html#class">Help</a></li>
-</ul>
-<ul class="sub-nav-list-small">
-<li>
-<p>Summary:</p>
-<ul>
-<li>Nested</li>
-<li><a href="#field-summary">Field</a></li>
-<li><a href="#constructor-summary">Constr</a></li>
-<li><a href="#method-summary">Method</a></li>
-</ul>
-</li>
-<li>
-<p>Detail:</p>
-<ul>
-<li><a href="#field-detail">Field</a></li>
-<li><a href="#constructor-detail">Constr</a></li>
-<li><a href="#method-detail">Method</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="sub-nav">
-<div id="navbar-sub-list">
-<ul class="sub-nav-list">
-<li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-summary">Method</a></li>
-</ul>
-<ul class="sub-nav-list">
-<li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
-</ul>
-</div>
-<div class="nav-list-search"><a href="../search.html">SEARCH</a>
-<input type="text" id="search-input" disabled placeholder="Search">
-<input type="reset" id="reset-button" disabled value="reset">
-</div>
-</div>
-<!-- ========= END OF TOP NAVBAR ========= -->
-<span class="skip-nav" id="skip-navbar-top"></span></nav>
-</header>
-<div class="flex-content">
-<main role="main">
-<!-- ======== START OF CLASS DATA ======== -->
-<div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">storage</a></div>
-<h1 title="Class MongoDBStorage" class="title">Class MongoDBStorage</h1>
-</div>
-<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="AbstractDataStorage.html" title="class in storage">storage.AbstractDataStorage</a>
-<div class="inheritance">storage.MongoDBStorage</div>
-</div>
-</div>
-<section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-</dl>
-<hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MongoDBStorage</span>
-<span class="extends-implements">extends <a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></span></div>
-</section>
-<section class="summary">
-<ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#accounts" class="member-name-link">accounts</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#branches" class="member-name-link">branches</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#customerAccounts" class="member-name-link">customerAccounts</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#customers" class="member-name-link">customers</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private com.mongodb.client.MongoDatabase</code></div>
-<div class="col-second even-row-color"><code><a href="#database" class="member-name-link">database</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#employees" class="member-name-link">employees</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private com.mongodb.client.MongoClient</code></div>
-<div class="col-second even-row-color"><code><a href="#mongoClient" class="member-name-link">mongoClient</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private com.mongodb.client.MongoCollection<wbr>&lt;org.bson.Document&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#userSalts" class="member-name-link">userSalts</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<li>
-<section class="constructor-summary" id="constructor-summary">
-<h2>Constructor Summary</h2>
-<div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
-<div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">MongoDBStorage</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
-<!-- ========== METHOD SUMMARY =========== -->
-<li>
-<section class="method-summary" id="method-summary">
-<h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCustomerToAccount(int,int,java.lang.String)" class="member-name-link">addCustomerToAccount</a><wbr>(int&nbsp;customerId,
- int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;role)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Adds a customer to an existing account as joint holder.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAllCollections()" class="member-name-link">clearAllCollections</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private org.bson.Document</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDocumentWithId(int,org.bson.Document)" class="member-name-link">createDocumentWithId</a><wbr>(int&nbsp;id,
- org.bson.Document&nbsp;doc)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAccount(int)" class="member-name-link">deleteAccount</a><wbr>(int&nbsp;accountNo)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Deletes an account by account number.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCustomer(int)" class="member-name-link">deleteCustomer</a><wbr>(int&nbsp;customerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Deletes a customer by ID.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#depositToAccount(int,java.math.BigDecimal)" class="member-name-link">depositToAccount</a><wbr>(int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;amount)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Deposits money to an account.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccount(int)" class="member-name-link">getAccount</a><wbr>(int&nbsp;accountNo)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves an account by account number.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccountsByBranch(int)" class="member-name-link">getAccountsByBranch</a><wbr>(int&nbsp;branchId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets all accounts for a specific branch.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccountsByCustomer(int)" class="member-name-link">getAccountsByCustomer</a><wbr>(int&nbsp;customerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Branch.html" title="class in entity">Branch</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBranch(int)" class="member-name-link">getBranch</a><wbr>(int&nbsp;branchId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves a branch by ID.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Customer.html" title="class in entity">Customer</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustomer(int)" class="member-name-link">getCustomer</a><wbr>(int&nbsp;customerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves a customer by ID.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Customer.html" title="class in entity">Customer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustomerByEmail(java.lang.String)" class="member-name-link">getCustomerByEmail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves a customer by email address.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustomersByAccount(int)" class="member-name-link">getCustomersByAccount</a><wbr>(int&nbsp;accountNo)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets all customers who are holders of an account.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustomersByBranch(int)" class="member-name-link">getCustomersByBranch</a><wbr>(int&nbsp;branchId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets all customers for a specific branch.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Employee.html" title="class in entity">Employee</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmployee(int)" class="member-name-link">getEmployee</a><wbr>(int&nbsp;employeeId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves an employee by ID.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Employee.html" title="class in entity">Employee</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmployeeByEmail(java.lang.String)" class="member-name-link">getEmployeeByEmail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves an employee by email address.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdAsInteger(org.bson.Document)" class="member-name-link">getIdAsInteger</a><wbr>(org.bson.Document&nbsp;doc)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../entity/Manager.html" title="class in entity">Manager</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getManager(int)" class="member-name-link">getManager</a><wbr>(int&nbsp;employeeId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSaltForCustomer(int)" class="member-name-link">getSaltForCustomer</a><wbr>(int&nbsp;customerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets the password salt for a customer.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSaltForEmployee(int)" class="member-name-link">getSaltForEmployee</a><wbr>(int&nbsp;employeeId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCustomerFromAccount(int,int)" class="member-name-link">removeCustomerFromAccount</a><wbr>(int&nbsp;customerId,
- int&nbsp;accountNo)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Removes a customer from a joint account.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveAccount(entity.SavingsAccount)" class="member-name-link">saveAccount</a><wbr>(<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&nbsp;account)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new account to storage.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveBranch(entity.Branch)" class="member-name-link">saveBranch</a><wbr>(<a href="../entity/Branch.html" title="class in entity">Branch</a>&nbsp;branch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a branch to storage.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveCustomer(entity.Customer)" class="member-name-link">saveCustomer</a><wbr>(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new customer to storage.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveCustomerWithPassword(entity.Customer,java.lang.String)" class="member-name-link">saveCustomerWithPassword</a><wbr>(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;salt)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new customer with password for login capability.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveEmployee(entity.Employee)" class="member-name-link">saveEmployee</a><wbr>(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new employee to storage.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveEmployeeWithPassword(entity.Employee,java.lang.String)" class="member-name-link">saveEmployeeWithPassword</a><wbr>(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;salt)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new employee with password for login capability.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAccount(entity.SavingsAccount)" class="member-name-link">updateAccount</a><wbr>(<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&nbsp;account)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Updates an existing account.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCustomer(entity.Customer)" class="member-name-link">updateCustomer</a><wbr>(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Updates an existing customer's information.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withdrawFromAccount(int,java.math.BigDecimal)" class="member-name-link">withdrawFromAccount</a><wbr>(int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;amount)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Withdraws money from an account.</div>
-</div>
-</div>
-</div>
-</div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-storage.AbstractDataStorage">Methods inherited from class&nbsp;storage.<a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></h3>
-<code><a href="AbstractDataStorage.html#isValidEmail(java.lang.String)">isValidEmail</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-storage.DataStorage">Methods inherited from interface&nbsp;storage.<a href="DataStorage.html" title="interface in storage">DataStorage</a></h3>
-<code><a href="DataStorage.html#getTransactionHistory(int)">getTransactionHistory</a>, <a href="DataStorage.html#getTransactionHistory(int,int)">getTransactionHistory</a>, <a href="DataStorage.html#getTransactionHistoryByDateRange(int,java.time.LocalDateTime,java.time.LocalDateTime)">getTransactionHistoryByDateRange</a>, <a href="DataStorage.html#logTransaction(entity.TransactionLog)">logTransaction</a></code></div>
-</section>
-</li>
-</ul>
-</section>
-<section class="details">
-<ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="mongoClient">
-<h3>mongoClient</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoClient</span>&nbsp;<span class="element-name">mongoClient</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="database">
-<h3>database</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoDatabase</span>&nbsp;<span class="element-name">database</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="customers">
-<h3>customers</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">customers</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="employees">
-<h3>employees</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">employees</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="accounts">
-<h3>accounts</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">accounts</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="branches">
-<h3>branches</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">branches</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="customerAccounts">
-<h3>customerAccounts</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">customerAccounts</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="userSalts">
-<h3>userSalts</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span class="element-name">userSalts</span></div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<li>
-<section class="constructor-details" id="constructor-detail">
-<h2>Constructor Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="&lt;init&gt;()">
-<h3>MongoDBStorage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MongoDBStorage</span>()</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="getIdAsInteger(org.bson.Document)">
-<h3>getIdAsInteger</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getIdAsInteger</span><wbr><span class="parameters">(org.bson.Document&nbsp;doc)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="createDocumentWithId(int,org.bson.Document)">
-<h3>createDocumentWithId</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">org.bson.Document</span>&nbsp;<span class="element-name">createDocumentWithId</span><wbr><span class="parameters">(int&nbsp;id,
- org.bson.Document&nbsp;doc)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="saveCustomer(entity.Customer)">
-<h3>saveCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">saveCustomer</span><wbr><span class="parameters">(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)</span></div>
-<div class="block">Saves a new customer to storage.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveCustomer(entity.Customer)">saveCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveCustomer(entity.Customer)">saveCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customer</code> - the customer to save</dd>
-<dt>Returns:</dt>
-<dd>the generated customer ID</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="saveCustomerWithPassword(entity.Customer,java.lang.String)">
-<h3>saveCustomerWithPassword</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">saveCustomerWithPassword</span><wbr><span class="parameters">(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;salt)</span></div>
-<div class="block">Saves a new customer with password for login capability.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveCustomerWithPassword(entity.Customer,java.lang.String)">saveCustomerWithPassword</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveCustomerWithPassword(entity.Customer,java.lang.String)">saveCustomerWithPassword</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customer</code> - the customer to save</dd>
-<dd><code>salt</code> - the password salt for security</dd>
-<dt>Returns:</dt>
-<dd>the generated customer ID</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCustomer(int)">
-<h3>getCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Customer.html" title="class in entity">Customer</a></span>&nbsp;<span class="element-name">getCustomer</span><wbr><span class="parameters">(int&nbsp;customerId)</span></div>
-<div class="block">Retrieves a customer by ID.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getCustomer(int)">getCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getCustomer(int)">getCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customerId</code> - the customer ID</dd>
-<dt>Returns:</dt>
-<dd>the customer or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCustomerByEmail(java.lang.String)">
-<h3>getCustomerByEmail</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Customer.html" title="class in entity">Customer</a></span>&nbsp;<span class="element-name">getCustomerByEmail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email)</span></div>
-<div class="block">Retrieves a customer by email address.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getCustomerByEmail(java.lang.String)">getCustomerByEmail</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getCustomerByEmail(java.lang.String)">getCustomerByEmail</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>email</code> - the customer's email</dd>
-<dt>Returns:</dt>
-<dd>the customer or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateCustomer(entity.Customer)">
-<h3>updateCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCustomer</span><wbr><span class="parameters">(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)</span>
-                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Updates an existing customer's information.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#updateCustomer(entity.Customer)">updateCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#updateCustomer(entity.Customer)">updateCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customer</code> - the customer to update</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if database operation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="deleteCustomer(int)">
-<h3>deleteCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">deleteCustomer</span><wbr><span class="parameters">(int&nbsp;customerId)</span></div>
-<div class="block">Deletes a customer by ID.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#deleteCustomer(int)">deleteCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#deleteCustomer(int)">deleteCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customerId</code> - the customer ID to delete</dd>
-<dt>Returns:</dt>
-<dd>true if deletion was successful, false otherwise</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCustomersByBranch(int)">
-<h3>getCustomersByBranch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</span>&nbsp;<span class="element-name">getCustomersByBranch</span><wbr><span class="parameters">(int&nbsp;branchId)</span></div>
-<div class="block">Gets all customers for a specific branch.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getCustomersByBranch(int)">getCustomersByBranch</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getCustomersByBranch(int)">getCustomersByBranch</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>branchId</code> - the branch ID</dd>
-<dt>Returns:</dt>
-<dd>list of customers in the branch</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSaltForCustomer(int)">
-<h3>getSaltForCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSaltForCustomer</span><wbr><span class="parameters">(int&nbsp;customerId)</span></div>
-<div class="block">Gets the password salt for a customer.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getSaltForCustomer(int)">getSaltForCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getSaltForCustomer(int)">getSaltForCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>customerId</code> - the customer ID</dd>
-<dt>Returns:</dt>
-<dd>the password salt or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="saveEmployee(entity.Employee)">
-<h3>saveEmployee</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">saveEmployee</span><wbr><span class="parameters">(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee)</span></div>
-<div class="block">Saves a new employee to storage.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveEmployee(entity.Employee)">saveEmployee</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveEmployee(entity.Employee)">saveEmployee</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>employee</code> - the employee to save</dd>
-<dt>Returns:</dt>
-<dd>the generated employee ID</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="saveEmployeeWithPassword(entity.Employee,java.lang.String)">
-<h3>saveEmployeeWithPassword</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">saveEmployeeWithPassword</span><wbr><span class="parameters">(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;salt)</span></div>
-<div class="block">Saves a new employee with password for login capability.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveEmployeeWithPassword(entity.Employee,java.lang.String)">saveEmployeeWithPassword</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveEmployeeWithPassword(entity.Employee,java.lang.String)">saveEmployeeWithPassword</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>employee</code> - the employee to save</dd>
-<dd><code>salt</code> - the password salt for security</dd>
-<dt>Returns:</dt>
-<dd>the generated employee ID</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEmployee(int)">
-<h3>getEmployee</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Employee.html" title="class in entity">Employee</a></span>&nbsp;<span class="element-name">getEmployee</span><wbr><span class="parameters">(int&nbsp;employeeId)</span></div>
-<div class="block">Retrieves an employee by ID.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getEmployee(int)">getEmployee</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getEmployee(int)">getEmployee</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>employeeId</code> - the employee ID</dd>
-<dt>Returns:</dt>
-<dd>the employee or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEmployeeByEmail(java.lang.String)">
-<h3>getEmployeeByEmail</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Employee.html" title="class in entity">Employee</a></span>&nbsp;<span class="element-name">getEmployeeByEmail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email)</span></div>
-<div class="block">Retrieves an employee by email address.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getEmployeeByEmail(java.lang.String)">getEmployeeByEmail</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getEmployeeByEmail(java.lang.String)">getEmployeeByEmail</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>email</code> - the employee's email</dd>
-<dt>Returns:</dt>
-<dd>the employee or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getManager(int)">
-<h3>getManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Manager.html" title="class in entity">Manager</a></span>&nbsp;<span class="element-name">getManager</span><wbr><span class="parameters">(int&nbsp;employeeId)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getManager(int)">getManager</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getManager(int)">getManager</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSaltForEmployee(int)">
-<h3>getSaltForEmployee</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSaltForEmployee</span><wbr><span class="parameters">(int&nbsp;employeeId)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getSaltForEmployee(int)">getSaltForEmployee</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getSaltForEmployee(int)">getSaltForEmployee</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="saveAccount(entity.SavingsAccount)">
-<h3>saveAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">saveAccount</span><wbr><span class="parameters">(<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&nbsp;account)</span></div>
-<div class="block">Saves a new account to storage.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveAccount(entity.SavingsAccount)">saveAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveAccount(entity.SavingsAccount)">saveAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>account</code> - the account to save</dd>
-<dt>Returns:</dt>
-<dd>the generated account number</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAccount(int)">
-<h3>getAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a></span>&nbsp;<span class="element-name">getAccount</span><wbr><span class="parameters">(int&nbsp;accountNo)</span></div>
-<div class="block">Retrieves an account by account number.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getAccount(int)">getAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getAccount(int)">getAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>accountNo</code> - the account number</dd>
-<dt>Returns:</dt>
-<dd>the account or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateAccount(entity.SavingsAccount)">
-<h3>updateAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateAccount</span><wbr><span class="parameters">(<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&nbsp;account)</span></div>
-<div class="block">Updates an existing account.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#updateAccount(entity.SavingsAccount)">updateAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#updateAccount(entity.SavingsAccount)">updateAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>account</code> - the account to update</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="deleteAccount(int)">
-<h3>deleteAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">deleteAccount</span><wbr><span class="parameters">(int&nbsp;accountNo)</span></div>
-<div class="block">Deletes an account by account number.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#deleteAccount(int)">deleteAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#deleteAccount(int)">deleteAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>accountNo</code> - the account number to delete</dd>
-<dt>Returns:</dt>
-<dd>true if deletion was successful, false otherwise</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAccountsByBranch(int)">
-<h3>getAccountsByBranch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&gt;</span>&nbsp;<span class="element-name">getAccountsByBranch</span><wbr><span class="parameters">(int&nbsp;branchId)</span></div>
-<div class="block">Gets all accounts for a specific branch.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getAccountsByBranch(int)">getAccountsByBranch</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getAccountsByBranch(int)">getAccountsByBranch</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>branchId</code> - the branch ID</dd>
-<dt>Returns:</dt>
-<dd>list of accounts in the branch</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAccountsByCustomer(int)">
-<h3>getAccountsByCustomer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/SavingsAccount.html" title="class in entity">SavingsAccount</a>&gt;</span>&nbsp;<span class="element-name">getAccountsByCustomer</span><wbr><span class="parameters">(int&nbsp;customerId)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getAccountsByCustomer(int)">getAccountsByCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getAccountsByCustomer(int)">getAccountsByCustomer</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="withdrawFromAccount(int,java.math.BigDecimal)">
-<h3>withdrawFromAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">withdrawFromAccount</span><wbr><span class="parameters">(int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;amount)</span></div>
-<div class="block">Withdraws money from an account.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#withdrawFromAccount(int,java.math.BigDecimal)">withdrawFromAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#withdrawFromAccount(int,java.math.BigDecimal)">withdrawFromAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>accountNo</code> - the account number</dd>
-<dd><code>amount</code> - the amount to withdraw</dd>
-<dt>Returns:</dt>
-<dd>true if withdrawal was successful, false otherwise</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="depositToAccount(int,java.math.BigDecimal)">
-<h3>depositToAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">depositToAccount</span><wbr><span class="parameters">(int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;amount)</span></div>
-<div class="block">Deposits money to an account.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#depositToAccount(int,java.math.BigDecimal)">depositToAccount</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#depositToAccount(int,java.math.BigDecimal)">depositToAccount</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>accountNo</code> - the account number</dd>
-<dd><code>amount</code> - the amount to deposit</dd>
-<dt>Returns:</dt>
-<dd>true if deposit was successful, false otherwise</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="saveBranch(entity.Branch)">
-<h3>saveBranch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">saveBranch</span><wbr><span class="parameters">(<a href="../entity/Branch.html" title="class in entity">Branch</a>&nbsp;branch)</span></div>
-<div class="block">Saves a branch to storage.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#saveBranch(entity.Branch)">saveBranch</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#saveBranch(entity.Branch)">saveBranch</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>branch</code> - the branch to save</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getBranch(int)">
-<h3>getBranch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../entity/Branch.html" title="class in entity">Branch</a></span>&nbsp;<span class="element-name">getBranch</span><wbr><span class="parameters">(int&nbsp;branchId)</span></div>
-<div class="block">Retrieves a branch by ID.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DataStorage.html#getBranch(int)">getBranch</a></code>&nbsp;in interface&nbsp;<code><a href="DataStorage.html" title="interface in storage">DataStorage</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="AbstractDataStorage.html#getBranch(int)">getBranch</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>branchId</code> - the branch ID</dd>
-<dt>Returns:</dt>
-<dd>the branch or null if not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="addCustomerToAccount(int,int,java.lang.String)">
-<h3>addCustomerToAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addCustomerToAccount</span><wbr><span class="parameters">(int&nbsp;customerId,
- int&nbsp;accountNo,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;role)</span></div>
-<div class="block">Adds a customer to an existing account as joint holder.
- Default implementation throws UnsupportedOperationException.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>customerId</code> - the customer ID to add</dd>
-<dd><code>accountNo</code> - the account number</dd>
-<dd><code>role</code> - the customer's role (PRIMARY, JOINT)</dd>
-<dt>Returns:</dt>
-<dd>the result status</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="class or interface in java.lang" class="external-link">UnsupportedOperationException</a></code> - if not supported by implementation</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="removeCustomerFromAccount(int,int)">
-<h3>removeCustomerFromAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">removeCustomerFromAccount</span><wbr><span class="parameters">(int&nbsp;customerId,
- int&nbsp;accountNo)</span></div>
-<div class="block">Removes a customer from a joint account.
- Default implementation throws UnsupportedOperationException.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>customerId</code> - the customer ID to remove</dd>
-<dd><code>accountNo</code> - the account number</dd>
-<dt>Returns:</dt>
-<dd>true if removal was successful, false otherwise</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="class or interface in java.lang" class="external-link">UnsupportedOperationException</a></code> - if not supported by implementation</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCustomersByAccount(int)">
-<h3>getCustomersByAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</span>&nbsp;<span class="element-name">getCustomersByAccount</span><wbr><span class="parameters">(int&nbsp;accountNo)</span></div>
-<div class="block">Gets all customers who are holders of an account.
- Default implementation throws UnsupportedOperationException.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>accountNo</code> - the account number</dd>
-<dt>Returns:</dt>
-<dd>list of account holders</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="class or interface in java.lang" class="external-link">UnsupportedOperationException</a></code> - if not supported by implementation</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearAllCollections()">
-<h3>clearAllCollections</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearAllCollections</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="close()">
-<h3>close</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">close</span>()</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-<!-- ========= END OF CLASS DATA ========= -->
-</main>
-</div>
-</div>
+	<noscript>
+		<div>JavaScript is disabled on your browser.</div>
+	</noscript>
+	<div class="flex-box">
+		<header role="banner" class="flex-header">
+			<nav role="navigation">
+				<!-- ========= START OF TOP NAVBAR ======= -->
+				<div class="top-nav" id="navbar-top">
+					<button id="navbar-toggle-button" aria-controls="navbar-top"
+						aria-expanded="false" aria-label="Toggle navigation links">
+						<span class="nav-bar-toggle-icon">&nbsp;</span><span
+							class="nav-bar-toggle-icon">&nbsp;</span><span
+							class="nav-bar-toggle-icon">&nbsp;</span>
+					</button>
+					<div class="skip-nav">
+						<a href="#skip-navbar-top" title="Skip navigation links">Skip
+							navigation links</a>
+					</div>
+					<ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
+						<li><a href="../index.html">Overview</a></li>
+						<li><a href="package-summary.html">Package</a></li>
+						<li class="nav-bar-cell1-rev">Class</li>
+						<li><a href="class-use/MongoDBStorage.html">Use</a></li>
+						<li><a href="package-tree.html">Tree</a></li>
+						<li><a href="../index-files/index-1.html">Index</a></li>
+						<li><a href="../help-doc.html#class">Help</a></li>
+					</ul>
+					<ul class="sub-nav-list-small">
+						<li>
+							<p>Summary:</p>
+							<ul>
+								<li>Nested</li>
+								<li><a href="#field-summary">Field</a></li>
+								<li><a href="#constructor-summary">Constr</a></li>
+								<li><a href="#method-summary">Method</a></li>
+							</ul>
+						</li>
+						<li>
+							<p>Detail:</p>
+							<ul>
+								<li><a href="#field-detail">Field</a></li>
+								<li><a href="#constructor-detail">Constr</a></li>
+								<li><a href="#method-detail">Method</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="sub-nav">
+					<div id="navbar-sub-list">
+						<ul class="sub-nav-list">
+							<li>Summary:&nbsp;</li>
+							<li>Nested&nbsp;|&nbsp;</li>
+							<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
+							<li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
+							<li><a href="#method-summary">Method</a></li>
+						</ul>
+						<ul class="sub-nav-list">
+							<li>Detail:&nbsp;</li>
+							<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+							<li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
+							<li><a href="#method-detail">Method</a></li>
+						</ul>
+					</div>
+					<div class="nav-list-search">
+						<a href="../search.html">SEARCH</a> <input type="text"
+							id="search-input" disabled placeholder="Search"> <input
+							type="reset" id="reset-button" disabled value="reset">
+					</div>
+				</div>
+				<!-- ========= END OF TOP NAVBAR ========= -->
+				<span class="skip-nav" id="skip-navbar-top"></span>
+			</nav>
+		</header>
+		<div class="flex-content">
+			<main role="main">
+				<!-- ======== START OF CLASS DATA ======== -->
+				<div class="header">
+					<div class="sub-title">
+						<span class="package-label-in-type">Package</span>&nbsp;<a
+							href="package-summary.html">storage</a>
+					</div>
+					<h1 title="Class MongoDBStorage" class="title">Class
+						MongoDBStorage</h1>
+				</div>
+				<div class="inheritance" title="Inheritance Tree">
+					<a
+						href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html"
+						title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+					<div class="inheritance">
+						<a href="AbstractDataStorage.html" title="class in storage">storage.AbstractDataStorage</a>
+						<div class="inheritance">storage.MongoDBStorage</div>
+					</div>
+				</div>
+				<section class="class-description" id="class-description">
+					<dl class="notes">
+						<dt>All Implemented Interfaces:</dt>
+						<dd>
+							<code>
+								<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+							</code>
+						</dd>
+					</dl>
+					<hr>
+					<div class="type-signature">
+						<span class="modifiers">public class </span><span
+							class="element-name type-name-label">MongoDBStorage</span> <span
+							class="extends-implements">extends <a
+							href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a></span>
+					</div>
+				</section>
+				<section class="summary">
+					<ul class="summary-list">
+						<!-- =========== FIELD SUMMARY =========== -->
+						<li>
+							<section class="field-summary" id="field-summary">
+								<h2>Field Summary</h2>
+								<div class="caption">
+									<span>Fields</span>
+								</div>
+								<div class="summary-table three-column-summary">
+									<div class="table-header col-first">Modifier and Type</div>
+									<div class="table-header col-second">Field</div>
+									<div class="table-header col-last">Description</div>
+									<div class="col-first even-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second even-row-color">
+										<code>
+											<a href="#accounts" class="member-name-link">accounts</a>
+										</code>
+									</div>
+									<div class="col-last even-row-color">&nbsp;</div>
+									<div class="col-first odd-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second odd-row-color">
+										<code>
+											<a href="#branches" class="member-name-link">branches</a>
+										</code>
+									</div>
+									<div class="col-last odd-row-color">&nbsp;</div>
+									<div class="col-first even-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second even-row-color">
+										<code>
+											<a href="#customerAccounts" class="member-name-link">customerAccounts</a>
+										</code>
+									</div>
+									<div class="col-last even-row-color">&nbsp;</div>
+									<div class="col-first odd-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second odd-row-color">
+										<code>
+											<a href="#customers" class="member-name-link">customers</a>
+										</code>
+									</div>
+									<div class="col-last odd-row-color">&nbsp;</div>
+									<div class="col-first even-row-color">
+										<code>private com.mongodb.client.MongoDatabase</code>
+									</div>
+									<div class="col-second even-row-color">
+										<code>
+											<a href="#database" class="member-name-link">database</a>
+										</code>
+									</div>
+									<div class="col-last even-row-color">&nbsp;</div>
+									<div class="col-first odd-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second odd-row-color">
+										<code>
+											<a href="#employees" class="member-name-link">employees</a>
+										</code>
+									</div>
+									<div class="col-last odd-row-color">&nbsp;</div>
+									<div class="col-first even-row-color">
+										<code>private com.mongodb.client.MongoClient</code>
+									</div>
+									<div class="col-second even-row-color">
+										<code>
+											<a href="#mongoClient" class="member-name-link">mongoClient</a>
+										</code>
+									</div>
+									<div class="col-last even-row-color">&nbsp;</div>
+									<div class="col-first odd-row-color">
+										<code>
+											private com.mongodb.client.MongoCollection
+											<wbr>
+											&lt;org.bson.Document&gt;
+										</code>
+									</div>
+									<div class="col-second odd-row-color">
+										<code>
+											<a href="#userSalts" class="member-name-link">userSalts</a>
+										</code>
+									</div>
+									<div class="col-last odd-row-color">&nbsp;</div>
+								</div>
+							</section>
+						</li>
+						<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+						<li>
+							<section class="constructor-summary" id="constructor-summary">
+								<h2>Constructor Summary</h2>
+								<div class="caption">
+									<span>Constructors</span>
+								</div>
+								<div class="summary-table two-column-summary">
+									<div class="table-header col-first">Constructor</div>
+									<div class="table-header col-last">Description</div>
+									<div class="col-constructor-name even-row-color">
+										<code>
+											<a href="#%3Cinit%3E()" class="member-name-link">MongoDBStorage</a>()
+										</code>
+									</div>
+									<div class="col-last even-row-color">&nbsp;</div>
+								</div>
+							</section>
+						</li>
+						<!-- ========== METHOD SUMMARY =========== -->
+						<li>
+							<section class="method-summary" id="method-summary">
+								<h2>Method Summary</h2>
+								<div id="method-summary-table">
+									<div class="table-tabs" role="tablist"
+										aria-orientation="horizontal">
+										<button id="method-summary-table-tab0" role="tab"
+											aria-selected="true"
+											aria-controls="method-summary-table.tabpanel" tabindex="0"
+											onkeydown="switchTab(event)"
+											onclick="show('method-summary-table', 'method-summary-table', 3)"
+											class="active-table-tab">All Methods</button>
+										<button id="method-summary-table-tab2" role="tab"
+											aria-selected="false"
+											aria-controls="method-summary-table.tabpanel" tabindex="-1"
+											onkeydown="switchTab(event)"
+											onclick="show('method-summary-table', 'method-summary-table-tab2', 3)"
+											class="table-tab">Instance Methods</button>
+										<button id="method-summary-table-tab4" role="tab"
+											aria-selected="false"
+											aria-controls="method-summary-table.tabpanel" tabindex="-1"
+											onkeydown="switchTab(event)"
+											onclick="show('method-summary-table', 'method-summary-table-tab4', 3)"
+											class="table-tab">Concrete Methods</button>
+									</div>
+									<div id="method-summary-table.tabpanel" role="tabpanel"
+										aria-labelledby="method-summary-table-tab0">
+										<div class="summary-table three-column-summary">
+											<div class="table-header col-first">Modifier and Type</div>
+											<div class="table-header col-second">Method</div>
+											<div class="table-header col-last">Description</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#addCustomerToAccount(int,int,java.lang.String)"
+														class="member-name-link">addCustomerToAccount</a>
+													<wbr>
+													(int&nbsp;customerId, int&nbsp;accountNo, <a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>&nbsp;role)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Adds a customer to an existing
+													account as joint holder.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>void</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#clearAllCollections()" class="member-name-link">clearAllCollections</a>()
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>void</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#close()" class="member-name-link">close</a>()
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>private org.bson.Document</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#createDocumentWithId(int,org.bson.Document)"
+														class="member-name-link">createDocumentWithId</a>
+													<wbr>
+													(int&nbsp;id, org.bson.Document&nbsp;doc)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>boolean</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#deleteAccount(int)" class="member-name-link">deleteAccount</a>
+													<wbr>
+													(int&nbsp;accountNo)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Deletes an account by account
+													number.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>boolean</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#deleteCustomer(int)" class="member-name-link">deleteCustomer</a>
+													<wbr>
+													(int&nbsp;customerId)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Deletes a customer by ID.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>boolean</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#depositToAccount(int,java.math.BigDecimal)"
+														class="member-name-link">depositToAccount</a>
+													<wbr>
+													(int&nbsp;accountNo, <a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html"
+														title="class or interface in java.math"
+														class="external-link">BigDecimal</a>&nbsp;amount)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Deposits money to an account.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/SavingsAccount.html"
+														title="class in entity">SavingsAccount</a>
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getAccount(int)" class="member-name-link">getAccount</a>
+													<wbr>
+													(int&nbsp;accountNo)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves an account by account
+													number.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+														title="class or interface in java.util"
+														class="external-link">List</a>
+													<wbr>
+													&lt;<a href="../entity/SavingsAccount.html"
+														title="class in entity">SavingsAccount</a>&gt;
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getAccountsByBranch(int)"
+														class="member-name-link">getAccountsByBranch</a>
+													<wbr>
+													(int&nbsp;branchId)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Gets all accounts for a specific
+													branch.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+														title="class or interface in java.util"
+														class="external-link">List</a>
+													<wbr>
+													&lt;<a href="../entity/SavingsAccount.html"
+														title="class in entity">SavingsAccount</a>&gt;
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getAccountsByCustomer(int)"
+														class="member-name-link">getAccountsByCustomer</a>
+													<wbr>
+													(int&nbsp;customerId)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Branch.html" title="class in entity">Branch</a>
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getBranch(int)" class="member-name-link">getBranch</a>
+													<wbr>
+													(int&nbsp;branchId)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves a branch by ID.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Customer.html" title="class in entity">Customer</a>
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getCustomer(int)" class="member-name-link">getCustomer</a>
+													<wbr>
+													(int&nbsp;customerId)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves a customer by ID.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Customer.html" title="class in entity">Customer</a>
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getCustomerByEmail(java.lang.String)"
+														class="member-name-link">getCustomerByEmail</a>
+													<wbr>
+													(<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>&nbsp;email)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves a customer by email
+													address.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+														title="class or interface in java.util"
+														class="external-link">List</a>
+													<wbr>
+													&lt;<a href="../entity/Customer.html"
+														title="class in entity">Customer</a>&gt;
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getCustomersByAccount(int)"
+														class="member-name-link">getCustomersByAccount</a>
+													<wbr>
+													(int&nbsp;accountNo)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Gets all customers who are holders
+													of an account.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+														title="class or interface in java.util"
+														class="external-link">List</a>
+													<wbr>
+													&lt;<a href="../entity/Customer.html"
+														title="class in entity">Customer</a>&gt;
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getCustomersByBranch(int)"
+														class="member-name-link">getCustomersByBranch</a>
+													<wbr>
+													(int&nbsp;branchId)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Gets all customers for a specific
+													branch.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Employee.html" title="class in entity">Employee</a>
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getEmployee(int)" class="member-name-link">getEmployee</a>
+													<wbr>
+													(int&nbsp;employeeId)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves an employee by ID.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Employee.html" title="class in entity">Employee</a>
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getEmployeeByEmail(java.lang.String)"
+														class="member-name-link">getEmployeeByEmail</a>
+													<wbr>
+													(<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>&nbsp;email)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Retrieves an employee by email
+													address.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>private int</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getIdAsInteger(org.bson.Document)"
+														class="member-name-link">getIdAsInteger</a>
+													<wbr>
+													(org.bson.Document&nbsp;doc)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="../entity/Manager.html" title="class in entity">Manager</a>
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getManager(int)" class="member-name-link">getManager</a>
+													<wbr>
+													(int&nbsp;employeeId)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>
+												</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getSaltForCustomer(int)" class="member-name-link">getSaltForCustomer</a>
+													<wbr>
+													(int&nbsp;customerId)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Gets the password salt for a
+													customer.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>
+												</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#getSaltForEmployee(int)" class="member-name-link">getSaltForEmployee</a>
+													<wbr>
+													(int&nbsp;employeeId)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>boolean</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#removeCustomerFromAccount(int,int)"
+														class="member-name-link">removeCustomerFromAccount</a>
+													<wbr>
+													(int&nbsp;customerId, int&nbsp;accountNo)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Removes a customer from a joint
+													account.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#saveAccount(entity.SavingsAccount)"
+														class="member-name-link">saveAccount</a>
+													<wbr>
+													(<a href="../entity/SavingsAccount.html"
+														title="class in entity">SavingsAccount</a>&nbsp;account)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a new account to storage.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>void</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#saveBranch(entity.Branch)"
+														class="member-name-link">saveBranch</a>
+													<wbr>
+													(<a href="../entity/Branch.html" title="class in entity">Branch</a>&nbsp;branch)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a branch to storage.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#saveCustomer(entity.Customer)"
+														class="member-name-link">saveCustomer</a>
+													<wbr>
+													(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a new customer to storage.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="#saveCustomerWithPassword(entity.Customer,java.lang.String)"
+														class="member-name-link">saveCustomerWithPassword</a>
+													<wbr>
+													(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer,
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>&nbsp;salt)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a new customer with password
+													for login capability.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#saveEmployee(entity.Employee)"
+														class="member-name-link">saveEmployee</a>
+													<wbr>
+													(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a new employee to storage.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>int</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a
+														href="#saveEmployeeWithPassword(entity.Employee,java.lang.String)"
+														class="member-name-link">saveEmployeeWithPassword</a>
+													<wbr>
+													(<a href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee,
+													<a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+														title="class or interface in java.lang"
+														class="external-link">String</a>&nbsp;salt)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Saves a new employee with password
+													for login capability.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>void</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#updateAccount(entity.SavingsAccount)"
+														class="member-name-link">updateAccount</a>
+													<wbr>
+													(<a href="../entity/SavingsAccount.html"
+														title="class in entity">SavingsAccount</a>&nbsp;account)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Updates an existing account.</div>
+											</div>
+											<div
+												class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>void</code>
+											</div>
+											<div
+												class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#updateCustomer(entity.Customer)"
+														class="member-name-link">updateCustomer</a>
+													<wbr>
+													(<a href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)
+												</code>
+											</div>
+											<div
+												class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Updates an existing customer's
+													information.</div>
+											</div>
+											<div
+												class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>boolean</code>
+											</div>
+											<div
+												class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<code>
+													<a href="#withdrawFromAccount(int,java.math.BigDecimal)"
+														class="member-name-link">withdrawFromAccount</a>
+													<wbr>
+													(int&nbsp;accountNo, <a
+														href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html"
+														title="class or interface in java.math"
+														class="external-link">BigDecimal</a>&nbsp;amount)
+												</code>
+											</div>
+											<div
+												class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+												<div class="block">Withdraws money from an account.</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="inherited-list">
+									<h3
+										id="methods-inherited-from-class-storage.AbstractDataStorage">
+										Methods inherited from class&nbsp;storage.<a
+											href="AbstractDataStorage.html" title="class in storage">AbstractDataStorage</a>
+									</h3>
+									<code>
+										<a
+											href="AbstractDataStorage.html#isValidEmail(java.lang.String)">isValidEmail</a>
+									</code>
+								</div>
+								<div class="inherited-list">
+									<h3 id="methods-inherited-from-class-java.lang.Object">
+										Methods inherited from class&nbsp;java.lang.<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html"
+											title="class or interface in java.lang" class="external-link">Object</a>
+									</h3>
+									<code>
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()"
+											title="class or interface in java.lang" class="external-link">clone</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)"
+											title="class or interface in java.lang" class="external-link">equals</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()"
+											title="class or interface in java.lang" class="external-link">finalize</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()"
+											title="class or interface in java.lang" class="external-link">getClass</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()"
+											title="class or interface in java.lang" class="external-link">hashCode</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()"
+											title="class or interface in java.lang" class="external-link">notify</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()"
+											title="class or interface in java.lang" class="external-link">notifyAll</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()"
+											title="class or interface in java.lang" class="external-link">toString</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()"
+											title="class or interface in java.lang" class="external-link">wait</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)"
+											title="class or interface in java.lang" class="external-link">wait</a>,
+										<a
+											href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)"
+											title="class or interface in java.lang" class="external-link">wait</a>
+									</code>
+								</div>
+								<div class="inherited-list">
+									<h3 id="methods-inherited-from-class-storage.DataStorage">
+										Methods inherited from interface&nbsp;storage.<a
+											href="DataStorage.html" title="interface in storage">DataStorage</a>
+									</h3>
+									<code>
+										<a href="DataStorage.html#getTransactionHistory(int)">getTransactionHistory</a>,
+										<a href="DataStorage.html#getTransactionHistory(int,int)">getTransactionHistory</a>,
+										<a
+											href="DataStorage.html#getTransactionHistoryByDateRange(int,java.time.LocalDateTime,java.time.LocalDateTime)">getTransactionHistoryByDateRange</a>,
+										<a
+											href="DataStorage.html#logTransaction(entity.TransactionLog)">logTransaction</a>
+									</code>
+								</div>
+							</section>
+						</li>
+					</ul>
+				</section>
+				<section class="details">
+					<ul class="details-list">
+						<!-- ============ FIELD DETAIL =========== -->
+						<li>
+							<section class="field-details" id="field-detail">
+								<h2>Field Details</h2>
+								<ul class="member-list">
+									<li>
+										<section class="detail" id="mongoClient">
+											<h3>mongoClient</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoClient</span>&nbsp;<span
+													class="element-name">mongoClient</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="database">
+											<h3>database</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoDatabase</span>&nbsp;<span
+													class="element-name">database</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="customers">
+											<h3>customers</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">customers</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="employees">
+											<h3>employees</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">employees</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="accounts">
+											<h3>accounts</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">accounts</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="branches">
+											<h3>branches</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">branches</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="customerAccounts">
+											<h3>customerAccounts</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">customerAccounts</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="userSalts">
+											<h3>userSalts</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">com.mongodb.client.MongoCollection&lt;org.bson.Document&gt;</span>&nbsp;<span
+													class="element-name">userSalts</span>
+											</div>
+										</section>
+									</li>
+								</ul>
+							</section>
+						</li>
+						<!-- ========= CONSTRUCTOR DETAIL ======== -->
+						<li>
+							<section class="constructor-details" id="constructor-detail">
+								<h2>Constructor Details</h2>
+								<ul class="member-list">
+									<li>
+										<section class="detail" id="&lt;init&gt;()">
+											<h3>MongoDBStorage</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="element-name">MongoDBStorage</span>()
+											</div>
+										</section>
+									</li>
+								</ul>
+							</section>
+						</li>
+						<!-- ============ METHOD DETAIL ========== -->
+						<li>
+							<section class="method-details" id="method-detail">
+								<h2>Method Details</h2>
+								<ul class="member-list">
+									<li>
+										<section class="detail" id="getIdAsInteger(org.bson.Document)">
+											<h3>getIdAsInteger</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">getIdAsInteger</span>
+												<wbr>
+												<span class="parameters">(org.bson.Document&nbsp;doc)</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="createDocumentWithId(int,org.bson.Document)">
+											<h3>createDocumentWithId</h3>
+											<div class="member-signature">
+												<span class="modifiers">private</span>&nbsp;<span
+													class="return-type">org.bson.Document</span>&nbsp;<span
+													class="element-name">createDocumentWithId</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;id,
+													org.bson.Document&nbsp;doc)</span>
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="saveCustomer(entity.Customer)">
+											<h3>saveCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">saveCustomer</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)
+												</span>
+											</div>
+											<div class="block">Saves a new customer to storage.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#saveCustomer(entity.Customer)">saveCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveCustomer(entity.Customer)">saveCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customer</code>
+													- the customer to save
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the generated customer ID</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="saveCustomerWithPassword(entity.Customer,java.lang.String)">
+											<h3>saveCustomerWithPassword</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">saveCustomerWithPassword</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer,
+													<a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a>&nbsp;salt)
+												</span>
+											</div>
+											<div class="block">Saves a new customer with password
+												for login capability.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#saveCustomerWithPassword(entity.Customer,java.lang.String)">saveCustomerWithPassword</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveCustomerWithPassword(entity.Customer,java.lang.String)">saveCustomerWithPassword</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customer</code>
+													- the customer to save
+												</dd>
+												<dd>
+													<code>salt</code>
+													- the password salt for security
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the generated customer ID</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getCustomer(int)">
+											<h3>getCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="../entity/Customer.html" title="class in entity">Customer</a></span>&nbsp;<span
+													class="element-name">getCustomer</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId)</span>
+											</div>
+											<div class="block">Retrieves a customer by ID.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getCustomer(int)">getCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getCustomer(int)">getCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customerId</code>
+													- the customer ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the customer or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="getCustomerByEmail(java.lang.String)">
+											<h3>getCustomerByEmail</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="../entity/Customer.html" title="class in entity">Customer</a></span>&nbsp;<span
+													class="element-name">getCustomerByEmail</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a>&nbsp;email)
+												</span>
+											</div>
+											<div class="block">Retrieves a customer by email
+												address.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#getCustomerByEmail(java.lang.String)">getCustomerByEmail</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#getCustomerByEmail(java.lang.String)">getCustomerByEmail</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>email</code>
+													- the customer's email
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the customer or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="updateCustomer(entity.Customer)">
+											<h3>updateCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">void</span>&nbsp;<span
+													class="element-name">updateCustomer</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Customer.html" title="class in entity">Customer</a>&nbsp;customer)
+												</span> throws <span class="exceptions"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html"
+													title="class or interface in java.sql"
+													class="external-link">SQLException</a></span>
+											</div>
+											<div class="block">Updates an existing customer's
+												information.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#updateCustomer(entity.Customer)">updateCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#updateCustomer(entity.Customer)">updateCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customer</code>
+													- the customer to update
+												</dd>
+												<dt>Throws:</dt>
+												<dd>
+													<code>
+														<a
+															href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html"
+															title="class or interface in java.sql"
+															class="external-link">SQLException</a>
+													</code>
+													- if database operation fails
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="deleteCustomer(int)">
+											<h3>deleteCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">boolean</span>&nbsp;<span
+													class="element-name">deleteCustomer</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId)</span>
+											</div>
+											<div class="block">Deletes a customer by ID.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#deleteCustomer(int)">deleteCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#deleteCustomer(int)">deleteCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customerId</code>
+													- the customer ID to delete
+												</dd>
+												<dt>Returns:</dt>
+												<dd>true if deletion was successful, false otherwise</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getCustomersByBranch(int)">
+											<h3>getCustomersByBranch</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+													title="class or interface in java.util"
+													class="external-link">List</a>&lt;<a
+													href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</span>&nbsp;<span
+													class="element-name">getCustomersByBranch</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;branchId)</span>
+											</div>
+											<div class="block">Gets all customers for a specific
+												branch.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getCustomersByBranch(int)">getCustomersByBranch</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#getCustomersByBranch(int)">getCustomersByBranch</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>branchId</code>
+													- the branch ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>list of customers in the branch</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getSaltForCustomer(int)">
+											<h3>getSaltForCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a></span>&nbsp;<span
+													class="element-name">getSaltForCustomer</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId)</span>
+											</div>
+											<div class="block">Gets the password salt for a
+												customer.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getSaltForCustomer(int)">getSaltForCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getSaltForCustomer(int)">getSaltForCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customerId</code>
+													- the customer ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the password salt or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="saveEmployee(entity.Employee)">
+											<h3>saveEmployee</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">saveEmployee</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee)
+												</span>
+											</div>
+											<div class="block">Saves a new employee to storage.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#saveEmployee(entity.Employee)">saveEmployee</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveEmployee(entity.Employee)">saveEmployee</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>employee</code>
+													- the employee to save
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the generated employee ID</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="saveEmployeeWithPassword(entity.Employee,java.lang.String)">
+											<h3>saveEmployeeWithPassword</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">saveEmployeeWithPassword</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Employee.html" title="class in entity">Employee</a>&nbsp;employee,
+													<a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a>&nbsp;salt)
+												</span>
+											</div>
+											<div class="block">Saves a new employee with password
+												for login capability.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#saveEmployeeWithPassword(entity.Employee,java.lang.String)">saveEmployeeWithPassword</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveEmployeeWithPassword(entity.Employee,java.lang.String)">saveEmployeeWithPassword</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>employee</code>
+													- the employee to save
+												</dd>
+												<dd>
+													<code>salt</code>
+													- the password salt for security
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the generated employee ID</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getEmployee(int)">
+											<h3>getEmployee</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="../entity/Employee.html" title="class in entity">Employee</a></span>&nbsp;<span
+													class="element-name">getEmployee</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;employeeId)</span>
+											</div>
+											<div class="block">Retrieves an employee by ID.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getEmployee(int)">getEmployee</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getEmployee(int)">getEmployee</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>employeeId</code>
+													- the employee ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the employee or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="getEmployeeByEmail(java.lang.String)">
+											<h3>getEmployeeByEmail</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="../entity/Employee.html" title="class in entity">Employee</a></span>&nbsp;<span
+													class="element-name">getEmployeeByEmail</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a>&nbsp;email)
+												</span>
+											</div>
+											<div class="block">Retrieves an employee by email
+												address.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#getEmployeeByEmail(java.lang.String)">getEmployeeByEmail</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#getEmployeeByEmail(java.lang.String)">getEmployeeByEmail</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>email</code>
+													- the employee's email
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the employee or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getManager(int)">
+											<h3>getManager</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a href="../entity/Manager.html"
+													title="class in entity">Manager</a></span>&nbsp;<span
+													class="element-name">getManager</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;employeeId)</span>
+											</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getManager(int)">getManager</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getManager(int)">getManager</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getSaltForEmployee(int)">
+											<h3>getSaltForEmployee</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a></span>&nbsp;<span
+													class="element-name">getSaltForEmployee</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;employeeId)</span>
+											</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getSaltForEmployee(int)">getSaltForEmployee</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getSaltForEmployee(int)">getSaltForEmployee</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="saveAccount(entity.SavingsAccount)">
+											<h3>saveAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">saveAccount</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/SavingsAccount.html"
+													title="class in entity">SavingsAccount</a>&nbsp;account)
+												</span>
+											</div>
+											<div class="block">Saves a new account to storage.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#saveAccount(entity.SavingsAccount)">saveAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveAccount(entity.SavingsAccount)">saveAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>account</code>
+													- the account to save
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the generated account number</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getAccount(int)">
+											<h3>getAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="../entity/SavingsAccount.html"
+													title="class in entity">SavingsAccount</a></span>&nbsp;<span
+													class="element-name">getAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;accountNo)</span>
+											</div>
+											<div class="block">Retrieves an account by account
+												number.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getAccount(int)">getAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getAccount(int)">getAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the account or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="updateAccount(entity.SavingsAccount)">
+											<h3>updateAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">void</span>&nbsp;<span
+													class="element-name">updateAccount</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/SavingsAccount.html"
+													title="class in entity">SavingsAccount</a>&nbsp;account)
+												</span>
+											</div>
+											<div class="block">Updates an existing account.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#updateAccount(entity.SavingsAccount)">updateAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#updateAccount(entity.SavingsAccount)">updateAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>account</code>
+													- the account to update
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="deleteAccount(int)">
+											<h3>deleteAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">boolean</span>&nbsp;<span
+													class="element-name">deleteAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;accountNo)</span>
+											</div>
+											<div class="block">Deletes an account by account
+												number.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#deleteAccount(int)">deleteAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#deleteAccount(int)">deleteAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>accountNo</code>
+													- the account number to delete
+												</dd>
+												<dt>Returns:</dt>
+												<dd>true if deletion was successful, false otherwise</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getAccountsByBranch(int)">
+											<h3>getAccountsByBranch</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+													title="class or interface in java.util"
+													class="external-link">List</a>&lt;<a
+													href="../entity/SavingsAccount.html"
+													title="class in entity">SavingsAccount</a>&gt;</span>&nbsp;<span
+													class="element-name">getAccountsByBranch</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;branchId)</span>
+											</div>
+											<div class="block">Gets all accounts for a specific
+												branch.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getAccountsByBranch(int)">getAccountsByBranch</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#getAccountsByBranch(int)">getAccountsByBranch</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>branchId</code>
+													- the branch ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>list of accounts in the branch</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getAccountsByCustomer(int)">
+											<h3>getAccountsByCustomer</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+													title="class or interface in java.util"
+													class="external-link">List</a>&lt;<a
+													href="../entity/SavingsAccount.html"
+													title="class in entity">SavingsAccount</a>&gt;</span>&nbsp;<span
+													class="element-name">getAccountsByCustomer</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId)</span>
+											</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getAccountsByCustomer(int)">getAccountsByCustomer</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#getAccountsByCustomer(int)">getAccountsByCustomer</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="withdrawFromAccount(int,java.math.BigDecimal)">
+											<h3>withdrawFromAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">boolean</span>&nbsp;<span
+													class="element-name">withdrawFromAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;accountNo, <a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html"
+													title="class or interface in java.math"
+													class="external-link">BigDecimal</a>&nbsp;amount)
+												</span>
+											</div>
+											<div class="block">Withdraws money from an account.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#withdrawFromAccount(int,java.math.BigDecimal)">withdrawFromAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#withdrawFromAccount(int,java.math.BigDecimal)">withdrawFromAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dd>
+													<code>amount</code>
+													- the amount to withdraw
+												</dd>
+												<dt>Returns:</dt>
+												<dd>true if withdrawal was successful, false otherwise</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="depositToAccount(int,java.math.BigDecimal)">
+											<h3>depositToAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">boolean</span>&nbsp;<span
+													class="element-name">depositToAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;accountNo, <a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html"
+													title="class or interface in java.math"
+													class="external-link">BigDecimal</a>&nbsp;amount)
+												</span>
+											</div>
+											<div class="block">Deposits money to an account.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="DataStorage.html#depositToAccount(int,java.math.BigDecimal)">depositToAccount</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#depositToAccount(int,java.math.BigDecimal)">depositToAccount</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dd>
+													<code>amount</code>
+													- the amount to deposit
+												</dd>
+												<dt>Returns:</dt>
+												<dd>true if deposit was successful, false otherwise</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="saveBranch(entity.Branch)">
+											<h3>saveBranch</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">void</span>&nbsp;<span
+													class="element-name">saveBranch</span>
+												<wbr>
+												<span class="parameters">(<a
+													href="../entity/Branch.html" title="class in entity">Branch</a>&nbsp;branch)
+												</span>
+											</div>
+											<div class="block">Saves a branch to storage.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#saveBranch(entity.Branch)">saveBranch</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a
+															href="AbstractDataStorage.html#saveBranch(entity.Branch)">saveBranch</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>branch</code>
+													- the branch to save
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getBranch(int)">
+											<h3>getBranch</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a href="../entity/Branch.html"
+													title="class in entity">Branch</a></span>&nbsp;<span
+													class="element-name">getBranch</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;branchId)</span>
+											</div>
+											<div class="block">Retrieves a branch by ID.</div>
+											<dl class="notes">
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="DataStorage.html#getBranch(int)">getBranch</a>
+													</code>
+													&nbsp;in interface&nbsp;
+													<code>
+														<a href="DataStorage.html" title="interface in storage">DataStorage</a>
+													</code>
+												</dd>
+												<dt>Specified by:</dt>
+												<dd>
+													<code>
+														<a href="AbstractDataStorage.html#getBranch(int)">getBranch</a>
+													</code>
+													&nbsp;in class&nbsp;
+													<code>
+														<a href="AbstractDataStorage.html"
+															title="class in storage">AbstractDataStorage</a>
+													</code>
+												</dd>
+												<dt>Parameters:</dt>
+												<dd>
+													<code>branchId</code>
+													- the branch ID
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the branch or null if not found</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="addCustomerToAccount(int,int,java.lang.String)">
+											<h3>addCustomerToAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">int</span>&nbsp;<span
+													class="element-name">addCustomerToAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId,
+													int&nbsp;accountNo, <a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+													title="class or interface in java.lang"
+													class="external-link">String</a>&nbsp;role)
+												</span>
+											</div>
+											<div class="block">Adds a customer to an existing
+												account as joint holder. Default implementation throws
+												UnsupportedOperationException.</div>
+											<dl class="notes">
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customerId</code>
+													- the customer ID to add
+												</dd>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dd>
+													<code>role</code>
+													- the customer's role (PRIMARY, JOINT)
+												</dd>
+												<dt>Returns:</dt>
+												<dd>the result status</dd>
+												<dt>Throws:</dt>
+												<dd>
+													<code>
+														<a
+															href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html"
+															title="class or interface in java.lang"
+															class="external-link">UnsupportedOperationException</a>
+													</code>
+													- if not supported by implementation
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail"
+											id="removeCustomerFromAccount(int,int)">
+											<h3>removeCustomerFromAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">boolean</span>&nbsp;<span
+													class="element-name">removeCustomerFromAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;customerId,
+													int&nbsp;accountNo)</span>
+											</div>
+											<div class="block">Removes a customer from a joint
+												account. Default implementation throws
+												UnsupportedOperationException.</div>
+											<dl class="notes">
+												<dt>Parameters:</dt>
+												<dd>
+													<code>customerId</code>
+													- the customer ID to remove
+												</dd>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dt>Returns:</dt>
+												<dd>true if removal was successful, false otherwise</dd>
+												<dt>Throws:</dt>
+												<dd>
+													<code>
+														<a
+															href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html"
+															title="class or interface in java.lang"
+															class="external-link">UnsupportedOperationException</a>
+													</code>
+													- if not supported by implementation
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="getCustomersByAccount(int)">
+											<h3>getCustomersByAccount</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type"><a
+													href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html"
+													title="class or interface in java.util"
+													class="external-link">List</a>&lt;<a
+													href="../entity/Customer.html" title="class in entity">Customer</a>&gt;</span>&nbsp;<span
+													class="element-name">getCustomersByAccount</span>
+												<wbr>
+												<span class="parameters">(int&nbsp;accountNo)</span>
+											</div>
+											<div class="block">Gets all customers who are holders
+												of an account. Default implementation throws
+												UnsupportedOperationException.</div>
+											<dl class="notes">
+												<dt>Parameters:</dt>
+												<dd>
+													<code>accountNo</code>
+													- the account number
+												</dd>
+												<dt>Returns:</dt>
+												<dd>list of account holders</dd>
+												<dt>Throws:</dt>
+												<dd>
+													<code>
+														<a
+															href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/UnsupportedOperationException.html"
+															title="class or interface in java.lang"
+															class="external-link">UnsupportedOperationException</a>
+													</code>
+													- if not supported by implementation
+												</dd>
+											</dl>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="clearAllCollections()">
+											<h3>clearAllCollections</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">void</span>&nbsp;<span
+													class="element-name">clearAllCollections</span>()
+											</div>
+										</section>
+									</li>
+									<li>
+										<section class="detail" id="close()">
+											<h3>close</h3>
+											<div class="member-signature">
+												<span class="modifiers">public</span>&nbsp;<span
+													class="return-type">void</span>&nbsp;<span
+													class="element-name">close</span>()
+											</div>
+										</section>
+									</li>
+								</ul>
+							</section>
+						</li>
+					</ul>
+				</section>
+				<!-- ========= END OF CLASS DATA ========= -->
+			</main>
+		</div>
+	</div>
 </body>
 </html>

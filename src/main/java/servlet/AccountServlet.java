@@ -2,6 +2,8 @@ package servlet;
 
 import javax.servlet.*;
 
+
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.sql.*;
@@ -24,9 +26,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 
+/**
+ * Servlet that handles all account related operations.
+ * Manages account creation, transactions, joint accounts, and transaction history.
+ * Supports multiple storage types.
+ *
+ * @author TAMIL MUGHILAN
+ */
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
     
+	/**
+     * Gets the correct data storage implementation based on storage type.
+     *
+     * @param storageType the type of storage (database, collections, mongoDB)
+     * @return the data storage implementation
+     * @throws SQLException if database connection fails
+     */
 	private DataStorage getDataStorage(String storageType) throws SQLException {
 	    if ("database".equalsIgnoreCase(storageType)) {
 	        return new DatabaseStorage();
@@ -39,11 +55,23 @@ public class AccountServlet extends HttpServlet {
 	    }
 	}
 	
+	/**
+     * Gets the current user's ID from session.
+     *
+     * @param request the HTTP request
+     * @return the user ID or null if not found
+     */
 	private Integer getCurrentUserId(HttpServletRequest request) {
 	    Object userIdObj = request.getSession().getAttribute("userId");
 	    return userIdObj != null ? (Integer) userIdObj : null;
 	}
 
+	/**
+     * Gets the current user's type from session.
+     *
+     * @param request the HTTP request
+     * @return the user type (CUSTOMER, EMPLOYEE, MANAGER) or null
+     */
 	private TransactionLog.UserType getCurrentUserType(HttpServletRequest request) {
 	    String role = (String) request.getSession().getAttribute("role");
 	    if (role != null) {
@@ -61,6 +89,15 @@ public class AccountServlet extends HttpServlet {
 	    return null;
 	}
 	
+	/**
+     * Sends JSON response for AJAX requests.
+     *
+     * @param response the HTTP response
+     * @param success whether the operation was successful
+     * @param message the response message
+     * @param data the response data
+     * @throws IOException if writing response fails
+     */
     private void sendJsonResponse(HttpServletResponse response, boolean success, String message, Object data) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -90,6 +127,15 @@ public class AccountServlet extends HttpServlet {
         out.flush();
     }
 
+    /**
+     * Sends JSON response for account data.
+     *
+     * @param response the HTTP response
+     * @param success whether the operation was successful
+     * @param message the response message
+     * @param accounts list of accounts to include in response
+     * @throws IOException if writing response fails
+     */
     private void sendAccountsJsonResponse(HttpServletResponse response, boolean success, String message, List<SavingsAccount> accounts) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -121,6 +167,16 @@ public class AccountServlet extends HttpServlet {
         out.flush();
     }
     
+    /**
+     * Handles GET requests for account retrieval operations.
+     * Performs Dependency Injection by passing the user's choice of data storage into the Services.
+     * Viewing accounts by ID, branch, customer, and transaction history.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -280,7 +336,7 @@ public class AccountServlet extends HttpServlet {
                 }
                 
                 try {
-                    // Initialize to empty list instead of null
+                    // Initialize to empty list 
                     List<SavingsAccount> userAccounts = new ArrayList<>();
                     
                     // Get accounts based on user role
@@ -381,6 +437,16 @@ public class AccountServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Handles POST requests for account modification operations.
+     * Performs Dependency Injection by passing the user's choice of data storage into the Services.
+     * Account creation, deposits, withdrawals, and joint account management.
+     *
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws ServletException if a servlet error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -461,7 +527,7 @@ public class AccountServlet extends HttpServlet {
                 }
             }
 
-            // Updated deposit action in doPost method
+
             else if ("deposit".equals(action)) {
                 try {
                     int accountNo = Integer.parseInt(request.getParameter("accountNo"));
